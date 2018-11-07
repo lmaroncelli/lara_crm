@@ -14,6 +14,7 @@ class RegioniTableSeeder extends Seeder
     	$tblRegioni  =  DB::connection('old')
     	                ->table('regioni')
     	                ->select(DB::raw('idregione as id, nomeregione as nome'))
+                        ->where('idregione','!=',0)
     	                ->get();
 
     	$tblRegioni = collect($tblRegioni)->map(function($x){ return (array) $x; })->toArray(); 

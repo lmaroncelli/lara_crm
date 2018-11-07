@@ -14,6 +14,7 @@ class ComuniTableSeeder extends Seeder
     	$tblComuni  =  DB::connection('old')
     	                ->table('comuni')
     	                ->select(DB::raw('idcomune as id, nomecomune as nome, idprovincia as provincia_id'))
+                        ->where('idcomune','!=',0)
     	                ->get();
 
     	$tblComuni = collect($tblComuni)->map(function($x){ return (array) $x; })->toArray(); 
