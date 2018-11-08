@@ -14,7 +14,9 @@ class ClientiController extends Controller
      */
     public function index()
     {
-    $clienti = Cliente::attivo()->get();
+    $clienti = Cliente::with(['localita','associato_a_commerciali'])->paginate(20);
+
+
     return view('clienti.index', compact('clienti'));
     }
 
@@ -56,9 +58,9 @@ class ClientiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Cliente $cliente)
     {
-        //
+     return view('clienti.form', compact('cliente'));   
     }
 
     /**

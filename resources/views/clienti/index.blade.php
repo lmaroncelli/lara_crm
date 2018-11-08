@@ -23,38 +23,37 @@
                             <table class="table table-striped m-table m-table--head-bg-success">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Username</th>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Località</th>
+                                        <th>Categoria</th>
+                                        <th>Stato</th>
+                                        <th>Commerciale</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Jhon</td>
-                                        <td>Stone</td>
-                                        <td>@jhon</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Lisa</td>
-                                        <td>Nilson</td>
-                                        <td>@lisa</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
+                                    @foreach ($clienti as $cliente)
+                                      <tr>
+                                          <th scope="row">{{$cliente->id_info}}</th>
+                                          <td> <a href="{{ route('clienti.edit',['id' => $cliente->id]) }}" title="Modifica cliente">{{$cliente->nome}}</a></td>
+                                          <td>{{optional($cliente->localita)->nome}}</td>
+                                          <td>{{$cliente->categoria()}}</td>
+                                          <td>{{$cliente->stato()}}</td>
+                                          <td>{{$cliente->commerciali()}}</td>
+                                      </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {{ $clienti->links() }}
+            
         </div>
+
 
         <!--end:: Widgets/Tasks -->
     </div>
