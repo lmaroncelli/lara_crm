@@ -41,6 +41,16 @@ class Cliente extends Model
         return $this->belongsToMany('App\User', 'tblClienteAssociatoCommerciale', 'cliente_id', 'user_id');
     }
 
+  public function commercialiAssociatiIds()
+    {
+        return $this->associato_a_commerciali->pluck('id')->toArray();
+    }
+
+  public function commercialiVisibilitaIds()
+    {
+        return $this->visibile_a_commerciali->pluck('id')->toArray();
+    }
+
     public function gruppo()
     {
         return $this->belongsTo(GruppoCliente::class, 'gruppo_id', 'id');

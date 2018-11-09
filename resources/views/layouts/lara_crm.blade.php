@@ -89,6 +89,10 @@
 
     <!--begin::Page Snippets -->
     <script src="{{ asset('js/dashboard.js') }}" type="text/javascript"></script>
+    
+
+    @yield('js')
+
 
     
 </body>

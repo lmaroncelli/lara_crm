@@ -41,6 +41,11 @@ class User extends Authenticatable
     }
 
 
+    public function scopeCommerciale($query)
+     {
+         return $query->where('type_id','C');
+     }
+
 
 
 }

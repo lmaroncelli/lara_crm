@@ -43,13 +43,22 @@
                							<option value="1" @if ( $cliente->attivo == 1 || old('attivo') == 1 ) selected="selected" @endif>Attivo</option>
                							<option value="0" @if ( $cliente->attivo == 0 || (old('attivo') !== null && old('attivo') == 0) ) selected="selected" @endif>NON Attivo</option>
                					</select>
-               					<span class="m-form__help">
-               						@if ($cliente->attivo)
-               						<span class="m-badge m-badge--success m-badge--wide data_attivazione">{{$cliente->data_attivazione->format('d/m/Y')}}</span>
-               						@else
-               						<span class="m-badge m-badge--danger m-badge--wide data_attivazione">{{$cliente->data_disattivazione->format('d/m/Y')}}</span>
-               						@endif
-               					</span>
+												
+												@if (!is_null($cliente->data_attivazione) || !is_null($cliente->data_disattivazione))
+
+	               					<span class="m-form__help">
+	               						@if ($cliente->attivo)
+	               						<span class="m-badge m-badge--success m-badge--wide data_attivazione">
+	               							{{optional($cliente->data_attivazione)->format('d/m/Y')}}
+	               						</span>
+	               						@else
+	               						<span class="m-badge m-badge--danger m-badge--wide data_attivazione">
+	               							{{optional($cliente->data_disattivazione)->format('d/m/Y')}}
+	               						</span>
+	               						@endif
+	               					</span>
+
+												@endif
                			</div>
                			<label class="col-lg-2 col-form-label" for="attivo_IA">Infoalberghi:</label>
                			<div class="col-lg-3">
@@ -57,13 +66,22 @@
                							<option value="1" @if ( $cliente->attivo_IA == 1 || old('attivo_IA') == 1 ) selected="selected" @endif>Attivo</option>
                							<option value="0" @if ( $cliente->attivo_IA == 0 || (old('attivo_IA') !== null && old('attivo_IA') == 0) ) selected="selected" @endif>NON Attivo</option>
                					</select>
+
+												@if (!is_null($cliente->data_attivazione_IA) || !is_null($cliente->data_disattivazione_IA))
+												
                					<span class="m-form__help">
                						@if ($cliente->attivo_IA)
-               						<span class="m-badge m-badge--success m-badge--wide data_attivazione">{{$cliente->data_attivazione_IA->format('d/m/Y')}}</span>
+               						<span class="m-badge m-badge--success m-badge--wide data_attivazione">
+               							{{optional($cliente->data_attivazione_IA)->format('d/m/Y')}}
+               						</span>
                						@else
-               						<span class="m-badge m-badge--danger m-badge--wide data_attivazione">{{$cliente->data_disattivazione_IA->format('d/m/Y')}}</span>
+               						<span class="m-badge m-badge--danger m-badge--wide data_attivazione">
+               							{{optional($cliente->data_disattivazione_IA)->format('d/m/Y')}}
+               						</span>
                						@endif
                					</span>
+												
+												@endif
                			</div>
                		</div>
 									{{-- \Attivo-AttivoIA --}}
@@ -124,6 +142,90 @@
 	             		</div>
 									{{-- \Città-CAP --}}
 
+									{{-- Telefono-Fax --}}
+	             		<div class="form-group m-form__group row">
+	             			<label class="col-lg-2 col-form-label" for="telefono">Telefono:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="telefono" id="telefono" value="{{ old('telefono') != '' ?  old('telefono') : $cliente->telefono}}"  class="form-control m-input" placeholder="Telefono">
+	             			</div>
+	             			<label class="col-lg-2 col-form-label" for="fax">FAX:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="fax" id="fax" value="{{ old('fax') != '' ?  old('fax') : $cliente->fax}}"  class="form-control m-input" placeholder="FAX">
+	             			</div>
+	             		</div>
+									{{-- \Telefono-Fax --}}
+
+									{{-- cellulare-Skype --}}
+	             		<div class="form-group m-form__group row">
+	             			<label class="col-lg-2 col-form-label" for="cell">Cellulare:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="cell" id="cell" value="{{ old('cell') != '' ?  old('cell') : $cliente->cell}}"  class="form-control m-input" placeholder="Cellulare">
+	             			</div>
+	             			<label class="col-lg-2 col-form-label" for="skype">Skype:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="skype" id="skype" value="{{ old('skype') != '' ?  old('skype') : $cliente->skype}}"  class="form-control m-input" placeholder="Skype">
+	             			</div>
+	             		</div>
+									{{-- \cellulare-Skype --}}
+
+									{{-- WhatsApp-Sms --}}
+	             		<div class="form-group m-form__group row">
+	             			<label class="col-lg-2 col-form-label" for="whatsapp">WhatsApp:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp') != '' ?  old('whatsapp') : $cliente->whatsapp}}"  class="form-control m-input" placeholder="WhatsApp">
+	             			</div>
+	             			<label class="col-lg-2 col-form-label" for="sms">Sms:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="sms" id="sms" value="{{ old('sms') != '' ?  old('sms') : $cliente->sms}}"  class="form-control m-input" placeholder="Sms">
+	             			</div>
+	             		</div>
+									{{-- \WhatsApp-Sms --}}
+
+									{{-- Web-Email --}}
+	             		<div class="form-group m-form__group row">
+	             			<label class="col-lg-2 col-form-label" for="web">Web:</label>
+	             			<div class="col-lg-3 input-group">
+	             				<input type="text" name="web" id="web" value="{{ old('web') != '' ?  old('web') : $cliente->web}}"  class="form-control m-input" placeholder="Web">
+	             				@if ($cliente->web != '')
+		             				<div class="input-group-append">
+		             					<a href="{{$cliente->web}}" target="_blank" class="btn btn-warning" title="Vai">Vai!</a>
+		             				</div>
+	             				@endif
+	             			</div>
+	             			<label class="col-lg-2 col-form-label" for="email">Email:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="email" id="email" value="{{ old('email') != '' ?  old('email') : $cliente->email}}"  class="form-control m-input" placeholder="Email">
+	             			</div>
+	             		</div>
+									{{-- \Web-Email --}}
+									
+									
+									{{-- Associato-Visibile --}}
+	             		<div class="form-group m-form__group row">
+	             			<label class="col-lg-2 col-form-label" for="associato">Associato:</label>
+	             			<div class="col-lg-3">
+	             				<select class="form-control m-select2" id="associato" multiple name="associato">
+													<option></option>
+													<optgroup label="Associato a">
+													@foreach ($commerciali as $id => $nome)
+														<option value="{{$id}}" @if ( in_array($id, $cliente->commercialiAssociatiIds()) ) selected="selected" @endif >{{$nome}}</option>
+													@endforeach
+													</optgroup>
+												</select>
+	             			</div>
+	             			<label class="col-lg-2 col-form-label" for="visibile">Visibile:</label>
+	             			<div class="col-lg-3">
+	             					<select class="form-control m-select2" id="visibile" multiple name="visibile">
+														<option></option>
+														<optgroup label="Visibile a">
+														@foreach ($commerciali as $id => $nome)
+															<option value="{{$id}}" @if ( in_array($id, $cliente->commercialiVisibilitaIds()) ) selected="selected" @endif >{{$nome}}</option>
+														@endforeach
+														</optgroup>
+													</select>
+	             			</div>
+	             		</div>
+									{{-- \Associato-Visibile --}}
 
 
             	</div> {{-- m-portlet__body --}}
@@ -155,6 +257,15 @@
 </div>{{-- row --}}
 </div>{{-- content --}}
 
+@endsection
 
 
+@section('js')
+	<script type="text/javascript" charset="utf-8">
+		jQuery(document).ready(function(){
+			$("#associato").select2({placeholder:"Seleziona i commerciali da associare"});
+			$("#visibile").select2({placeholder:"Seleziona i commerciali che hanno la visibilità"});
+		});
+	</script>
+	<script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
 @endsection
