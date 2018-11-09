@@ -38,7 +38,7 @@
                                           <th scope="row">{{$cliente->id_info}}</th>
                                           <td> <a href="{{ route('clienti.edit',['id' => $cliente->id]) }}" title="Modifica cliente">{{$cliente->nome}}</a></td>
                                           <td>{{optional($cliente->localita)->nome}}</td>
-                                          <td>{{$cliente->categoria()}}</td>
+                                          <td>{{optional($cliente->categoria)->categoria}}</td>
                                           <td>{{$cliente->stato()}}</td>
                                           <td>{{$cliente->commerciali()}}</td>
                                       </tr>

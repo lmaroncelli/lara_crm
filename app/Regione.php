@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Regione extends Model
 {
-   protected $table = 'tblProvince';
+   protected $table = 'tblRegioni';
 
    protected $guarded = ['id'];
 

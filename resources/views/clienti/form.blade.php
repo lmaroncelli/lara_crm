@@ -33,24 +33,8 @@
 	          @endif
 	          	{!! csrf_field() !!}
 
-							{{-- Nome-Tipo --}}
             	<div class="m-portlet__body">
-               		<div class="form-group m-form__group row">
-               			<label class="col-lg-2 col-form-label" for="nome">Nome:</label>
-               			<div class="col-lg-3">
-               				<input type="text" name="nome" id="nome" value="{{ old('nome') != '' ?  old('nome') : $cliente->nome}}"  class="form-control m-input" placeholder="Nome">
-               			</div>
-               			<label class="col-lg-2 col-form-label" for="tipo_id">Tipo:</label>
-               			<div class="col-lg-3">
-               					<select class="form-control m-input" id="tipo_id" name="tipo_id">
-               						@foreach ($tipi_cliente as $tipo_id => $tipo)
-               							<option value="{{$tipo_id}}" @if ($cliente->tipo_id == $tipo_id || old('tipo_id') == $tipo_id ) selected="selected" @endif>{{$tipo}}</option>
-               						@endforeach
-               					</select>
-               			</div>
-               		</div>
-									{{-- \Nome-Tipo --}}
-
+									
 									{{-- Attivo-AttivoIA --}}
                		<div class="form-group m-form__group row">
                			<label class="col-lg-2 col-form-label" for="attivo">Stato:</label>
@@ -82,9 +66,67 @@
                					</span>
                			</div>
                		</div>
+									{{-- \Attivo-AttivoIA --}}
 
-            	</div>
-							{{-- \Attivo-AttivoIA --}}
+
+									{{-- Nome-Tipo --}}
+	             		<div class="form-group m-form__group row">
+	             			<label class="col-lg-2 col-form-label" for="nome">Nome:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="nome" id="nome" value="{{ old('nome') != '' ?  old('nome') : $cliente->nome}}"  class="form-control m-input" placeholder="Nome">
+	             			</div>
+	             			<label class="col-lg-2 col-form-label" for="tipo_id">Tipo:</label>
+	             			<div class="col-lg-3">
+	             					<select class="form-control m-input" id="tipo_id" name="tipo_id">
+	             						@foreach ($tipi_cliente as $tipo_id => $tipo)
+	             							<option value="{{$tipo_id}}" @if ($cliente->tipo_id == $tipo_id || old('tipo_id') == $tipo_id ) selected="selected" @endif>{{$tipo}}</option>
+	             						@endforeach
+	             					</select>
+	             			</div>
+	             		</div>
+									{{-- \Nome-Tipo --}}
+
+									{{-- Indirizzo-Categoria --}}
+	             		<div class="form-group m-form__group row">
+	             			<label class="col-lg-2 col-form-label" for="indirizzo">Indirizzo:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="indirizzo" id="indirizzo" value="{{ old('indirizzo') != '' ?  old('indirizzo') : $cliente->indirizzo}}"  class="form-control m-input" placeholder="Nome">
+	             			</div>
+	             			<label class="col-lg-2 col-form-label" for="categoria_id">Categoria:</label>
+	             			<div class="col-lg-3">
+	             					<select class="form-control m-input" id="categoria_id" name="categoria_id">
+	             						<option value="6">Altro</option>
+	             						@foreach ($cataegorie_cliente as $categoria_id => $categoria)
+	             							<option value="{{$categoria_id}}" @if ($cliente->categoria_id == $categoria_id || old('categoria_id') == $categoria_id ) selected="selected" @endif>{{$categoria}}</option>
+	             						@endforeach
+	             					</select>
+	             			</div>
+	             		</div>
+									{{-- \Indirizzo-Categoria --}}
+
+
+									{{-- Città-CAP --}}
+	             		<div class="form-group m-form__group row">
+	             			<label class="col-lg-2 col-form-label" for="localita_id">Località:</label>
+	             			<div class="col-lg-3">
+	             					<select class="form-control m-input" id="localita_id" name="localita_id">
+	             						<option value="6">Altro</option>
+	             						@foreach ($localita_cliente as $localita_id => $localita)
+	             							<option value="{{$localita_id}}" @if ($cliente->localita_id == $localita_id || old('localita_id') == $localita_id ) selected="selected" @endif>{{$localita}}</option>
+	             						@endforeach
+	             					</select>
+	             			</div>
+	             			<label class="col-lg-2 col-form-label" id="luogo">{{$cliente->localita->comune->nome}} ({{$cliente->localita->comune->provincia->sigla}}) - {{$cliente->localita->comune->provincia->regione->nome}}</label>
+	             			<label class="col-lg-2 col-form-label" for="cap">CAP:</label>
+	             			<div class="col-lg-3">
+	             				<input type="text" name="cap" id="cap" value="{{ old('cap') != '' ?  old('cap') : $cliente->cap}}"  class="form-control m-input" placeholder="CAP">
+	             			</div>
+	             		</div>
+									{{-- \Città-CAP --}}
+
+
+
+            	</div> {{-- m-portlet__body --}}
 						
             
             	<div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">

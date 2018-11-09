@@ -14,7 +14,12 @@ class ClientiController extends Controller
      */
     public function index()
     {
-    $clienti = Cliente::with(['localita','associato_a_commerciali'])->orderBy('id_info')->paginate(20);
+    $clienti = Cliente::with([
+            'localita',
+            'associato_a_commerciali',
+            'categoria',
+            'localita.comune.provincia.regione'
+            ])->orderBy('id_info')->paginate(20);
 
 
     return view('clienti.index', compact('clienti'));

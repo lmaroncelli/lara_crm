@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\CategoriaCliente;
 use App\GruppoCliente;
 use App\Localita;
 use App\TipologiaCliente;
@@ -55,33 +56,15 @@ class Cliente extends Model
         return $this->belongsTo(TipologiaCliente::class, 'tipo_id', 'id');
     }
 
+    public function categoria()
+    {
+        return $this->belongsTo(CategoriaCliente::class, 'categoria_id', 'id');
+    }
+
 
     public function scopeAttivo($query)
      {
          return $query->where('attivo',1);
-     }
-
-
-
-    public function categoria()
-     {
-        if ($this->categoria_id == 0) 
-          {
-          return "";
-          } 
-        else 
-          {
-          if ($this->categoria_id == 1) 
-            {
-            return "1 stella";
-            } 
-          else 
-            {
-            return $this->categoria_id . " stelle";
-
-            }
-          }
-        return ucfirst($value);
      }
 
 
