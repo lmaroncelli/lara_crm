@@ -33,23 +33,59 @@
 	          @endif
 	          	{!! csrf_field() !!}
 
-							{{-- form row --}}
+							{{-- Nome-Tipo --}}
             	<div class="m-portlet__body">
                		<div class="form-group m-form__group row">
-               			<label class="col-lg-2 col-form-label">Full Name:</label>
+               			<label class="col-lg-2 col-form-label" for="nome">Nome:</label>
                			<div class="col-lg-3">
-               				<input type="email" class="form-control m-input" placeholder="Enter full name">
-               				<span class="m-form__help">Please enter your full name</span>
+               				<input type="text" name="nome" id="nome" value="{{ old('nome') != '' ?  old('nome') : $cliente->nome}}"  class="form-control m-input" placeholder="Nome">
                			</div>
-               			<label class="col-lg-2 col-form-label">Contact Number:</label>
+               			<label class="col-lg-2 col-form-label" for="tipo_id">Tipo:</label>
                			<div class="col-lg-3">
-               				<input type="email" class="form-control m-input" placeholder="Enter contact number">
-               				<span class="m-form__help">Please enter your contact number</span>
+               					<select class="form-control m-input" id="tipo_id" name="tipo_id">
+               						@foreach ($tipi_cliente as $tipo_id => $tipo)
+               							<option value="{{$tipo_id}}" @if ($cliente->tipo_id == $tipo_id || old('tipo_id') == $tipo_id ) selected="selected" @endif>{{$tipo}}</option>
+               						@endforeach
+               					</select>
                			</div>
                		</div>
+									{{-- \Nome-Tipo --}}
+
+									{{-- Attivo-AttivoIA --}}
+               		<div class="form-group m-form__group row">
+               			<label class="col-lg-2 col-form-label" for="attivo">Stato:</label>
+               			<div class="col-lg-3">
+               					<select class="form-control m-input" id="attivo" name="attivo">
+               							<option value="1" @if ( $cliente->attivo == 1 || old('attivo') == 1 ) selected="selected" @endif>Attivo</option>
+               							<option value="0" @if ( $cliente->attivo == 0 || (old('attivo') !== null && old('attivo') == 0) ) selected="selected" @endif>NON Attivo</option>
+               					</select>
+               					<span class="m-form__help">
+               						@if ($cliente->attivo)
+               						<span class="m-badge m-badge--success m-badge--wide data_attivazione">{{$cliente->data_attivazione->format('d/m/Y')}}</span>
+               						@else
+               						<span class="m-badge m-badge--danger m-badge--wide data_attivazione">{{$cliente->data_disattivazione->format('d/m/Y')}}</span>
+               						@endif
+               					</span>
+               			</div>
+               			<label class="col-lg-2 col-form-label" for="attivo_IA">Infoalberghi:</label>
+               			<div class="col-lg-3">
+               					<select class="form-control m-input" id="attivo_IA" name="attivo_IA">
+               							<option value="1" @if ( $cliente->attivo_IA == 1 || old('attivo_IA') == 1 ) selected="selected" @endif>Attivo</option>
+               							<option value="0" @if ( $cliente->attivo_IA == 0 || (old('attivo_IA') !== null && old('attivo_IA') == 0) ) selected="selected" @endif>NON Attivo</option>
+               					</select>
+               					<span class="m-form__help">
+               						@if ($cliente->attivo_IA)
+               						<span class="m-badge m-badge--success m-badge--wide data_attivazione">{{$cliente->data_attivazione_IA->format('d/m/Y')}}</span>
+               						@else
+               						<span class="m-badge m-badge--danger m-badge--wide data_attivazione">{{$cliente->data_disattivazione_IA->format('d/m/Y')}}</span>
+               						@endif
+               					</span>
+               			</div>
+               		</div>
+
             	</div>
-							{{-- \form row --}}
-							
+							{{-- \Attivo-AttivoIA --}}
+						
             
             	<div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
             		<div class="m-form__actions m-form__actions--solid">

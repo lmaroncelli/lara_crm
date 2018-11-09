@@ -160,6 +160,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+        Composer per fare il bind di dati a delle view senza ripetere codice
+         */
+        App\Providers\ViewComposerProvider::class,
+
     ],
 
     /*

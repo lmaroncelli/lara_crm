@@ -4,6 +4,7 @@ namespace App;
 
 use App\GruppoCliente;
 use App\Localita;
+use App\TipologiaCliente;
 use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
@@ -11,6 +12,22 @@ class Cliente extends Model
    protected $table = 'tblClienti';
 
    protected $guarded = ['id'];
+
+
+   /**
+        * The attributes that should be mutated to dates.
+        *
+        * @var array
+        */
+       protected $dates = [
+           'created_at',
+           'updated_at',
+           'deleted_at',
+           'data_attivazione',
+          'data_attivazione_IA',
+          'data_disattivazione',
+          'data_disattivazione_IA'
+       ];
 
 
    public function visibile_a_commerciali()
@@ -28,9 +45,14 @@ class Cliente extends Model
         return $this->belongsTo(GruppoCliente::class, 'gruppo_id', 'id');
     }
 
-    public function Localita()
+    public function localita()
     {
         return $this->belongsTo(Localita::class, 'localita_id', 'id');
+    }
+
+    public function tipo()
+    {
+        return $this->belongsTo(TipologiaCliente::class, 'tipo_id', 'id');
     }
 
 
@@ -74,7 +96,6 @@ class Cliente extends Model
         return "No";
         }
       }
-
 
     /**
      * [commerciali scrive i nomi dei commerciali ASSOCIATI a questo cliente ]

@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
     |        | DELETE    | clienti/{clienti}      | clienti.destroy  | App\Http\Controllers\ClientiController@destroy                         | web,auth     |
     |        | GET|HEAD  | clienti/{clienti}/edit | clienti.edit     | App\Http\Controllers\ClientiController@edit                            | web,auth     |
 	*/
+    Route::model('clienti', 'App\Cliente');
 		Route::resource('clienti', 'ClientiController')/*->middleware('log')*/;
 
 });

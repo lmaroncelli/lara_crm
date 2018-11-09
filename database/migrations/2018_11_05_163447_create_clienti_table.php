@@ -19,6 +19,7 @@ class CreateClientiTable extends Migration
             $table->string('nome');
             $table->integer("localita_id")->unsigned()->default(0);
             $table->integer("gruppo_id")->unsigned()->default(0);
+            $table->integer("tipo_id")->unsigned()->default(1);
             $table->string('cap')->nullable();
             $table->string('indirizzo')->nullable();
             $table->string('telefono')->nullable();

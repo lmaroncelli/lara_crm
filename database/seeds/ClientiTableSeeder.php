@@ -16,7 +16,7 @@ class ClientiTableSeeder extends Seeder
 
     	$tblClienti  =  DB::connection('old')
     	                ->table('clienti')
-    	                ->select(DB::raw('id, nome, id_localita as localita_id, id_gruppo as gruppo_id, cap, indirizzo, telefono, fax, cell, email, email_amministrativa, pec, codice_destinatario, skype, note, note_2, id_categoria as categoria_id, attivo, attivo_IA, data_attivazione, data_attivazione_IA, data_disattivazione, data_disattivazione_IA, web, id_info, whatsapp, sms'))
+    	                ->select(DB::raw('id, nome, id_localita as localita_id, id_gruppo as gruppo_id, cap, indirizzo, id_tipo as tipo_id, telefono, fax, cell, email, email_amministrativa, pec, codice_destinatario, skype, note, note_2, id_categoria as categoria_id, attivo, attivo_IA, data_attivazione, data_attivazione_IA, data_disattivazione, data_disattivazione_IA, web, id_info, whatsapp, sms'))
     	                ->get();
 
     	$tblClienti = collect($tblClienti)->map(function($x){ return (array) $x; })->toArray(); 
