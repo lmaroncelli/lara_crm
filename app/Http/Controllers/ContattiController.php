@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Cliente;
 use Illuminate\Http\Request;
 
-class ClientiController extends Controller
+class ContattiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,16 +13,7 @@ class ClientiController extends Controller
      */
     public function index()
     {
-    $clienti = Cliente::with([
-            'localita',
-            'associato_a_commerciali',
-            'categoria',
-            'localita.comune.provincia.regione',
-            'contatti',
-            ])->orderBy('id_info')->paginate(20);
-
-
-    return view('clienti.index', compact('clienti'));
+        //
     }
 
     /**
@@ -64,9 +54,9 @@ class ClientiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cliente $cliente)
+    public function edit($id)
     {
-     return view('clienti.form', compact('cliente'));   
+        //
     }
 
     /**
@@ -91,20 +81,4 @@ class ClientiController extends Controller
     {
         //
     }
-
-
-
-
-    public function gestisciContattiAjax(Request $request)
-      {
-        $contatto_id = $request->get('contatto_id');
-        $cliente_id = $request->get('cliente_id');
-        
-        $cliente = Cliente::find($cliente_id); 
-
-        $cliente->contatti()->toggle([$contatto_id]);
-
-        echo 'ok';
-
-      }
 }

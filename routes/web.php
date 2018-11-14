@@ -47,6 +47,12 @@ Route::middleware(['auth'])->group(function () {
     |        | GET|HEAD  | clienti/{clienti}/edit | clienti.edit     | App\Http\Controllers\ClientiController@edit                            | web,auth     |
 	*/
     Route::model('clienti', 'App\Cliente');
-		Route::resource('clienti', 'ClientiController')/*->middleware('log')*/;
+	Route::resource('clienti', 'ClientiController')/*->middleware('log')*/;
+
+    Route::model('contatti', 'App\Contatto');
+    Route::resource('contatti', 'ContattiController')/*->middleware('log')*/;
+
+    Route::post('/gestisci-contatti-ajax', 'ClientiController@gestisciContattiAjax');
+
 
 });

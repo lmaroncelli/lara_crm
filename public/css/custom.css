@@ -42,3 +42,23 @@ ul.content_contatto li span {
 .fea_doc_nome::after {
 	content: ' documento FEA';
 }
+
+
+span.associazione_contatto {
+	margin-left: 50px;
+	margin-top: 15px;
+}
+
+
+li.dissocia {
+	margin-left: -50px!important;
+	margin-top: 50px!important;
+}
+
+
+#m_modal_contatti {
+  height: 80%!important;
+  overflow-y: auto!important;
+  overscroll-behavior-y: auto!important;
+  top: 100px!important;
+}

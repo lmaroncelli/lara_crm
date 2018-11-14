@@ -231,8 +231,8 @@
 										{{-- Contatti --}}
 										<div class="m-content">
 											<div class="row">
-												<div class="offset-lg-1 col-lg-10">
-													<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#m_modal_4">Launch Modal</button>
+												<div class="offset-lg-1 col-lg-10" style="padding: 10px; 0">
+													<button type="button" class="btn btn-warning" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#m_modal_contatti">Aggiungi contatti al ciente</button>
 												</div>
 											</div>
 											<div class="row">
@@ -269,12 +269,21 @@
 																		@if ($contatto->$colonna != '')
 																				@if ($colonna == 'fea_doc_nome')
 																					<li class="fea_doc_nome"><a href="{{ asset('contrattti/documenti_fea/'.$contatto->$colonna) }}" title="Fea"><i class="fea_doc fa fa-file-pdf"></i></a></li>
+																				@elseif($colonna == 'nome')
+																					<li><span><i class="fa fa-user"></i> {!!$contatto->$colonna!!}</span></li>
 																				@else
 																					<li><span>{{$colonna}}:</span> {!!$contatto->$colonna!!}</li>
 																				@endif
 																		@endif
 																		@endforeach
+																		<li class="dissocia">
+																			<a href="#" data-contatto="{{$contatto->id}}" class="dissocia_contatto btn btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air">
+																				<i class="fa fa-user-slash"></i>
+																				<span class="associazione_contatto ">Elimina associazione con questo contatto</span>
+																			</a>
+																		</li>
 																	</ul>
+																	
 																</div>
 																@endforeach
 															</div>
@@ -285,38 +294,6 @@
 											</div>
 										</div>
 										{{-- \Contatti --}}
-										
-										{{-- MODAL elenco contatti --}}
-										<div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-											<div class="modal-dialog modal-lg" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h5 class="modal-title" id="exampleModalLabel">New message</h5>
-														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-															<span aria-hidden="true">&times;</span>
-														</button>
-													</div>
-													<div class="modal-body">
-														<form>
-															<div class="form-group">
-																<label for="recipient-name" class="form-control-label">Recipient:</label>
-																<input type="text" class="form-control" id="recipient-name">
-															</div>
-															<div class="form-group">
-																<label for="message-text" class="form-control-label">Message:</label>
-																<textarea class="form-control" id="message-text"></textarea>
-															</div>
-														</form>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-														<button type="button" class="btn btn-primary">Send message</button>
-													</div>
-												</div>
-											</div>
-										</div>
-										{{-- \MODAL elenco contatti --}}
-
 									@endif
 
 
@@ -349,15 +326,102 @@
 </div>{{-- row --}}
 </div>{{-- content --}}
 
+
+{{-- MODAL elenco contatti --}}
+<div class="modal fade" id="m_modal_contatti" tabindex="-1" role="dialog" aria-labelledby="contatti" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="contatti">Elenco contatti</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="m-scrollable m-scrollable--track m-scroller ps ps--active-y" data-scrollable="true" style="height: 400px; overflow: hidden;">
+				<table class="table table-striped m-table m-table--head-bg-success">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($contatti as $contatto)
+                  <tr>
+                      <td>
+                      	<label class="m-checkbox">
+													<input type="checkbox" @if (in_array($contatto->id, $cliente->contatti->pluck('id')->toArray())) checked="checked" @endif class="contatti_cliente" value="{{$contatto->id}}"> {{$contatto->nome}}
+													<span></span>
+												</label>
+                      </td>
+                      <td>{{$contatto->email}}</td>
+                  </tr>
+                @endforeach
+            </tbody>
+        </table>
+      	</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{-- \MODAL elenco contatti --}}
+
+
 @endsection
 
 
 @section('js')
 	<script type="text/javascript" charset="utf-8">
+		
+		function gestisciContatti(val) {
+			var contatto_id = val;
+			var cliente_id = '{{$cliente->id}}';
+			jQuery.ajax({
+			        url: '<?=url("gestisci-contatti-ajax") ?>',
+			        type: "post",
+			        async: false,
+			        data : { 
+			               'contatto_id': contatto_id, 
+			               'cliente_id': cliente_id,
+			               '_token': jQuery('input[name=_token]').val()
+			               },
+			       	success: function(data) {
+			         
+			       }
+			 });
+		}
+
 		jQuery(document).ready(function(){
 			$("#associato").select2({placeholder:"Seleziona i commerciali da associare"});
 			$("#visibile").select2({placeholder:"Seleziona i commerciali che hanno la visibilità"});
+	
+
+			$(".contatti_cliente").click(function(){
+				gestisciContatti(this.value);
+			});
+
+
+			$(".close").click(function(){
+				alert('La pagina si riaggiorna per visualizzare le modifiche effettuate!');
+				location.reload();
+			});
+
+			$(".dissocia_contatto").click(function(e){
+				e.preventDefault();
+				var val = $(this).data("contatto");
+				gestisciContatti(val);
+				alert('La pagina si riaggiorna per visualizzare le modifiche effettuate!');
+				location.reload();
+			});
+
+
+
 		});
+	
+
 	</script>
 	<script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
+
+
 @endsection
