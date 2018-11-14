@@ -226,6 +226,98 @@
 	             			</div>
 	             		</div>
 									{{-- \Associato-Visibile --}}
+									
+									@if ($cliente->exists)
+										{{-- Contatti --}}
+										<div class="m-content">
+											<div class="row">
+												<div class="offset-lg-1 col-lg-10">
+													<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#m_modal_4">Launch Modal</button>
+												</div>
+											</div>
+											<div class="row">
+											<div class="offset-lg-1 col-lg-10">
+
+													<!--begin::Portlet-->
+													<div class="m-portlet m-portlet--tabs m-portlet--success m-portlet--head-solid-bg m-portlet--head-sm">
+														<div class="m-portlet__head">
+															<div class="m-portlet__head-caption">
+																<div class="m-portlet__head-title">
+																	<h3 class="m-portlet__head-text">
+																		Contatti
+																	</h3>
+																</div>
+															</div>
+															<div class="m-portlet__head-tools">
+																<ul class="nav nav-tabs m-tabs m-tabs-line  m-tabs-line--right" role="tablist">
+																	@foreach ($cliente->contatti as $key => $contatto)
+																	<li class="nav-item m-tabs__item">
+																		<a class="nav-link m-tabs__link @if ($key == 0)active @endif" data-toggle="tab" href="#m_tabs_7_{{$key}}" role="tab">
+																			{{$contatto->nome}}
+																		</a>
+																	</li>
+																	@endforeach
+																</ul>
+															</div>
+														</div>
+														<div class="m-portlet__body">
+															<div class="tab-content">
+																@foreach ($cliente->contatti as $key => $contatto)
+																<div class="tab-pane @if ($key == 0)active @endif" id="m_tabs_7_{{$key}}" role="tabpanel">
+																	<ul class="content_contatto">
+																		@foreach ($contatto->viewColumns() as $colonna)
+																		@if ($contatto->$colonna != '')
+																				@if ($colonna == 'fea_doc_nome')
+																					<li class="fea_doc_nome"><a href="{{ asset('contrattti/documenti_fea/'.$contatto->$colonna) }}" title="Fea"><i class="fea_doc fa fa-file-pdf"></i></a></li>
+																				@else
+																					<li><span>{{$colonna}}:</span> {!!$contatto->$colonna!!}</li>
+																				@endif
+																		@endif
+																		@endforeach
+																	</ul>
+																</div>
+																@endforeach
+															</div>
+														</div>
+													</div>
+
+											</div>
+											</div>
+										</div>
+										{{-- \Contatti --}}
+										
+										{{-- MODAL elenco contatti --}}
+										<div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">New message</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<form>
+															<div class="form-group">
+																<label for="recipient-name" class="form-control-label">Recipient:</label>
+																<input type="text" class="form-control" id="recipient-name">
+															</div>
+															<div class="form-group">
+																<label for="message-text" class="form-control-label">Message:</label>
+																<textarea class="form-control" id="message-text"></textarea>
+															</div>
+														</form>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+														<button type="button" class="btn btn-primary">Send message</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										{{-- \MODAL elenco contatti --}}
+
+									@endif
 
 
             	</div> {{-- m-portlet__body --}}

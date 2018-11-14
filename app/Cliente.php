@@ -3,6 +3,7 @@
 namespace App;
 
 use App\CategoriaCliente;
+use App\Contatto;
 use App\GruppoCliente;
 use App\Localita;
 use App\TipologiaCliente;
@@ -69,6 +70,11 @@ class Cliente extends Model
     public function categoria()
     {
         return $this->belongsTo(CategoriaCliente::class, 'categoria_id', 'id');
+    }
+
+    public function contatti()
+    {
+        return $this->belongsToMany(Contatto::class, 'tblClienteContatto', 'cliente_id', 'contatto_id');
     }
 
 

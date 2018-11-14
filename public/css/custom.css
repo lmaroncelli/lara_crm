@@ -1,7 +1,44 @@
 
+
+/* data attivazione form clienti*/
 .data_attivazione {
 	font-weight: bold;
 	font-size: 14px;
 	letter-spacing: 1.6px!important;
 	font-family: 'Roboto'!important;
+}
+
+
+
+/* portlet per i contatti form clienti */
+
+.m-form.m-form--group-seperator-dashed .m-portlet__body
+{
+	padding-top: 1.7rem!important;
+	padding-bottom: 1.7rem!important;
+}
+
+
+/* contenuto del contatto form clienti */
+ul.content_contatto li {
+	list-style: none;
+	margin: 10px 0;
+}
+
+ul.content_contatto li span {
+	color: #575962;
+	font-size: 1.1rem;
+  font-weight: 500;
+  display: block;
+}
+
+/* icona pdf documento fea */
+.fea_doc {
+	font-size: 22px;
+	color: #b10808;
+}
+
+
+.fea_doc_nome::after {
+	content: ' documento FEA';
 }

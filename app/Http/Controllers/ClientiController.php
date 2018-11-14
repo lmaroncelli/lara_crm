@@ -18,7 +18,8 @@ class ClientiController extends Controller
             'localita',
             'associato_a_commerciali',
             'categoria',
-            'localita.comune.provincia.regione'
+            'localita.comune.provincia.regione',
+            'contatti',
             ])->orderBy('id_info')->paginate(20);
 
 
