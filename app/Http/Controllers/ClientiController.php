@@ -7,6 +7,22 @@ use Illuminate\Http\Request;
 
 class ClientiController extends Controller
 {
+
+
+
+    private function _getClienteEagerLoaded()
+      {
+      return Cliente::with([
+            'localita',
+            'associato_a_commerciali',
+            'categoria',
+            'localita.comune.provincia.regione',
+            'contatti',
+            'gruppo.clienti',
+            ]);
+      }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,13 +30,9 @@ class ClientiController extends Controller
      */
     public function index()
     {
-    $clienti = Cliente::with([
-            'localita',
-            'associato_a_commerciali',
-            'categoria',
-            'localita.comune.provincia.regione',
-            'contatti',
-            ])->orderBy('id_info')->paginate(20);
+    $clienteEagerLoaded = $this->_getClienteEagerLoaded();
+
+    $clienti = $clienteEagerLoaded->orderBy('id_info')->paginate(15);
 
 
     return view('clienti.index', compact('clienti'));
@@ -94,7 +106,11 @@ class ClientiController extends Controller
 
 
 
-
+    /**
+     * [gestisciContattiAjax chiamata ajax quando faccio check su un contatto dal form del cliente]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function gestisciContattiAjax(Request $request)
       {
         $contatto_id = $request->get('contatto_id');
@@ -105,6 +121,79 @@ class ClientiController extends Controller
         $cliente->contatti()->toggle([$contatto_id]);
 
         echo 'ok';
+
+      }
+
+    /**
+     * [cercaClienti Ricerca dei clienti per nome e ID dall'elenco]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function cercaClienti(Request $request)
+      {
+
+        //dd($request->all());
+
+        $q = $request->get('q');
+
+        $attivo_ia = $request->get('attivo_ia');
+        $attivo = $request->get('attivo');
+
+
+        
+        if(empty($q))
+          redirect('index');
+
+        $clienteEagerLoaded = $this->_getClienteEagerLoaded();
+        $clienti = $clienteEagerLoaded;
+
+        if($attivo_ia == 'on')
+          {
+          $clienti = $clienti->where('attivo_ia',1);
+          }
+
+        if($attivo == 'on')
+          {
+          $clienti = $clienti->where('attivo',1);
+          }
+
+
+
+        $clienti = $clienti->where(function ($query) use ($q) {
+                        $query->where('nome','LIKE','%'.$q.'%')
+                              ->orWhere('id_info','LIKE','%'.$q.'%');
+                        })
+                  ->orderBy('id_info');
+        
+        
+        $to_append = ['q' => $q];
+
+        if($attivo_ia == 'on')
+          {
+          $to_append['attivo_ia'] = "on";
+          }
+
+         if($attivo == 'on')
+          {
+          $to_append['attivo'] = "on";
+          }
+
+
+
+        //dd($clienti->toSql());
+
+
+        $clienti = $clienti->paginate(15)->setpath('')->appends($to_append);
+
+        
+        if($clienti->count())
+          {
+          return view('clienti.index', compact('clienti'));
+          }
+        else
+          {
+          return view('clienti.index')->withMessage('Nessun risultato trovato!');
+          }
 
       }
 }

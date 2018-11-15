@@ -13,7 +13,7 @@ class GruppoCliente extends Model
 
    public function clienti()
    {
-       return $this->hasMany(Cliente::class, 'gruppo_id', 'id');
+       return $this->hasMany(Cliente::class, 'gruppo_id', 'id')->orderBy('nome');
    }
 
 }

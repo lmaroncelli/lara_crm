@@ -82,3 +82,15 @@ class ClientiFormComposer
     App\Providers\ViewComposerProvider::class,
 
     che definisce la classe da caricare automaticamente nel SericeContainer
+
+
+
+
+
+
+
+
+#Implementare la ricerca con paginazione
+
+> https://www.youtube.com/watch?v=3PeF9UvoSsk
+

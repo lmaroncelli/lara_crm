@@ -62,3 +62,75 @@ li.dissocia {
   overscroll-behavior-y: auto!important;
   top: 100px!important;
 }
+
+
+
+/*elenco degli hotel del gruppo in form clienti*/
+.container_gruppo {
+	display: flex!important;
+	flex-wrap: wrap;
+	align-items: baseline;
+}
+
+
+.container_gruppo a {
+border: 1px solid #299781;
+color: #299781;
+background-color: #fff;
+border-radius: 1.43rem;
+padding: .33rem 1.14rem .33rem 1.14rem;
+/*font-size: .85rem;*/
+font-weight: 500;
+margin-right: .4rem;
+text-decoration: none;
+height: 30px;
+text-align: center;
+margin-bottom: 10px;
+}
+
+
+.container_gruppo a:hover {
+	color: #fff;
+   background-color: #299781;
+}
+
+.container_gruppo a.disattivato {
+	border: 1px solid #f12143;
+	color: #fff;
+	background-color: #f4516c;
+}
+
+.container_gruppo a.disattivato:hover {
+	border: 1px solid #f12143;
+	background: #f12143!important;
+	color: #fff!important;
+}
+
+
+.la-search:hover {
+	cursor: pointer;
+}
+
+
+/*#searchForm {
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	width: 60%;
+	padding: 10px 0;
+}*/
+
+#searchForm .m-input-icon {
+	width: inherit;
+}
+
+#searchForm span.label {
+	margin-left: 30px;
+}
+
+
+/*#containerSearch {
+	display: flex;
+  justify-content: flex-start;
+  margin-left: 15px;
+}*/

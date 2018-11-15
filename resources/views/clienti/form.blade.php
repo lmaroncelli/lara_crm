@@ -232,7 +232,7 @@
 										<div class="m-content">
 											<div class="row">
 												<div class="offset-lg-1 col-lg-10" style="padding: 10px; 0">
-													<button type="button" class="btn btn-warning" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#m_modal_contatti">Aggiungi contatti al ciente</button>
+													<button type="button" class="btn btn-warning" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#m_modal_contatti">Associa contatti al ciente</button>
 												</div>
 											</div>
 											<div class="row">
@@ -295,6 +295,30 @@
 										</div>
 										{{-- \Contatti --}}
 									@endif
+
+									@if ($cliente->exists && !is_null($cliente->gruppo))
+										{{-- GRUPPI --}}
+											<div class="m-content">
+												<div class="row">
+													<div class="offset-lg-1 col-lg-10" style="padding: 10px; 0">
+														<div class="m-section">
+															<h3 class="m-section__heading">
+																{{$cliente->gruppo->nome}}
+															</h3>
+															<div class="m-section__content container_gruppo">
+																@foreach ($cliente->gruppo->clienti as $cliente_gruppo)
+																	@if ($cliente_gruppo->id != $cliente->id)
+																		<a href="{{ route('clienti.edit',['id' => $cliente_gruppo->id]) }}" class="@if(!$cliente_gruppo->attivo) disattivato @endif">{{$cliente_gruppo->nome}} (ID {{$cliente_gruppo->id_info}})</a>
+																	@endif
+																@endforeach
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										{{-- \GRUPPI --}}
+									@endif
+									
 
 
             	</div> {{-- m-portlet__body --}}
