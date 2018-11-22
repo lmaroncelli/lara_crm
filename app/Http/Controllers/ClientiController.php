@@ -21,9 +21,9 @@ class ClientiController extends Controller
             'gruppo.clienti',
             ]);
       
-      if($orderby == 'tblLocalita.nome')
+      if($orderby == 'nome_localita')
         {
-        $clienti->select('tblClienti.*', 'tblLocalita.nome');
+        $clienti->select('tblClienti.*', 'tblLocalita.nome as nome_localita');
         $clienti->join("tblLocalita","tblClienti.localita_id","=","tblLocalita.id");
         }
 
@@ -57,7 +57,7 @@ class ClientiController extends Controller
           }
         elseif ($orderby == 'localita') 
           {
-          $orderby = 'tblLocalita.nome';
+          $orderby = 'nome_localita';
           }
 
         $attivo_ia = $request->get('attivo_ia');
@@ -90,7 +90,7 @@ class ClientiController extends Controller
           {
             $orderby='id_info';
           }
-        elseif ($orderby == 'tblLocalita.nome') 
+        elseif ($orderby == 'nome_localita') 
           {
           $orderby = 'localita';
           }
