@@ -11,12 +11,21 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text" style="width: 200px;">
-                            Elenco clienti &nbsp;&nbsp; @if (isset($clienti)) <span class="m-badge m-badge--success m-badge--wide">{{$clienti->total()}}@endif</span>
+                            @if (!count(Request()->query()))
+                                Elenco clienti
+                            @else
+                                <a href="{{ url('clienti') }}" title="Tutti i clienti" class="btn btn-warning">
+                                    Elenco clienti
+                                </a> 
+                            @endif
+                            &nbsp;&nbsp; @if (isset($clienti)) <span class="m-badge m-badge--success m-badge--wide">{{$clienti->total()}}@endif</span>
                         </h3>
                     </div>
                 </div>
             </div>
-                <form action="{{ url('cerca-clienti') }}" method="get" id="searchForm" accept-charset="utf-8">
+                <form action="{{ url('clienti') }}" method="get" id="searchForm" accept-charset="utf-8">
+                <input type="hidden" name="orderby" id="orderby" value="">
+                <input type="hidden" name="order" id="order" value="">
                 <div class="row">
                     <div class="col-lg-6" style="padding-left: 40px; padding-top: 20px">
                         <div class="m-input-icon m-input-icon--left m-input-icon--right">
@@ -50,11 +59,61 @@
                             <table class="table table-striped m-table m-table--head-bg-success">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th>Località</th>
-                                        <th>Categoria</th>
-                                        <th>Stato</th>
+                                        
+                                        <th class="order" data-orderby="id_info" @if (\Request::get('orderby') == 'id_info' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            ID 
+                                            @if (\Request::get('orderby') == 'id_info') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-numeric-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-numeric-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+                                        
+                                        <th class="order" data-orderby="nome" @if (\Request::get('orderby') == 'nome' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            Nome 
+                                            @if (\Request::get('orderby') == 'nome') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-alpha-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-alpha-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+                                        
+                                        <th class="order" data-orderby="localita" @if (\Request::get('orderby') == 'localita' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            Località 
+                                            @if (\Request::get('orderby') == 'localita') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-alpha-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-alpha-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+
+                                        <th class="order" data-orderby="categoria_id" @if (\Request::get('orderby') == 'categoria_id' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            Categoria 
+                                            @if (\Request::get('orderby') == 'categoria_id') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-numeric-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-numeric-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+                                        
+                                        <th class="order" data-orderby="attivo" @if (\Request::get('orderby') == 'attivo' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            Stato 
+                                            @if (\Request::get('orderby') == 'attivo') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-alpha-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-alpha-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
                                         <th>Commerciale</th>
                                         <th></th>
                                     </tr>
@@ -62,7 +121,7 @@
                                 <tbody>
                                     @foreach ($clienti as $cliente)
                                       <tr>
-                                          <th scope="row">{{$cliente->id_info}}</th>
+                                          <th scope="row"><a href="" title=""></a>{{$cliente->id_info}}</th>
                                           <td> <a href="{{ route('clienti.edit',['id' => $cliente->id]) }}" title="Modifica cliente">{{$cliente->nome}}</a></td>
                                           <td>{{optional($cliente->localita)->nome}}</td>
                                           <td>{{optional($cliente->categoria)->categoria}}</td>
@@ -109,6 +168,14 @@
                 $("#searchForm").submit();
             });
 
+
+            $('.order').click(function(){
+                var orderby = $(this).data("orderby");
+                var order = $(this).data("order");
+                $("#orderby").val(orderby);
+                $("#order").val(order);
+                 $("#searchForm").submit();
+            });
 
           
         });

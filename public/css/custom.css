@@ -111,15 +111,6 @@ margin-bottom: 10px;
 	cursor: pointer;
 }
 
-
-/*#searchForm {
-	display: flex;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	width: 60%;
-	padding: 10px 0;
-}*/
-
 #searchForm .m-input-icon {
 	width: inherit;
 }
@@ -129,8 +120,7 @@ margin-bottom: 10px;
 }
 
 
-/*#containerSearch {
-	display: flex;
-  justify-content: flex-start;
-  margin-left: 15px;
-}*/
+th.order:hover {
+	cursor: pointer;
+}
+

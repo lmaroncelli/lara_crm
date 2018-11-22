@@ -10,9 +10,9 @@ class ClientiController extends Controller
 
 
 
-    private function _getClienteEagerLoaded()
+    private function _getClienteEagerLoaded($orderby)
       {
-      return Cliente::with([
+      $clienti = Cliente::with([
             'localita',
             'associato_a_commerciali',
             'categoria',
@@ -20,23 +20,119 @@ class ClientiController extends Controller
             'contatti',
             'gruppo.clienti',
             ]);
+      
+      if($orderby == 'nome_localita')
+        {
+        $clienti->select('tblClienti.*', 'tblLocalita.nome as nome_localita');
+        $clienti->join("tblLocalita","tblClienti.localita_id","=","tblLocalita.id");
+        }
+      elseif ($orderby == 'categoria_id') 
+        {
+        $clienti->where('categoria_id', '!=', 0);
+        }
+
+      return $clienti;
       }
 
 
     /**
      * Display a listing of the resource.
+     * Capacità di cercare e ordinare
      *
      * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    $clienteEagerLoaded = $this->_getClienteEagerLoaded();
+     */  
+    public function index(Request $request)
+      {
 
-    $clienti = $clienteEagerLoaded->orderBy('id_info')->paginate(15);
+       //dd($request->all());
+
+        $q = $request->get('q');
+        $orderby = $request->get('orderby');
+        $order = $request->get('order');
+        
+        if(is_null($order))
+          {
+            $order='asc';
+          }
+
+        if(is_null($orderby))
+          {
+            $orderby='tblClienti.id_info';
+          }
+        elseif ($orderby == 'localita') 
+          {
+          $orderby = 'nome_localita';
+          }
+
+        $attivo_ia = $request->get('attivo_ia');
+        $attivo = $request->get('attivo');
 
 
-    return view('clienti.index', compact('clienti'));
-    }
+        $clienteEagerLoaded = $this->_getClienteEagerLoaded($orderby);
+        $clienti = $clienteEagerLoaded;
+
+        if($attivo_ia == 'on')
+          {
+          $clienti = $clienti->where('attivo_ia',1);
+          }
+
+        if($attivo == 'on')
+          {
+          $clienti = $clienti->where('attivo',1);
+          }
+
+
+
+        $clienti = $clienti->where(function ($query) use ($q) {
+                        $query->where('tblClienti.nome','LIKE','%'.$q.'%')
+                              ->orWhere('tblClienti.id_info','LIKE','%'.$q.'%');
+                        })
+                  ->orderBy($orderby, $order);
+        
+
+        if($orderby == 'tblClienti.id_info')
+          {
+            $orderby='id_info';
+          }
+        elseif ($orderby == 'nome_localita') 
+          {
+          $orderby = 'localita';
+          }
+        
+        
+        $to_append = ['q' => $q, 'order' => $order, 'orderby' => $orderby];
+       
+
+        if($attivo_ia == 'on')
+          {
+          $to_append['attivo_ia'] = "on";
+          }
+
+         if($attivo == 'on')
+          {
+          $to_append['attivo'] = "on";
+          }
+
+
+
+        //dd($clienti->toSql());
+
+        $clienti = $clienti->paginate(15)->setpath('')->appends($to_append);
+
+        
+        
+        if($clienti->count())
+          {
+          return view('clienti.index', compact('clienti'));
+          }
+        else
+          {
+          return view('clienti.index')->withMessage('Nessun risultato trovato!');
+          }
+
+      }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -123,77 +219,5 @@ class ClientiController extends Controller
         echo 'ok';
 
       }
-
-    /**
-     * [cercaClienti Ricerca dei clienti per nome e ID dall'elenco]
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function cercaClienti(Request $request)
-      {
-
-        //dd($request->all());
-
-        $q = $request->get('q');
-
-        $attivo_ia = $request->get('attivo_ia');
-        $attivo = $request->get('attivo');
-
-
-        
-        if(empty($q))
-          redirect('index');
-
-        $clienteEagerLoaded = $this->_getClienteEagerLoaded();
-        $clienti = $clienteEagerLoaded;
-
-        if($attivo_ia == 'on')
-          {
-          $clienti = $clienti->where('attivo_ia',1);
-          }
-
-        if($attivo == 'on')
-          {
-          $clienti = $clienti->where('attivo',1);
-          }
-
-
-
-        $clienti = $clienti->where(function ($query) use ($q) {
-                        $query->where('nome','LIKE','%'.$q.'%')
-                              ->orWhere('id_info','LIKE','%'.$q.'%');
-                        })
-                  ->orderBy('id_info');
-        
-        
-        $to_append = ['q' => $q];
-
-        if($attivo_ia == 'on')
-          {
-          $to_append['attivo_ia'] = "on";
-          }
-
-         if($attivo == 'on')
-          {
-          $to_append['attivo'] = "on";
-          }
-
-
-
-        //dd($clienti->toSql());
-
-
-        $clienti = $clienti->paginate(15)->setpath('')->appends($to_append);
-
-        
-        if($clienti->count())
-          {
-          return view('clienti.index', compact('clienti'));
-          }
-        else
-          {
-          return view('clienti.index')->withMessage('Nessun risultato trovato!');
-          }
-
-      }
+    
 }
