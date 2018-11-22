@@ -26,6 +26,10 @@ class ClientiController extends Controller
         $clienti->select('tblClienti.*', 'tblLocalita.nome as nome_localita');
         $clienti->join("tblLocalita","tblClienti.localita_id","=","tblLocalita.id");
         }
+      elseif ($orderby == 'categoria_id') 
+        {
+        $clienti->where('categoria_id', '!=', 0);
+        }
 
       return $clienti;
       }

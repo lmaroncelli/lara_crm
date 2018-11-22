@@ -59,12 +59,62 @@
                             <table class="table table-striped m-table m-table--head-bg-success">
                                 <thead>
                                     <tr>
-                                        <th class="order" data-orderby="id_info" @if (\Request::get('orderby') == 'id_info' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>ID</th>
-                                        <th class="order" data-orderby="nome" @if (\Request::get('orderby') == 'nome' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>Nome</th>
-                                        <th class="order" data-orderby="localita">Località</th>
-                                        <th class="order" data-orderby="categoria">Categoria</th>
-                                        <th class="order" data-orderby="stato">Stato</th>
-                                        <th class="order" data-orderby="commerciale">Commerciale</th>
+                                        
+                                        <th class="order" data-orderby="id_info" @if (\Request::get('orderby') == 'id_info' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            ID 
+                                            @if (\Request::get('orderby') == 'id_info') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-numeric-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-numeric-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+                                        
+                                        <th class="order" data-orderby="nome" @if (\Request::get('orderby') == 'nome' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            Nome 
+                                            @if (\Request::get('orderby') == 'nome') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-alpha-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-alpha-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+                                        
+                                        <th class="order" data-orderby="localita" @if (\Request::get('orderby') == 'localita' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            Località 
+                                            @if (\Request::get('orderby') == 'localita') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-alpha-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-alpha-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+
+                                        <th class="order" data-orderby="categoria_id" @if (\Request::get('orderby') == 'categoria_id' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            Categoria 
+                                            @if (\Request::get('orderby') == 'categoria_id') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-numeric-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-numeric-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+                                        
+                                        <th class="order" data-orderby="attivo" @if (\Request::get('orderby') == 'attivo' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                            Stato 
+                                            @if (\Request::get('orderby') == 'attivo') 
+                                                @if (\Request::get('order') == 'asc')
+                                                    <i class="fa fa-sort-alpha-down"></i>
+                                                @else 
+                                                    <i class="fa fa-sort-alpha-up"></i> 
+                                                @endif
+                                            @endif
+                                        </th>
+                                        <th>Commerciale</th>
                                         <th></th>
                                     </tr>
                                 </thead>
