@@ -24,8 +24,8 @@
                 </div>
             </div>
                 <form action="{{ url('clienti') }}" method="get" id="searchForm" accept-charset="utf-8">
-                <input type="hidden" name="order" id="order" value="">
                 <input type="hidden" name="orderby" id="orderby" value="">
+                <input type="hidden" name="order" id="order" value="">
                 <div class="row">
                     <div class="col-lg-6" style="padding-left: 40px; padding-top: 20px">
                         <div class="m-input-icon m-input-icon--left m-input-icon--right">
@@ -59,12 +59,12 @@
                             <table class="table table-striped m-table m-table--head-bg-success">
                                 <thead>
                                     <tr>
-                                        <th class="order" data-order="id_info" @if (\Request::get('order') == 'id_info' && \Request::get('orderby') == 'asc') data-orderby='desc' @else data-orderby='asc' @endif>ID</th>
-                                        <th class="order" data-order="nome" @if (\Request::get('order') == 'nome' && \Request::get('orderby') == 'asc') data-orderby='desc' @else data-orderby='asc' @endif>Nome</th>
-                                        <th class="order" data-order="localita">Località</th>
-                                        <th class="order" data-order="categoria">Categoria</th>
-                                        <th class="order" data-order="stato">Stato</th>
-                                        <th class="order" data-order="commerciale">Commerciale</th>
+                                        <th class="order" data-orderby="id_info" @if (\Request::get('orderby') == 'id_info' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>ID</th>
+                                        <th class="order" data-orderby="nome" @if (\Request::get('orderby') == 'nome' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>Nome</th>
+                                        <th class="order" data-orderby="localita">Località</th>
+                                        <th class="order" data-orderby="categoria">Categoria</th>
+                                        <th class="order" data-orderby="stato">Stato</th>
+                                        <th class="order" data-orderby="commerciale">Commerciale</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -120,10 +120,10 @@
 
 
             $('.order').click(function(){
-                var order = $(this).data("order");
                 var orderby = $(this).data("orderby");
-                $("#order").val(order);
+                var order = $(this).data("order");
                 $("#orderby").val(orderby);
+                $("#order").val(order);
                  $("#searchForm").submit();
             });
 

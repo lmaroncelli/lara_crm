@@ -10,9 +10,9 @@ class ClientiController extends Controller
 
 
 
-    private function _getClienteEagerLoaded()
+    private function _getClienteEagerLoaded($orderby)
       {
-      return Cliente::with([
+      $clienti = Cliente::with([
             'localita',
             'associato_a_commerciali',
             'categoria',
@@ -20,6 +20,14 @@ class ClientiController extends Controller
             'contatti',
             'gruppo.clienti',
             ]);
+      
+      if($orderby == 'tblLocalita.nome')
+        {
+        $clienti->select('tblClienti.*', 'tblLocalita.nome');
+        $clienti->join("tblLocalita","tblClienti.localita_id","=","tblLocalita.id");
+        }
+
+      return $clienti;
       }
 
 
@@ -35,24 +43,28 @@ class ClientiController extends Controller
        //dd($request->all());
 
         $q = $request->get('q');
-        $order = $request->get('order');
         $orderby = $request->get('orderby');
-
+        $order = $request->get('order');
+        
         if(is_null($order))
           {
-            $order='id_info';
+            $order='asc';
           }
 
         if(is_null($orderby))
           {
-            $orderby='asc';
+            $orderby='tblClienti.id_info';
+          }
+        elseif ($orderby == 'localita') 
+          {
+          $orderby = 'tblLocalita.nome';
           }
 
         $attivo_ia = $request->get('attivo_ia');
         $attivo = $request->get('attivo');
 
 
-        $clienteEagerLoaded = $this->_getClienteEagerLoaded();
+        $clienteEagerLoaded = $this->_getClienteEagerLoaded($orderby);
         $clienti = $clienteEagerLoaded;
 
         if($attivo_ia == 'on')
@@ -68,10 +80,20 @@ class ClientiController extends Controller
 
 
         $clienti = $clienti->where(function ($query) use ($q) {
-                        $query->where('nome','LIKE','%'.$q.'%')
-                              ->orWhere('id_info','LIKE','%'.$q.'%');
+                        $query->where('tblClienti.nome','LIKE','%'.$q.'%')
+                              ->orWhere('tblClienti.id_info','LIKE','%'.$q.'%');
                         })
-                  ->orderBy($order, $orderby);
+                  ->orderBy($orderby, $order);
+        
+
+        if($orderby == 'tblClienti.id_info')
+          {
+            $orderby='id_info';
+          }
+        elseif ($orderby == 'tblLocalita.nome') 
+          {
+          $orderby = 'localita';
+          }
         
         
         $to_append = ['q' => $q, 'order' => $order, 'orderby' => $orderby];
@@ -89,11 +111,11 @@ class ClientiController extends Controller
 
 
 
-
+        //dd($clienti->toSql());
 
         $clienti = $clienti->paginate(15)->setpath('')->appends($to_append);
 
-      
+        
         
         if($clienti->count())
           {
