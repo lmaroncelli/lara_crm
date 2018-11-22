@@ -25,18 +25,88 @@ class ClientiController extends Controller
 
     /**
      * Display a listing of the resource.
+     * Capacità di cercare e ordinare
      *
      * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    $clienteEagerLoaded = $this->_getClienteEagerLoaded();
+     */  
+    public function index(Request $request)
+      {
 
-    $clienti = $clienteEagerLoaded->orderBy('id_info')->paginate(15);
+       //dd($request->all());
+
+        $q = $request->get('q');
+        $order = $request->get('order');
+        $orderby = $request->get('orderby');
+
+        if(is_null($order))
+          {
+            $order='id_info';
+          }
+
+        if(is_null($orderby))
+          {
+            $orderby='asc';
+          }
+
+        $attivo_ia = $request->get('attivo_ia');
+        $attivo = $request->get('attivo');
 
 
-    return view('clienti.index', compact('clienti'));
-    }
+        $clienteEagerLoaded = $this->_getClienteEagerLoaded();
+        $clienti = $clienteEagerLoaded;
+
+        if($attivo_ia == 'on')
+          {
+          $clienti = $clienti->where('attivo_ia',1);
+          }
+
+        if($attivo == 'on')
+          {
+          $clienti = $clienti->where('attivo',1);
+          }
+
+
+
+        $clienti = $clienti->where(function ($query) use ($q) {
+                        $query->where('nome','LIKE','%'.$q.'%')
+                              ->orWhere('id_info','LIKE','%'.$q.'%');
+                        })
+                  ->orderBy($order, $orderby);
+        
+        
+        $to_append = ['q' => $q, 'order' => $order, 'orderby' => $orderby];
+       
+
+        if($attivo_ia == 'on')
+          {
+          $to_append['attivo_ia'] = "on";
+          }
+
+         if($attivo == 'on')
+          {
+          $to_append['attivo'] = "on";
+          }
+
+
+
+
+
+        $clienti = $clienti->paginate(15)->setpath('')->appends($to_append);
+
+      
+        
+        if($clienti->count())
+          {
+          return view('clienti.index', compact('clienti'));
+          }
+        else
+          {
+          return view('clienti.index')->withMessage('Nessun risultato trovato!');
+          }
+
+      }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -123,77 +193,5 @@ class ClientiController extends Controller
         echo 'ok';
 
       }
-
-    /**
-     * [cercaClienti Ricerca dei clienti per nome e ID dall'elenco]
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function cercaClienti(Request $request)
-      {
-
-        //dd($request->all());
-
-        $q = $request->get('q');
-
-        $attivo_ia = $request->get('attivo_ia');
-        $attivo = $request->get('attivo');
-
-
-        
-        if(empty($q))
-          redirect('index');
-
-        $clienteEagerLoaded = $this->_getClienteEagerLoaded();
-        $clienti = $clienteEagerLoaded;
-
-        if($attivo_ia == 'on')
-          {
-          $clienti = $clienti->where('attivo_ia',1);
-          }
-
-        if($attivo == 'on')
-          {
-          $clienti = $clienti->where('attivo',1);
-          }
-
-
-
-        $clienti = $clienti->where(function ($query) use ($q) {
-                        $query->where('nome','LIKE','%'.$q.'%')
-                              ->orWhere('id_info','LIKE','%'.$q.'%');
-                        })
-                  ->orderBy('id_info');
-        
-        
-        $to_append = ['q' => $q];
-
-        if($attivo_ia == 'on')
-          {
-          $to_append['attivo_ia'] = "on";
-          }
-
-         if($attivo == 'on')
-          {
-          $to_append['attivo'] = "on";
-          }
-
-
-
-        //dd($clienti->toSql());
-
-
-        $clienti = $clienti->paginate(15)->setpath('')->appends($to_append);
-
-        
-        if($clienti->count())
-          {
-          return view('clienti.index', compact('clienti'));
-          }
-        else
-          {
-          return view('clienti.index')->withMessage('Nessun risultato trovato!');
-          }
-
-      }
+    
 }

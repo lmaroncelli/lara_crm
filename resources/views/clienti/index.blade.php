@@ -11,12 +11,21 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text" style="width: 200px;">
-                            Elenco clienti &nbsp;&nbsp; @if (isset($clienti)) <span class="m-badge m-badge--success m-badge--wide">{{$clienti->total()}}@endif</span>
+                            @if (!count(Request()->query()))
+                                Elenco clienti
+                            @else
+                                <a href="{{ url('clienti') }}" title="Tutti i clienti" class="btn btn-warning">
+                                    Elenco clienti
+                                </a> 
+                            @endif
+                            &nbsp;&nbsp; @if (isset($clienti)) <span class="m-badge m-badge--success m-badge--wide">{{$clienti->total()}}@endif</span>
                         </h3>
                     </div>
                 </div>
             </div>
-                <form action="{{ url('cerca-clienti') }}" method="get" id="searchForm" accept-charset="utf-8">
+                <form action="{{ url('clienti') }}" method="get" id="searchForm" accept-charset="utf-8">
+                <input type="hidden" name="order" id="order" value="">
+                <input type="hidden" name="orderby" id="orderby" value="">
                 <div class="row">
                     <div class="col-lg-6" style="padding-left: 40px; padding-top: 20px">
                         <div class="m-input-icon m-input-icon--left m-input-icon--right">
@@ -50,19 +59,19 @@
                             <table class="table table-striped m-table m-table--head-bg-success">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th>Località</th>
-                                        <th>Categoria</th>
-                                        <th>Stato</th>
-                                        <th>Commerciale</th>
+                                        <th class="order" data-order="id_info" @if (\Request::get('order') == 'id_info' && \Request::get('orderby') == 'asc') data-orderby='desc' @else data-orderby='asc' @endif>ID</th>
+                                        <th class="order" data-order="nome" @if (\Request::get('order') == 'nome' && \Request::get('orderby') == 'asc') data-orderby='desc' @else data-orderby='asc' @endif>Nome</th>
+                                        <th class="order" data-order="localita">Località</th>
+                                        <th class="order" data-order="categoria">Categoria</th>
+                                        <th class="order" data-order="stato">Stato</th>
+                                        <th class="order" data-order="commerciale">Commerciale</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($clienti as $cliente)
                                       <tr>
-                                          <th scope="row">{{$cliente->id_info}}</th>
+                                          <th scope="row"><a href="" title=""></a>{{$cliente->id_info}}</th>
                                           <td> <a href="{{ route('clienti.edit',['id' => $cliente->id]) }}" title="Modifica cliente">{{$cliente->nome}}</a></td>
                                           <td>{{optional($cliente->localita)->nome}}</td>
                                           <td>{{optional($cliente->categoria)->categoria}}</td>
@@ -109,6 +118,14 @@
                 $("#searchForm").submit();
             });
 
+
+            $('.order').click(function(){
+                var order = $(this).data("order");
+                var orderby = $(this).data("orderby");
+                $("#order").val(order);
+                $("#orderby").val(orderby);
+                 $("#searchForm").submit();
+            });
 
           
         });

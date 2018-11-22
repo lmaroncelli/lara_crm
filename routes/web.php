@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     |        | GET|HEAD  | clienti/{clienti}/edit | clienti.edit     | App\Http\Controllers\ClientiController@edit                            | web,auth     |
 	*/
     Route::model('clienti', 'App\Cliente');
-    Route::get('cerca-clienti', 'ClientiController@cercaClienti');
+    //Route::get('cerca-clienti', 'ClientiController@cercaClienti');
 	Route::resource('clienti', 'ClientiController')/*->middleware('log')*/;
 
     Route::model('contatti', 'App\Contatto');
