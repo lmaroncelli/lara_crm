@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cliente;
+use App\Contatto;
 use Illuminate\Http\Request;
 
 class ClientiController extends Controller
@@ -47,9 +48,39 @@ class ClientiController extends Controller
        //dd($request->all());
 
         $q = $request->get('q');
+        $qc = $request->get('qc');
+
         $orderby = $request->get('orderby');
         $order = $request->get('order');
-        
+
+        $clienti_ids = [];
+        if(!is_null($qc))
+          {
+          
+          // cerco gli ids dei contatti che soddisfano
+          $contatti = Contatto::where('nome','LIKE','%'.$qc.'%')->orWhere('email','LIKE','%'.$qc.'%')->orWhere('cellulare','LIKE','%'.$qc.'%')->orWhere('note','LIKE','%'.$qc.'%')->get();
+
+          // se non trovo contatti non trovo neanche clienti
+          if($contatti->count())
+            {
+            foreach ($contatti as $contatto) 
+              {
+              foreach ($contatto->clientiIds() as $cliente_id) 
+                {
+                $clienti_ids[] = $cliente_id;
+                }
+              }
+            }
+          else
+            {
+            $clienti_ids[] = -1;
+            }
+
+          
+          $clienti_ids = array_unique($clienti_ids);
+          
+          }
+
         if(is_null($order))
           {
             $order='asc';
@@ -82,6 +113,10 @@ class ClientiController extends Controller
           }
 
 
+        if(count($clienti_ids))
+          {
+          $clienti = $clienti->whereIn('id', $clienti_ids);
+          }
 
         $clienti = $clienti->where(function ($query) use ($q) {
                         $query->where('tblClienti.nome','LIKE','%'.$q.'%')
@@ -108,11 +143,15 @@ class ClientiController extends Controller
           $to_append['attivo_ia'] = "on";
           }
 
-         if($attivo == 'on')
-          {
-          $to_append['attivo'] = "on";
-          }
+       if($attivo == 'on')
+        {
+        $to_append['attivo'] = "on";
+        }
 
+        if(!is_null($qc))
+          {
+          $to_append['qc'] = $qc;
+          }
 
 
         //dd($clienti->toSql());

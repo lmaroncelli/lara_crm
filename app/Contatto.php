@@ -19,6 +19,11 @@ class Contatto extends Model
        return $this->belongsToMany(Cliente::class, 'tblClienteContatto', 'contatto_id', 'cliente_id');
    }
 
+   public function clientiIds()
+    {
+        return $this->clienti->pluck('id')->toArray();
+    }
+
 
    public function viewColumns()
     {

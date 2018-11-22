@@ -27,7 +27,8 @@
                 <input type="hidden" name="orderby" id="orderby" value="">
                 <input type="hidden" name="order" id="order" value="">
                 <div class="row">
-                    <div class="col-lg-6" style="padding-left: 40px; padding-top: 20px">
+                    
+                    <div class="col-lg-6" style="padding-left: 40px; padding-right: 40px; padding-top: 20px">
                         <div class="m-input-icon m-input-icon--left m-input-icon--right">
                             <input type="text" name="q" value="{{\Request::get('q')}}" class="form-control m-input m-input--pill m-input--air" placeholder="Cerca per nome o ID">
                             <span class="m-input-icon__icon m-input-icon__icon--left">
@@ -42,12 +43,37 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-lg-6" style="padding-top: 20px">
+
+                    <div class="col-lg-3" style="padding-top: 20px">
                         <span class="label">Solo attivi</span>
                         <input data-switch="true" type="checkbox" name="attivo" @if ( \Request::get('attivo') ) checked="checked" @endif  data-on-color="success" data-off-color="danger" data-on-text="Sì" data-off-text="No">
+                    </div>
+
+                    <div class="col-lg-3" style="padding-top: 20px">
                         <span class="label">Solo attivi IA</span>
                         <input data-switch="true" type="checkbox" name="attivo_ia" @if ( \Request::get('attivo_ia') ) checked="checked" @endif data-on-color="success" data-off-color="danger" data-on-text="Sì" data-off-text="No">
                     </div>
+
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col-lg-6" style="padding-left: 40px; padding-right: 40px; padding-top: 20px">
+                        <div class="m-input-icon m-input-icon--left m-input-icon--right">
+                            <input type="text" name="qc" value="{{\Request::get('qc')}}" class="form-control m-input m-input--pill m-input--air" placeholder="Cerca nei contatti">
+                            <span class="m-input-icon__icon m-input-icon__icon--left">
+                                <span>
+                                    <i class="la la-user-secret"></i>
+                                </span>
+                            </span>
+                            <span class="m-input-icon__icon m-input-icon__icon--right">
+                                <span>
+                                    <i class="la la-search"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
                 </form>
 
