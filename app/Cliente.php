@@ -84,15 +84,29 @@ class Cliente extends Model
      }
 
 
-    public function stato()
+    public function stato($icon = false)
       {
       if ($this->attivo) 
         {
-        return "Sì";
+        if ($icon) 
+          {
+          return '<i class="fa fa-thumbs-up"></i>';
+          } 
+        else 
+          {  
+          return "Sì";
+          }
         } 
       else 
         {
-        return "No";
+        if ($icon) 
+          {
+          return '<i class="fa fa-thumbs-down" style="color:#d42020"></i>';
+          } 
+        else 
+          {
+          return "No";
+          }
         }
       }
 

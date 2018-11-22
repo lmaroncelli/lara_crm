@@ -1,5 +1,45 @@
 
 
+
+
+
+/*
+override default anchor
+ */
+
+
+a {
+	color:#111;
+}
+
+a:hover {
+	color:#212529;
+}
+
+
+ .page-link {
+    color: #34bfa3!important;
+   }
+
+ .page-link:hover {
+  color: #2ca189!important;
+  text-decoration: underline;
+ }
+
+ .page-item.active .page-link {
+    z-index: 1!important;
+    color: #fff!important;
+    background-color: #34bfa3!important;
+    border-color: #34bfa3!important;
+}
+
+
+/*
+override default anchor
+ */
+
+
+
 /* data attivazione form clienti*/
 .data_attivazione {
 	font-weight: bold;
