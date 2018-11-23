@@ -24,6 +24,7 @@ class ClientiIndexComposer
     	$campi_cliente_search['telefono'] = 'telefono';
     	$campi_cliente_search['fax'] = 'fax';
     	$campi_cliente_search['cell'] = 'cell';
+    	$campi_cliente_search['commerciale'] = 'commerciale';
     	$campi_cliente_search['email'] = 'email';
     	$campi_cliente_search['email_amministrativa'] = 'email_amministrativa';
     	$campi_cliente_search['pec'] = 'pec';

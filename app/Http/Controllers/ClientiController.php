@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use App\Contatto;
+use App\User;
 use Illuminate\Http\Request;
 
 class ClientiController extends Controller
@@ -138,13 +139,33 @@ class ClientiController extends Controller
         
         if( !is_null($qf) && $field != '0' )
           {
-          $clienti = $clienti->where('tblClienti.'.$field, 'LIKE', '%' . $qf . '%');
+          if($field == 'commerciale')
+            {
+            $commerciali = User::commerciale()->where('name','LIKE','%'.$qf.'%')->get();
+            if($commerciali->count())
+              {
+              foreach ($commerciali as $commerciale) 
+                {
+                foreach ($commerciale->clientiAssociatiIds() as $cliente_id) 
+                {
+                $clienti_ids[] = $cliente_id;
+                }
+                }
+                
+                $clienti_ids = array_unique($clienti_ids);
+              }
+            }
+          else
+            {
+            $clienti = $clienti->where('tblClienti.'.$field, 'LIKE', '%' . $qf . '%');
+            }
+
           }
 
 
         if(count($clienti_ids))
           {
-          $clienti = $clienti->whereIn('id', $clienti_ids);
+          $clienti = $clienti->whereIn('tblClienti.id', $clienti_ids);
           }
 
         $clienti = $clienti->where(function ($query) use ($q) {

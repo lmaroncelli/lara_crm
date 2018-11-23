@@ -41,10 +41,17 @@ class User extends Authenticatable
     }
 
 
+    public function clientiAssociatiIds()
+    {
+        return $this->clienti_associati->pluck('id')->toArray();
+    }
+
     public function scopeCommerciale($query)
      {
          return $query->where('type_id','C');
      }
+
+
 
 
 

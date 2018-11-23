@@ -46,12 +46,12 @@
 
                     <div class="col-lg-3" style="padding-top: 20px">
                         <span class="label">Solo attivi</span>
-                        <input data-switch="true" type="checkbox" name="attivo" @if ( \Request::get('attivo') ) checked="checked" @endif  data-on-color="success" data-off-color="danger" data-on-text="Sì" data-off-text="No">
+                        <input class="attivo_check" data-switch="true" type="checkbox" name="attivo" @if ( \Request::get('attivo') ) checked="checked" @endif  data-on-color="success" data-off-color="danger" data-on-text="Sì" data-off-text="No">
                     </div>
 
                     <div class="col-lg-3" style="padding-top: 20px">
                         <span class="label">Solo attivi IA</span>
-                        <input data-switch="true" type="checkbox" name="attivo_ia" @if ( \Request::get('attivo_ia') ) checked="checked" @endif data-on-color="success" data-off-color="danger" data-on-text="Sì" data-off-text="No">
+                        <input class="attivo_check" data-switch="true" type="checkbox" name="attivo_ia" @if ( \Request::get('attivo_ia') ) checked="checked" @endif data-on-color="success" data-off-color="danger" data-on-text="Sì" data-off-text="No">
                     </div>
 
                 </div>
@@ -215,6 +215,10 @@
         jQuery(document).ready(function(){
             
             $(".la-search").click(function(){
+                $("#searchForm").submit();
+            });
+
+            $(".attivo_check").on('switchChange.bootstrapSwitch', function (event, state) {
                 $("#searchForm").submit();
             });
 
