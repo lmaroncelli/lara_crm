@@ -50,10 +50,22 @@ class ClientiController extends Controller
         $q = $request->get('q');
         $qc = $request->get('qc');
 
+
+        // campo libero
+        $qf = $request->get('qf');
+        $field = $request->get('field');
+
+
+
         $orderby = $request->get('orderby');
         $order = $request->get('order');
 
+
+        ////////////////////////////////////
+        // RIcerca per campo del contatto //
+        ////////////////////////////////////
         $clienti_ids = [];
+
         if(!is_null($qc))
           {
           
@@ -80,6 +92,9 @@ class ClientiController extends Controller
           $clienti_ids = array_unique($clienti_ids);
           
           }
+        ///////////////////////////////////////
+        // \ RIcerca per campo del contatto //
+        ///////////////////////////////////////
 
         if(is_null($order))
           {
@@ -100,6 +115,8 @@ class ClientiController extends Controller
 
 
         $clienteEagerLoaded = $this->_getClienteEagerLoaded($orderby);
+
+
         $clienti = $clienteEagerLoaded;
 
         if($attivo_ia == 'on')
@@ -110,6 +127,18 @@ class ClientiController extends Controller
         if($attivo == 'on')
           {
           $clienti = $clienti->where('attivo',1);
+          }
+
+
+        //////////////////////////////////////
+        // Ricerca campo libero del cliente //
+        //////////////////////////////////////
+
+        // se ho inserito un valore da cercare ed ho selzionato un campo
+        
+        if( !is_null($qf) && $field != '0' )
+          {
+          $clienti = $clienti->where('tblClienti.'.$field, 'LIKE', '%' . $qf . '%');
           }
 
 
@@ -151,6 +180,12 @@ class ClientiController extends Controller
         if(!is_null($qc))
           {
           $to_append['qc'] = $qc;
+          }
+
+         if( !is_null($qf) && $field != '0' )
+          {
+          $to_append['qf'] = $qf;
+          $to_append['field'] = $field;
           }
 
 

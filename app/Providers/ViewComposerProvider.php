@@ -24,5 +24,6 @@ class ViewComposerProvider extends ServiceProvider
     public function register()
     {
         view()->composer('clienti.form','App\Http\Composers\ClientiFormComposer');
+        view()->composer('clienti.index','App\Http\Composers\ClientiIndexComposer');
     }
 }
