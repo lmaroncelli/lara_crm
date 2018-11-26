@@ -6,6 +6,8 @@ use App\CategoriaCliente;
 use App\Contatto;
 use App\GruppoCliente;
 use App\Localita;
+use App\Servizio;
+use App\Societa;
 use App\TipologiaCliente;
 use Illuminate\Database\Eloquent\Model;
 
@@ -75,6 +77,17 @@ class Cliente extends Model
     public function contatti()
     {
         return $this->belongsToMany(Contatto::class, 'tblClienteContatto', 'cliente_id', 'contatto_id');
+    }
+
+
+    public function societa()
+    {
+        return $this->hasMany(Societa::class, 'cliente_id', 'id');
+    }
+
+    public function servizi()
+    {
+        return $this->hasMany(Servizio::class, 'cliente_id', 'id');
     }
 
 

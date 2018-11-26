@@ -85,13 +85,21 @@ class ClientiFormComposer
 
 
 
-
-
-
-
-
 #Implementare la ricerca con paginazione
 
 > https://www.youtube.com/watch?v=3PeF9UvoSsk
 
+
+
+
+#FATTURAZIONE (vecchio CRM)
+
+
+- per prima cosa seleziono il tipo di documento: prefattura, fattura, nota di credito, clona
+
+PERCHE' ?
+
+- l'unica cosa che ricavo dal tipo fattura sono le ultime fatture inserite di quel tipo
+
+  
 

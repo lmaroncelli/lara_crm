@@ -12,7 +12,6 @@
 */
 
 
-
 Route::get('/', '\App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
 
 
@@ -46,14 +45,26 @@ Route::middleware(['auth'])->group(function () {
     |        | DELETE    | clienti/{clienti}      | clienti.destroy  | App\Http\Controllers\ClientiController@destroy                         | web,auth     |
     |        | GET|HEAD  | clienti/{clienti}/edit | clienti.edit     | App\Http\Controllers\ClientiController@edit                            | web,auth     |
 	*/
+    /////////////
+    // CLIENTI //
+    /////////////
     Route::model('clienti', 'App\Cliente');
-    //Route::get('cerca-clienti', 'ClientiController@cercaClienti');
-	Route::resource('clienti', 'ClientiController')/*->middleware('log')*/;
+    Route::resource('clienti', 'ClientiController')/*->middleware('log')*/;
 
+
+    //////////////
+    // CONTATTI //
+    //////////////
     Route::model('contatti', 'App\Contatto');
     Route::resource('contatti', 'ContattiController')/*->middleware('log')*/;
-
     Route::post('/gestisci-contatti-ajax', 'ClientiController@gestisciContattiAjax');
 
 
+    /////////////
+    // FATTURE //
+    /////////////
+    Route::model('fatture', 'App\Fattura');
+    Route::resource('fatture', 'FattureController')/*->middleware('log')*/;
+    Route::get('fatture/create/{tipo_id?}', 'FattureController@create');
+    Route::post('/last-fatture-ajax', 'FattureController@lastFattureAjax');
 });

@@ -25,6 +25,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         //
 
+        Route::pattern('tipo_id', 'F|PF|NC|CF?');
+
         parent::boot();
     }
 
