@@ -10,7 +10,7 @@ class Fattura extends Model
 {
    protected $table = 'tblFatture';
 
-   protected $guarded = ['id'];
+   protected $fillable = ['tipo_id','numero_fattura','numero_prefattura','data','societa_id'];
 
    protected $dates = [
        'created_at',

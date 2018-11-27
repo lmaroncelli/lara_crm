@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Fattura;
+use App\Utility;
 use Illuminate\Http\Request;
 
 class FattureController extends Controller
@@ -36,7 +37,27 @@ class FattureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $validatedData = $request->validate([
+             'societa' => 'required',
+             'societa_id' => 'required|integer',
+             'numero' => 'required',
+             'data' => 'required|date_format:"d/m/Y"'
+         ]);
+
+      $fattura = Fattura::create($request->except(['data','numero']));
+      $fattura->data = Utility::getCarbonDate($request->get('data'));
+      
+      if ($request->get('tipo_id') == 'PF') 
+        {
+        $fattura->numero_prefattura = $request->get('numero');
+        } 
+      else 
+        {
+        $fattura->numero_fattura = $request->get('numero');
+        }
+
+      $fattura->save();
+      return redirect('fatture/'.$fattura->id.'/edit');
     }
 
     /**
@@ -58,7 +79,13 @@ class FattureController extends Controller
      */
     public function edit($id)
     {
-        //
+    $fattura = Fattura::with([
+                          'righe',
+                          'scadenze',
+                          'societa.RagioneSociale.localita',
+                          'societa.cliente',
+                        ])->find($id);
+    return view('fatture.form', compact('fattura'));
     }
 
     /**
@@ -88,6 +115,9 @@ class FattureController extends Controller
 
     public function lastFattureAjax(Request $request)
       {
-          
+        $tipo_id = $request->get('tipo_id');
+        $last_fatture = Fattura::getLastNumber($tipo_id);
+
+        echo view('fatture._numeri_fatture', compact('last_fatture'));
       }
 }

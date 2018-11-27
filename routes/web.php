@@ -63,7 +63,7 @@ Route::middleware(['auth'])->group(function () {
     /////////////
     // FATTURE //
     /////////////
-    Route::model('fatture', 'App\Fattura');
+    //Route::model('fatture', 'App\Fattura');
     Route::resource('fatture', 'FattureController')/*->middleware('log')*/;
     Route::get('fatture/create/{tipo_id?}', 'FattureController@create');
     Route::post('/last-fatture-ajax', 'FattureController@lastFattureAjax');

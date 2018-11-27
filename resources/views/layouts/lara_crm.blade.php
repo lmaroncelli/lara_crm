@@ -54,6 +54,26 @@
             @include('layouts.left_menu')
         
             <div class="m-grid__item m-grid__item--fluid m-wrapper">
+                @if ($errors->any())
+                    <div class="row">
+                        <div class="offset-lg-2 col-lg-8">
+                            <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-danger alert-dismissible fade show" role="alert" style="margin-top:30px;">
+                                <div class="m-alert__icon">
+                                    <i class="flaticon-exclamation-1"></i>
+                                </div>
+                                @foreach ($errors->all() as $error)
+                                <div class="m-alert__text" style="display: block; padding-top: 4px;  padding-bottom: 4px;">
+                                    <strong>Errore!</strong> {{ $error }}.
+                                </div>
+                                @endforeach
+                                <div class="m-alert__close">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="m-content">
                     @yield('content')
                 </div>

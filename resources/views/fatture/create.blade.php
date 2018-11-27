@@ -18,9 +18,9 @@
                 </div>
             </div>
 
-            <form class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed" role="form" action="{{ route('clienti.store') }}" method="POST" enctype="multipart/form-data">            
+            <form class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed" role="form" action="{{ route('fatture.store') }}" method="POST" enctype="multipart/form-data">            
             {!! csrf_field() !!}
-            <input type="hidden" name="societa_id" id="societa_id" value="">
+            <input type="hidden" name="societa_id" id="societa_id" value="{{old('societa_id')}}">
             <div class="m-portlet__body">
             {{-- Tipo-Societa --}}
             <div class="form-group m-form__group row">
@@ -34,7 +34,7 @@
                 </div>
                 <label class="col-lg-2 col-form-label" for="societa">Societa:</label>
                 <div class="col-lg-2">
-                    <input type="text" name="societa" id="societa" value="{{ old('societa') != '' ?  old('societa') : optional(optional($fattura->societa)->ragioneSociale) ->nome }}"  class="form-control m-input" placeholder="Societa" readonly="readonly">
+                    <input type="text" name="societa" id="societa" value="{{ old('societa') != '' ?  old('societa') : optional(optional($fattura->societa)->ragioneSociale)->nome }}"  class="form-control m-input" placeholder="Societa" readonly="readonly">
                 </div>
                 <div class="col-lg-1">
                     <button type="button" class="btn btn-warning" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#m_modal_contatti">Società</button>
@@ -52,7 +52,7 @@
                 <label class="col-lg-2 col-form-label" for="tipo_id">Data:</label>
                 <div class="col-lg-3">
                     <div class="input-group date">
-                        <input type="text" class="form-control m-input" readonly value="{{Carbon\Carbon::today()->format('d/m/Y')}}" id="m_datepicker_3" />
+                        <input type="text" name="data" class="form-control m-input" readonly value="{{Carbon\Carbon::today()->format('d/m/Y')}}" id="m_datepicker_3" />
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 <i class="la la-calendar"></i>
@@ -70,14 +70,14 @@
                     <div class="row">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10">
-                            <button type="reset" class="btn btn-success">
+                            <button type="submit" class="btn btn-success">
                                 @if ($fattura->exists)
                                     Modifica
                                 @else
                                     Crea
                                 @endif
                             </button>
-                            <a href="{{ url('clienti') }}" title="Annulla" class="btn btn-secondary">Annulla</a>
+                            <button type="reset"  title="Annulla" class="btn btn-secondary">Annulla</button>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                 </button>
             </div>
             
-            <div class="modal-body">
+            <div class="modal-body" id="wrapper_last_numeri">
                 @include('fatture._numeri_fatture')
             </div>
 
@@ -178,16 +178,15 @@
 
             $("#tipo_id").change(function(){
                 jQuery.ajax({
-                        url: '<?=url("gestisci-contatti-ajax") ?>',
+                        url: '<?=url("last-fatture-ajax") ?>',
                         type: "post",
                         async: false,
                         data : { 
-                               'contatto_id': contatto_id, 
-                               'cliente_id': cliente_id,
+                               'tipo_id': this.value, 
                                '_token': jQuery('input[name=_token]').val()
                                },
                         success: function(data) {
-                         
+                         $("#wrapper_last_numeri").html(data);
                        }
                  });
             });

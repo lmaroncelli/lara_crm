@@ -239,4 +239,29 @@ class Utility extends Model
 
 
 
+
+	 public static function getNomeTipoFattura($tipo_id)
+		{
+		switch ($tipo_id) 
+			{
+			case 'F':
+				return 'Fattura';
+				break;
+
+			case 'PF':
+				return 'Prefattura';
+				break;
+
+			case 'NC':
+				return 'Nota di credito';
+				break;
+			
+			default:
+				return 'Fattura';
+				break;
+			}
+		}
+
+
+
 }
