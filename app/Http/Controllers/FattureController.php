@@ -82,7 +82,7 @@ class FattureController extends Controller
     $fattura = Fattura::with([
                           'righe',
                           'scadenze',
-                          'societa.RagioneSociale.localita',
+                          'societa.RagioneSociale.localita.comune.provincia',
                           'societa.cliente',
                         ])->find($id);
     return view('fatture.form', compact('fattura'));

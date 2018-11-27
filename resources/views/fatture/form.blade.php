@@ -23,22 +23,22 @@
                                     </a>
                                 </div>
                                 <span class="m-invoice__desc">
-                                    <span>Info ALberghi srl</span>
-                                    <span>Via Gambalunga, 81/A</span>
+                                    <span>Info Alberghi srl</span>
+                                    <span>Via Gambalunga, 81/A - 47921 - Rimini(RN)</span>
                                 </span>
                                 <div class="m-invoice__items">
                                     <div class="m-invoice__item">
                                         <span class="m-invoice__subtitle">DATA</span>
-                                        <span class="m-invoice__text">Dec 12, 2017</span>
+                                        <span class="m-invoice__text">{{$fattura->data->format('d/m/Y')}}</span>
                                     </div>
                                     <div class="m-invoice__item">
-                                        <span class="m-invoice__subtitle">INVOICE NO.</span>
-                                        <span class="m-invoice__text">GS 000014</span>
+                                        <span class="m-invoice__subtitle">{{ App\Utility::getNomeTipoFattura($fattura->tipo_id) }} N°.</span>
+                                        <span class="m-invoice__text">{{$fattura->tipo_id == 'PF' ? $fattura->numero_prefattura : $fattura->numero_fattura}}</span>
                                     </div>
                                     <div class="m-invoice__item">
                                         <span class="m-invoice__subtitle">{{ App\Utility::getNomeTipoFattura($fattura->tipo_id) }} per </span>
                                         <span class="m-invoice__text">{{optional(optional($fattura->societa)->ragioneSociale)->nome}}
-                                            <br>{{optional(optional($fattura->societa)->ragioneSociale)->indirizzo}} - {{optional(optional($fattura->societa)->ragioneSociale)->cap}} - {{optional(optional(optional($fattura->societa)->ragioneSociale)->localita)->nome}}</span>
+                                            <br>{{optional(optional($fattura->societa)->ragioneSociale)->indirizzo}} - {{optional(optional($fattura->societa)->ragioneSociale)->cap}} - {{optional(optional(optional($fattura->societa)->ragioneSociale)->localita)->nome}} ({{optional(optional(optional($fattura->societa)->ragioneSociale)->localita)->comune->provincia->sigla}})</span>
                                     </div>
                                 </div>
                             </div>
@@ -49,14 +49,20 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>DESCRIPTION</th>
-                                            <th>HOURS</th>
-                                            <th>RATE</th>
-                                            <th>AMOUNT</th>
+                                            <th>Servizio</th>
+                                            <th>Qta</th>
+                                            <th>Prezzo</th>
+                                            <th>T.Netto</th>
+                                            <th>Al.IVA</th>
+                                            <th>IVA</th>
+                                            <th>Totale</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td>Creative Design</td>
+                                            <td>80</td>
+                                            <td>$40.00</td>
                                             <td>Creative Design</td>
                                             <td>80</td>
                                             <td>$40.00</td>
@@ -66,12 +72,60 @@
                                             <td>Front-End Development</td>
                                             <td>120</td>
                                             <td>$40.00</td>
+                                            <td>Creative Design</td>
+                                            <td>80</td>
+                                            <td>$40.00</td>
                                             <td class="m--font-danger">$4800.00</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
+                        
+                         {{-- form aggiunta servizio / riga di fatturazione --}}
+                        <div class="m-portlet__body">
+                            <form action="" method="POST" accept-charset="utf-8">
+                                {!! csrf_field() !!}
+                                <div class="form-group m-form__group row">
+                                    <label class="offset-lg-3 col-lg-1 col-form-label text-right" for="numero">Servizio:</label>
+                                    <div class="col-lg-5">
+                                        <textarea name="servizio" class="form-control m-input" id="servizio" rows="4">{{ old('servizio') != '' ?  old('servizio') : ''}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label class="col-lg-1 col-form-label text-right" for="numero">Qta:</label>
+                                    <div class="col-lg-1">
+                                        <input type="text" name="qta" id="qta" value="{{ old('qta') != '' ?  old('qta') : ''}}"  class="form-control m-input">
+                                    </div>
+                                    <label class="col-lg-1 col-form-label text-right" for="numero">Prezzo:</label>
+                                    <div class="col-lg-1">
+                                        <input type="text" name="prezzo" id="prezzo" value="{{ old('prezzo') != '' ?  old('prezzo') : ''}}"  class="form-control m-input">
+                                    </div>
+                                    <label class="col-lg-1 col-form-label text-right" for="numero">Tot netto:</label>
+                                    <div class="col-lg-1">
+                                        <input type="text" name="totale_netto" id="totale_netto" value="{{ old('totale_netto') != '' ?  old('totale_netto') : ''}}"  class="form-control m-input">
+                                    </div>
+                                    <label class="col-lg-1 col-form-label text-right" for="numero">Al. IVA:</label>
+                                    <div class="col-lg-1">
+                                        <input type="text" name="al_iva" id="al_iva" value="22"  class="form-control m-input">
+                                    </div>
+                                    <label class="col-lg-1 col-form-label text-right" for="numero">IVA:</label>
+                                    <div class="col-lg-1">
+                                        <input type="text" name="iva" id="iva" value="{{ old('iva') != '' ?  old('iva') : ''}}"  class="form-control m-input">
+                                    </div>
+                                     <label class="col-lg-1 col-form-label text-right" for="numero">Totale:</label>
+                                     <div class="col-lg-1">
+                                         <input type="text" name="totale" id="totale" value="{{ old('totale') != '' ?  old('totale') : ''}}"  class="form-control m-input">
+                                     </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-success">Inserisci</button>
+                                    <button type="reset"  title="Annulla" class="btn btn-secondary">Annulla</button>
+                                </div>
+                            </form>
+                        </div>
+
                         {{-- footer fattura --}}
                         <div class="m-invoice__footer">
                             <div class="m-invoice__table  m-invoice__table--centered table-responsive">
