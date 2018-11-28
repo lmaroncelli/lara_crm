@@ -12,119 +12,55 @@
                 <div class="m-invoice-2">
                     <div class="m-invoice__wrapper">
                         {{-- intestazione fattura --}}
-                        <div class="m-invoice__head" style="background-image: url(../../assets/app/media/img//logos/bg-6.jpg);">
-                            <div class="m-invoice__container m-invoice__container--centered">
-                                <div class="m-invoice__logo">
-                                    <a href="#">
-                                        <h1>{{ App\Utility::getNomeTipoFattura($fattura->tipo_id) }}</h1>
-                                    </a>
-                                    <a href="#">
-                                        <img src="../../assets/app/media/img//logos/logo_client_color.png">
-                                    </a>
-                                </div>
-                                <span class="m-invoice__desc">
-                                    <span>Info Alberghi srl</span>
-                                    <span>Via Gambalunga, 81/A - 47921 - Rimini(RN)</span>
-                                </span>
-                                <div class="m-invoice__items">
-                                    <div class="m-invoice__item">
-                                        <span class="m-invoice__subtitle">DATA</span>
-                                        <span class="m-invoice__text">{{$fattura->data->format('d/m/Y')}}</span>
-                                    </div>
-                                    <div class="m-invoice__item">
-                                        <span class="m-invoice__subtitle">{{ App\Utility::getNomeTipoFattura($fattura->tipo_id) }} N°.</span>
-                                        <span class="m-invoice__text">{{$fattura->tipo_id == 'PF' ? $fattura->numero_prefattura : $fattura->numero_fattura}}</span>
-                                    </div>
-                                    <div class="m-invoice__item">
-                                        <span class="m-invoice__subtitle">{{ App\Utility::getNomeTipoFattura($fattura->tipo_id) }} per </span>
-                                        <span class="m-invoice__text">{{optional(optional($fattura->societa)->ragioneSociale)->nome}}
-                                            <br>{{optional(optional($fattura->societa)->ragioneSociale)->indirizzo}} - {{optional(optional($fattura->societa)->ragioneSociale)->cap}} - {{optional(optional(optional($fattura->societa)->ragioneSociale)->localita)->nome}} ({{optional(optional(optional($fattura->societa)->ragioneSociale)->localita)->comune->provincia->sigla}})</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- body fattura --}}
-                        <div class="m-invoice__body m-invoice__body--centered">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Servizio</th>
-                                            <th>Qta</th>
-                                            <th>Prezzo</th>
-                                            <th>T.Netto</th>
-                                            <th>Al.IVA</th>
-                                            <th>IVA</th>
-                                            <th>Totale</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Creative Design</td>
-                                            <td>80</td>
-                                            <td>$40.00</td>
-                                            <td>Creative Design</td>
-                                            <td>80</td>
-                                            <td>$40.00</td>
-                                            <td class="m--font-danger">$3200.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Front-End Development</td>
-                                            <td>120</td>
-                                            <td>$40.00</td>
-                                            <td>Creative Design</td>
-                                            <td>80</td>
-                                            <td>$40.00</td>
-                                            <td class="m--font-danger">$4800.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        
+                        @include('fatture._header_fattura')
 
+                        {{-- righe fatturazione --}}
+                        <div class="m-invoice__body m-invoice__body--centered">
+                            @if ($fattura->righe()->count())
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Servizio</th>
+                                                <th>Qta</th>
+                                                <th>Prezzo</th>
+                                                <th>T.Netto</th>
+                                                <th>Al.IVA</th>
+                                                <th>IVA</th>
+                                                <th>Totale</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($fattura->righe as $riga)
+                                            <tr>
+                                                <td>{{$riga->servizio}}</td>
+                                                <td>{{$riga->qta}}</td>
+                                                <td>{{App\Utility::formatta_cifra($riga->prezzo, '€')}}</td>
+                                                <td>{{App\Utility::formatta_cifra($riga->totale_netto, '€')}}</td>
+                                                <td>{{$riga->al_iva}}</td>
+                                                <td>{{App\Utility::formatta_cifra($riga->iva, '€')}}</td>
+                                                <td class="m--font-danger">{{App\Utility::formatta_cifra($riga->totale, '€')}}</td>
+                                                <td>
+                                                  <a href="{{ route('load-riga',['rigafattura_id' => $riga->id]) }}" class="btn btn-info m-btn m-btn--icon m-btn--icon-only">
+                                                    <i class="la la-edit"></i>
+                                                  </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                            @endif
+                            
                         </div>
                         
                          {{-- form aggiunta servizio / riga di fatturazione --}}
-                        <div class="m-portlet__body">
-                            <form action="" method="POST" accept-charset="utf-8">
-                                {!! csrf_field() !!}
-                                <div class="form-group m-form__group row">
-                                    <label class="offset-lg-3 col-lg-1 col-form-label text-right" for="numero">Servizio:</label>
-                                    <div class="col-lg-5">
-                                        <textarea name="servizio" class="form-control m-input" id="servizio" rows="4">{{ old('servizio') != '' ?  old('servizio') : ''}}</textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group m-form__group row">
-                                    <label class="col-lg-1 col-form-label text-right" for="numero">Qta:</label>
-                                    <div class="col-lg-1">
-                                        <input type="text" name="qta" id="qta" value="{{ old('qta') != '' ?  old('qta') : ''}}"  class="form-control m-input">
-                                    </div>
-                                    <label class="col-lg-1 col-form-label text-right" for="numero">Prezzo:</label>
-                                    <div class="col-lg-1">
-                                        <input type="text" name="prezzo" id="prezzo" value="{{ old('prezzo') != '' ?  old('prezzo') : ''}}"  class="form-control m-input">
-                                    </div>
-                                    <label class="col-lg-1 col-form-label text-right" for="numero">Tot netto:</label>
-                                    <div class="col-lg-1">
-                                        <input type="text" name="totale_netto" id="totale_netto" value="{{ old('totale_netto') != '' ?  old('totale_netto') : ''}}"  class="form-control m-input">
-                                    </div>
-                                    <label class="col-lg-1 col-form-label text-right" for="numero">Al. IVA:</label>
-                                    <div class="col-lg-1">
-                                        <input type="text" name="al_iva" id="al_iva" value="22"  class="form-control m-input">
-                                    </div>
-                                    <label class="col-lg-1 col-form-label text-right" for="numero">IVA:</label>
-                                    <div class="col-lg-1">
-                                        <input type="text" name="iva" id="iva" value="{{ old('iva') != '' ?  old('iva') : ''}}"  class="form-control m-input">
-                                    </div>
-                                     <label class="col-lg-1 col-form-label text-right" for="numero">Totale:</label>
-                                     <div class="col-lg-1">
-                                         <input type="text" name="totale" id="totale" value="{{ old('totale') != '' ?  old('totale') : ''}}"  class="form-control m-input">
-                                     </div>
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-success">Inserisci</button>
-                                    <button type="reset"  title="Annulla" class="btn btn-secondary">Annulla</button>
-                                </div>
-                            </form>
-                        </div>
+                        @include('fatture._form_add_riga_fattura')
+                        
 
                         {{-- footer fattura --}}
                         <div class="m-invoice__footer">
@@ -152,28 +88,7 @@
                     </div> {{--  \wrapper --}}
                 </div> {{-- "m-invoice-2 --}} 
 
-                <form class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed" role="form" action="{{ route('fatture.store') }}" method="POST" enctype="multipart/form-data">            
-                    {!! csrf_field() !!}
-                    <input type="hidden" name="societa_id" id="societa_id" value="{{old('societa_id')}}">
-             
-                    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
-                        <div class="m-form__actions m-form__actions--solid">
-                            <div class="row">
-                                <div class="col-lg-2"></div>
-                                <div class="col-lg-10">
-                                    <button type="submit" class="btn btn-success">
-                                        @if ($fattura->exists)
-                                            Modifica
-                                        @else
-                                            Crea
-                                        @endif
-                                    </button>
-                                    <button type="reset"  title="Annulla" class="btn btn-secondary">Annulla</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+          
             </div> {{-- m-portlet__body --}}
         </div>{{-- m-portlet --}}
     
@@ -244,6 +159,7 @@
             });
 
 
+            /* aggiornamento degli ultimi numeroìi in base al tipo di fattura */
             $("#tipo_id").change(function(){
                 jQuery.ajax({
                         url: '<?=url("last-fatture-ajax") ?>',
@@ -258,6 +174,28 @@
                        }
                  });
             });
+
+
+            /* aggiornamento della riga di fatturazione */
+            $(".trigger_row").blur(function(){
+                var qta = $("#qta").val();
+                var prezzo = $("#prezzo").val();
+                var al_iva = $("#al_iva").val();
+                if(qta != '' && prezzo != '' && !isNaN(qta) && !isNaN(prezzo))
+                  {
+                  var totale_netto = qta*prezzo;
+                  var iva = totale_netto*al_iva/100;
+                  var totale = totale_netto + iva;
+                  if(!isNaN(totale_netto) && !isNaN(iva) && !isNaN(totale)) 
+                    {
+                    $("#totale_netto").val(totale_netto);
+                    $("#iva").val(iva);
+                    $("#totale").val(totale);
+                    }
+                  }
+            });
+
+
 
 
 

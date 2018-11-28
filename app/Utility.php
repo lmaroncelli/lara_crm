@@ -262,6 +262,13 @@ class Utility extends Model
 			}
 		}
 
+	public static function formatta_cifra($cifra, $simbolo = '')
+		{
+	
+		$formato =  number_format((float)$cifra, 2, ',', '.');
+		return empty($simbolo) ? $formato : $simbolo.' '.$formato;
+		}
+
 
 
 }

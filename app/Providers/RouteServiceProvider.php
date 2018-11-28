@@ -26,6 +26,8 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         Route::pattern('tipo_id', 'F|PF|NC|CF?');
+        Route::pattern('rigafattura_id', '[0-9]+');
+        
 
         parent::boot();
     }

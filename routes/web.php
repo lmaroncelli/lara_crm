@@ -65,6 +65,15 @@ Route::middleware(['auth'])->group(function () {
     /////////////
     //Route::model('fatture', 'App\Fattura');
     Route::resource('fatture', 'FattureController')/*->middleware('log')*/;
-    Route::get('fatture/create/{tipo_id?}', 'FattureController@create');
+    
+    // sovrascrivo create
+    Route::get('fatture/create/{tipo_id?}', 'FattureController@create')->name('fatture.create');
+    
+    // sovrascrivo edit
+    Route::get('fatture/{fattura_id}/edit/{rigafattura_id?}', 'FattureController@edit')->name('fatture.edit');
+
+    Route::post('fatture/add-riga', 'FattureController@addRiga')->name('add-riga');
+    Route::get('fatture/load-riga/{rigafattura_id}', 'FattureController@loadRiga')->name('load-riga');
+    Route::post('fatture/update-riga/{rigafattura_id}', 'FattureController@updateRiga')->name('update-riga');
     Route::post('/last-fatture-ajax', 'FattureController@lastFattureAjax');
 });
