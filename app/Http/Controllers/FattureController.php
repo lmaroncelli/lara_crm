@@ -216,5 +216,27 @@ class FattureController extends Controller
       }
 
 
+    public function deleteRiga(Request $request, $rigafattura_id)
+      {
+      $riga_fattura = RigaDiFatturazione::find($rigafattura_id);
+      $fattura_id = $riga_fattura->fattura_id;
+      $riga_fattura->delete();
+       return redirect('fatture/'.$fattura_id.'/edit');
+      }
+
+
+    public function addNote(Request $request)
+      {
+      $fattura_id = $request->get('fattura_id');
+
+      $fattura = Fattura::find($fattura_id);
+      $fattura->note = $request->get('note');
+
+      $fattura->save();
+
+      return redirect('fatture/'.$fattura_id.'/edit');
+      }
+
+
 
 }

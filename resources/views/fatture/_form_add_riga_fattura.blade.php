@@ -1,9 +1,9 @@
 <div class="m-portlet__body">
     @if (is_null($riga_fattura))
-        <form action="{{ route('add-riga') }}" method="POST" accept-charset="utf-8">
+        <form action="{{ route('fatture.add-riga') }}" method="POST" accept-charset="utf-8">
         {{-- true expr --}}
     @else
-        <form action="{{ route('update-riga',['rigafattura_id' => $riga_fattura->id]) }}" method="POST" accept-charset="utf-8">
+        <form action="{{ route('fatture.update-riga',['rigafattura_id' => $riga_fattura->id]) }}" method="POST" accept-charset="utf-8">
     @endif
      
         {!! csrf_field() !!}

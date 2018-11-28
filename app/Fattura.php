@@ -37,6 +37,18 @@ class Fattura extends Model
    }
 
 
+
+   public function getTotale()
+    {
+    $totale = 0;
+    foreach (self::righe()->get() as $r) 
+      {
+      $totale += $r->totale;
+      }
+    return $totale;
+    }
+
+
    public function scopeTipo($query, $tipo_id)
      {
         return $query->where('tipo_id', $tipo_id);
@@ -51,7 +63,6 @@ class Fattura extends Model
     }
 
 
-   
 
 
 }

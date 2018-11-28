@@ -44,8 +44,13 @@
                                                 <td>{{App\Utility::formatta_cifra($riga->iva, '€')}}</td>
                                                 <td class="m--font-danger">{{App\Utility::formatta_cifra($riga->totale, '€')}}</td>
                                                 <td>
-                                                  <a href="{{ route('load-riga',['rigafattura_id' => $riga->id]) }}" class="btn btn-info m-btn m-btn--icon m-btn--icon-only">
+                                                  <a href="{{ route('fatture.load-riga',['rigafattura_id' => $riga->id]) }}" class="btn btn-info m-btn m-btn--icon m-btn--icon-only">
                                                     <i class="la la-edit"></i>
+                                                  </a>
+                                                </td>
+                                                <td>
+                                                  <a href="{{ route('fatture.delete-riga',['rigafattura_id' => $riga->id]) }}" class="btn btn-danger m-btn m-btn--icon m-btn--icon-only">
+                                                    <i class="la la-trash"></i>
                                                   </a>
                                                 </td>
                                             </tr>
@@ -63,28 +68,10 @@
                         
 
                         {{-- footer fattura --}}
-                        <div class="m-invoice__footer">
-                            <div class="m-invoice__table  m-invoice__table--centered table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>BANK</th>
-                                            <th>ACC.NO.</th>
-                                            <th>DUE DATE</th>
-                                            <th>TOTAL AMOUNT</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>BARCLAYS UK</td>
-                                            <td>12345678909</td>
-                                            <td>Jan 07, 2018</td>
-                                            <td class="m--font-danger">20,600.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        @include('fatture._footer_fattura_'.strtolower($fattura->tipo_id))
+
+                        
+
                     </div> {{--  \wrapper --}}
                 </div> {{-- "m-invoice-2 --}} 
 
