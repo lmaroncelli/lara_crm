@@ -91,6 +91,15 @@ class Cliente extends Model
     }
 
 
+    ////////////////////////////////////////////////////////////////////////
+    // servizi da fatturare per un cliente NON archiviato e SENZA fattura //
+    ////////////////////////////////////////////////////////////////////////
+    public function servizi_non_fatturati()
+    {
+        return $this->hasMany(Servizio::class, 'cliente_id', 'id')->where('archiviato',0)->where('fattura_id',NULL);
+    }
+
+
     public function scopeAttivo($query)
      {
          return $query->where('attivo',1);

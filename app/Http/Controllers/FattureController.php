@@ -123,6 +123,12 @@ class FattureController extends Controller
       {
       $riga_fattura = null;
       }
+
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // SE NON SONO UNA 'NC'
+    // con l'id della societa voglio trovare tutti i servizi NON FATTURATI associati al cliente di questa societa //
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     return view('fatture.form', compact('fattura','riga_fattura'));
     
