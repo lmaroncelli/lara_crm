@@ -112,7 +112,7 @@ class FattureController extends Controller
                           'righe',
                           'scadenze',
                           'societa.RagioneSociale.localita.comune.provincia',
-                          'societa.cliente',
+                          'societa.cliente.servizi_non_fatturati',
                         ])->find($id);
 
     if(!is_null($rigafattura_id))
@@ -124,13 +124,38 @@ class FattureController extends Controller
       $riga_fattura = null;
       }
 
-    
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // SE NON SONO UNA 'NC'
     // con l'id della societa voglio trovare tutti i servizi NON FATTURATI associati al cliente di questa societa //
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    return view('fatture.form', compact('fattura','riga_fattura'));
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // riesco a caricarle come rigediFatturazione prendendo il prezzo dai precontratti?? //
+    ///////////////////////////////////////////////////////////////////////////////////////
+
+    $servizio_prefill_arr = [];
+
+
+    if(is_null($riga_fattura))
+      {
+      if($fattura->societa->cliente->servizi_non_fatturati->count())
+        {
+        foreach ($fattura->societa->cliente->servizi_non_fatturati as $servizio) 
+          {
+          // aggiungere servizio dal al 
+          $servizio_prefill_arr[] = $servizio->prodotto->nome .' - ' . $servizio->note;
+          }
+        }
+      }
+
+
+    dd($servizio_prefill_arr);
+    $servizio_prefill = implode(',', $servizio_prefill_arr);
+
+
+
+    return view('fatture.form', compact('fattura','riga_fattura', 'servizio_prefill'));
     
     }
 
