@@ -118,14 +118,21 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="societa">Elenco Società</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="col-lg-3" style="margin-top: 10px">
+                    <h5 class="modal-title" id="societa">Elenco Società</h5>
+                </div>
+                <div class="col-lg-6">
+                    <input id="myInput" type="text" class="form-control m-input m-input--pill m-input--air" placeholder="scrivi per filtrare">
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="m-scrollable m-scrollable--track m-scroller ps ps--active-y" data-scrollable="true" style="height: 400px; overflow: hidden;">
-                <table class="table table-striped m-table m-table--head-bg-success">
+            <table class="table table-striped m-table m-table--head-bg-success" id="tabellaSocieta">
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -137,7 +144,7 @@
             <tbody>
                 @foreach ($ragioneSociale as $r)
                     @foreach ($r->societa as $s)
-                      <tr>
+                      <tr class="societa">
                           <td><a href="#" data-id="{{$s->id}}" data-nome="{{$r->nome}}"  class="societa_fattura" title="Fattura a questa società">{{$r->nome}}</a></td>
                           <td>{{optional($s->cliente)->nome}}</td>
                           <td>{{optional($s->cliente)->id_info}}</td>
@@ -192,7 +199,13 @@
             });
 
 
-
+            /* ricerca nelle societa in popup modale */
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("tr.societa").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+              });
 
         });
     
