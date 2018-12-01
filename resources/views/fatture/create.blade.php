@@ -119,7 +119,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="col-lg-3" style="margin-top: 10px">
-                    <h5 class="modal-title" id="societa">Elenco Società</h5>
+                    <h5 class="modal-title" id="societa">Elenco Società <span id="n_societa">{{$ragioneSociale->count()}}</span></h5>
                 </div>
                 <div class="col-lg-6">
                     <input id="myInput" type="text" class="form-control m-input m-input--pill m-input--air" placeholder="scrivi per filtrare">
@@ -205,6 +205,8 @@
                 $("tr.societa").filter(function() {
                   $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
+                var visible_rows = $('tr.societa:visible').length;
+                jQuery("#n_societa").html(visible_rows);
               });
 
         });

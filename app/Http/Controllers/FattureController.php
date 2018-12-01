@@ -55,7 +55,7 @@ class FattureController extends Controller
     public function create($tipo_id = 'F')
     {
         $fattura = new Fattura;
-        return view('fatture.create', compact('fattura','societa'));
+        return view('fatture.create', compact('fattura'));
     }
 
     /**

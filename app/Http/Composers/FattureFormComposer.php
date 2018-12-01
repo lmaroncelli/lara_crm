@@ -22,7 +22,7 @@ class FattureFormComposer
     									}
     								])
     						->get();
-
+        
     	$tipo_fattura = ['F' => 'Fattura', 'PF' => 'Prefattura', 'NC' => 'Nota di credito'];
 
     	$last_fatture = Fattura::getLastNumber();
