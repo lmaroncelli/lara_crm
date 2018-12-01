@@ -119,12 +119,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="col-lg-3" style="margin-top: 10px">
-                    <h5 class="modal-title" id="societa">Elenco Società <span id="n_societa">{{$ragioneSociale->count()}}</span></h5>
+                    <h5 class="modal-title" id="societa">Elenco Società </h5>
                 </div>
+                <span style="margin-top: 10px" class="col-lg-1 m-badge m-badge--success m-badge--wide" id="n_societa">{{$ragioneSociale->count()}}</span>
                 <div class="col-lg-6">
                     <input id="myInput" type="text" class="form-control m-input m-input--pill m-input--air" placeholder="scrivi per filtrare">
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-1">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

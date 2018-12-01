@@ -144,7 +144,7 @@ class FattureController extends Controller
         foreach ($fattura->societa->cliente->servizi_non_fatturati as $servizio) 
           {
           // aggiungere servizio dal al 
-          $servizio_prefill_arr[] = $servizio->prodotto->nome .' - ' . $servizio->note;
+          $servizio_prefill_arr[] = $servizio->prodotto->nome . ':dal '. $servizio->data_inizio->format('d/m/Y'). ' al '. $servizio->data_fine->format('d/m/Y') .' - ' . $servizio->note;
           }
         }
       }
