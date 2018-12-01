@@ -124,7 +124,6 @@ class FattureController extends Controller
       $riga_fattura = null;
       }
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // SE NON SONO UNA 'NC'
     // con l'id della societa voglio trovare tutti i servizi NON FATTURATI associati al cliente di questa societa //
@@ -143,19 +142,47 @@ class FattureController extends Controller
         {
         foreach ($fattura->societa->cliente->servizi_non_fatturati as $servizio) 
           {
-          // aggiungere servizio dal al 
-          $servizio_prefill_arr[] = $servizio->prodotto->nome . ':dal '. $servizio->data_inizio->format('d/m/Y'). ' al '. $servizio->data_fine->format('d/m/Y') .' - ' . $servizio->note;
+          $val =  $servizio->prodotto->nome . ': dal '. $servizio->data_inizio->format('d/m/Y'). ' al '. $servizio->data_fine->format('d/m/Y');
+          if($servizio->note != '')
+            {
+            $val .= ' - ' .$servizio->note;
+            }
+          $servizio_prefill_arr[] =  $val;
+
           }
         }
       }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // SE NON SONO UNA 'NC'
+    // con l'id della societa voglio trovare tutte le scadenze non pagate risalenti a prefatture di questa società //
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    $societa = $fattura->societa;
 
-    dd($servizio_prefill_arr);
-    $servizio_prefill = implode(',', $servizio_prefill_arr);
+    if(!is_null($societa))
+    {
+    $prefatture_ids = $societa->prefatture->pluck('id')->toArray();
+    }
+
+    $prefatture_da_associare = Fattura::with('pagamento')
+                                ->whereHas(
+                                    'scadenze' , function($q) {
+                                      $q->where('pagata',0);
+                                    }
+                                )
+                                ->whereIn('id', $prefatture_ids)
+                                ->get();
+
+
+      dd($prefatture_da_associare);
 
 
 
-    return view('fatture.form', compact('fattura','riga_fattura', 'servizio_prefill'));
+
+
+    
+    return view('fatture.form', compact('fattura','riga_fattura', 'servizio_prefill_arr'));
     
     }
 

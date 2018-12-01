@@ -12,6 +12,13 @@ class Servizio extends Model
 
    protected $guarded = ['id'];
 
+   protected $dates = [
+       'created_at',
+       'updated_at',
+        'data_inizio',
+        'data_fine'
+   ];
+
 
    public function prodotto()
    {

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Pagamento;
 use App\RigaDiFatturazione;
 use App\Societa;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +35,11 @@ class Fattura extends Model
    public function societa()
    {
        return $this->belongsTo(Societa::class, 'societa_id', 'id');
+   }
+
+   public function pagamento()
+   {
+       return $this->belongsTo(Pagamento::class, 'pagamento_id', 'cod');
    }
 
 

@@ -11,7 +11,15 @@
         <div class="form-group m-form__group row">
             <label class="offset-lg-3 col-lg-1 col-form-label text-right" for="numero">Servizio:</label>
             <div class="col-lg-5">
-                <textarea name="servizio" class="form-control m-input m-input--air m-input--pill" id="servizio" rows="4">{{ $servizio_prefill != '' ? $servizio_prefill : old('servizio') != '' ?  old('servizio') : optional($riga_fattura)->servizio}}</textarea>
+                    @if (count($servizio_prefill_arr))
+                        <textarea name="servizio" class="form-control m-input m-input--air m-input--pill" id="servizio" rows="4">{{trim(implode("\n", $servizio_prefill_arr))}}</textarea>
+                    @else
+                        @if (old('servizio') != '')
+                            <textarea name="servizio" class="form-control m-input m-input--air m-input--pill" id="servizio" rows="4">{!!old('servizio') != ''!!}</textarea>
+                        @else
+                            <textarea name="servizio" class="form-control m-input m-input--air m-input--pill" id="servizio" rows="4">{!!optional($riga_fattura)->servizio!!}</textarea>
+                        @endif
+                    @endif
             </div>
         </div>
         <div class="form-group m-form__group row">
