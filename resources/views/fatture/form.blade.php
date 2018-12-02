@@ -183,6 +183,22 @@
             });
 
 
+            $("#servizi").select2({placeholder:"Seleziona i servizi da fatturare"});
+
+
+            $(".add_servizi").click(function(){
+                var servizi_ids = $("#servizi").val();
+
+                var selText = [];
+                $("#servizi option:selected").each(function () {
+                   var $this = $(this);
+                   if ($this.length) {
+                    selText.push($this.text());
+                   }
+                });
+
+                $("#prefill").html(' <textarea name="servizio" class="form-control m-input m-input--air m-input--pill" id="servizio" rows="4">' + selText.join("\n") + '</textarea> <input type="hidden" name="servizi" value="'+ servizi_ids +'">');
+            });
 
 
 
@@ -192,4 +208,5 @@
 
     </script>
     <script src="{{ asset('js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
 @endsection

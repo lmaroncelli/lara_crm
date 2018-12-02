@@ -147,7 +147,7 @@ class FattureController extends Controller
             {
             $val .= ' - ' .$servizio->note;
             }
-          $servizio_prefill_arr[] =  $val;
+          $servizio_prefill_arr[$servizio->id] =  $val;
 
           }
         }
@@ -160,11 +160,12 @@ class FattureController extends Controller
     
     $societa = $fattura->societa;
 
+    $prefatture_da_associare = null;
+
     if(!is_null($societa))
     {
     $prefatture_ids = $societa->prefatture->pluck('id')->toArray();
-    }
-
+    
     $prefatture_da_associare = Fattura::with('pagamento')
                                 ->whereHas(
                                     'scadenze' , function($q) {
@@ -174,15 +175,10 @@ class FattureController extends Controller
                                 ->whereIn('id', $prefatture_ids)
                                 ->get();
 
-
-      dd($prefatture_da_associare);
-
-
-
-
+    }
 
     
-    return view('fatture.form', compact('fattura','riga_fattura', 'servizio_prefill_arr'));
+    return view('fatture.form', compact('fattura','riga_fattura', 'servizio_prefill_arr','prefatture_da_associare'));
     
     }
 
