@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Cliente;
+use App\Fattura;
 use App\Prodotto;
+use App\RigaDiFatturazione;
 use Illuminate\Database\Eloquent\Model;
 
 class Servizio extends Model
@@ -31,6 +33,17 @@ class Servizio extends Model
        return $this->belongsTo(Cliente::class, 'cliente_id', 'id');
    }
 
+
+  public function fattura()
+   {
+       return $this->belongsTo(Fattura::class, 'fattura_id', 'id');
+   }
+
+
+  public function rigaFattura()
+  {
+      return $this->belongsTo(RigaDiFatturazione::class, 'rigafatturazione_id', 'id');
+  }
    
 
 }

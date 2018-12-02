@@ -43,6 +43,32 @@ class Fattura extends Model
    }
 
 
+   public function servizi()
+   {
+       return $this->hasMany(Servizio::class, 'fattura_id', 'id');
+   }
+
+
+
+   /**
+      * Override parent boot and Call deleting event
+      *
+      * @return void
+      */
+      protected static function boot() 
+       {
+         parent::boot();
+
+         static::deleting(function($fattura) {
+            foreach ($fattura->servizi as $servizio) {
+               $servizio->fattura_id = NULL;
+               $servizio->rigafatturazione_id = NULL;
+               $servizio->save();
+            }
+         });
+       }
+
+
 
    public function getTotale()
     {

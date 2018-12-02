@@ -186,7 +186,8 @@
             $("#servizi").select2({placeholder:"Seleziona i servizi da fatturare"});
 
 
-            $(".add_servizi").click(function(){
+            $(".add_servizi").click(function(e){
+                e.preventDefault();
                 var servizi_ids = $("#servizi").val();
 
                 var selText = [];
@@ -198,6 +199,7 @@
                 });
 
                 $("#prefill").html(' <textarea name="servizio" class="form-control m-input m-input--air m-input--pill" id="servizio" rows="4">' + selText.join("\n") + '</textarea> <input type="hidden" name="servizi" value="'+ servizi_ids +'">');
+                $("#reset_servizi").show();
             });
 
 

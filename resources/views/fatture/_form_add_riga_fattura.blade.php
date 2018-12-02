@@ -12,7 +12,7 @@
             <label class="offset-lg-3 col-lg-1 col-form-label text-right" for="numero">Servizio:</label>
             @if (count($servizio_prefill_arr))
                     <div class="col-lg-4"  id="prefill">
-                        <select class="form-control m-select2" id="servizi" multiple name="servizi">
+                        <select class="form-control m-select2" id="servizi" multiple name="servizi[]">
                             <option></option>
                             <optgroup label="Seleziona i servizi da fatturare">
                             @foreach ($servizio_prefill_arr as $id => $nome)
@@ -22,11 +22,16 @@
                         </select>
                     </div>
                     <div class="col-lg-1">
-                        <a href="#" class="add_servizi btn btn-warning m-btn m-btn--icon m-btn--wide">
+                        <a href="#" class="add_servizi btn btn-warning m-btn m-btn--icon m-btn--wide" title="modifica il servizio a mano">
                             <span>
                                 <i class="fa flaticon-chat-1"></i>
                                 <span></span>
                             </span>
+                        </a>
+                    </div>
+                    <div class="col-lg-1" id="reset_servizi" style="display:none;">
+                        <a href="{{ route('fatture.edit',['fattura_id' => $fattura->id]) }}" class="btn btn-danger m-btn m-btn--icon m-btn--wide" title="refresh">
+                            <i class="fa flaticon-refresh"></i>
                         </a>
                     </div>
             @else

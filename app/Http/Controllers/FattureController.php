@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Fattura;
 use App\RigaDiFatturazione;
+use App\Servizio;
 use App\Utility;
 use Illuminate\Http\Request;
 
@@ -220,18 +221,37 @@ class FattureController extends Controller
       // aggiunge la riga alla fattura
       public function addRiga(Request $request)
         {
-        
+         //dd($request->get('servizi'));
         $this->_validate_riga_fatturazione($request);
 
         $fattura_id = $request->get('fattura_id');
 
-        $dati_riga = $request->all();
+        $dati_riga = $request->except('servizi');
         
         $this->_ricalcola_dati_riga($dati_riga);
 
         $riga_fattura = RigaDiFatturazione::create($dati_riga);
 
         Fattura::find($fattura_id)->righe()->save($riga_fattura);
+
+        ///////////////////////////////////////////////////////
+        // assegno ai servizi selezionati l'id della fattura //
+        ///////////////////////////////////////////////////////
+
+        // può essere
+        // hidden
+        // multiselect
+        $servizi = $request->get('servizi');
+
+        if(!is_array($servizi))
+          {
+          $servizi = explode(',', $servizi);
+          }
+
+        if(count($servizi))
+          {
+          Servizio::whereIn('id',$servizi)->update(['rigafatturazione_id' => $riga_fattura->id, 'fattura_id' => $fattura_id]);
+          }
 
         return redirect('fatture/'.$fattura_id.'/edit');
 
