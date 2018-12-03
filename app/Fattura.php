@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Fattura;
 use App\Pagamento;
 use App\RigaDiFatturazione;
 use App\Societa;
@@ -46,6 +47,21 @@ class Fattura extends Model
    public function servizi()
    {
        return $this->hasMany(Servizio::class, 'fattura_id', 'id');
+   }
+
+
+
+   /**
+    * Same Model many to many
+    * https://laracasts.com/discuss/channels/eloquent/same-model-many-to-many
+    * 
+    */
+   public function prefatture() {
+       return $this->belongsToMany(Fattura::class,'tblFatturePrefatture','fattura_id','prefattura_id');
+   }
+
+   public function fatture() {
+       return $this->belongsToMany(Fattura::class,'tblFatturePrefatture','prefattura_id','fattura_id');
    }
 
 
