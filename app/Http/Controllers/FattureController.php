@@ -122,6 +122,7 @@ class FattureController extends Controller
                           'scadenze',
                           'societa.RagioneSociale.localita.comune.provincia',
                           'societa.cliente.servizi_non_fatturati',
+                          'prefatture',
                         ])->find($id);
 
     if(!is_null($rigafattura_id))
@@ -164,6 +165,7 @@ class FattureController extends Controller
     $societa = $fattura->societa;
 
     $prefatture_da_associare = null;
+    $prefatture_associate = [];
 
     if(!is_null($societa))
     {
@@ -178,12 +180,13 @@ class FattureController extends Controller
                                 ->whereIn('id', $prefatture_ids)
                                 ->get();
 
-    
+      $prefatture_associate = $fattura->prefatture->pluck('id')->toArray();
+
 
     }
 
     
-    return view('fatture.form', compact('fattura','riga_fattura', 'servizio_prefill_arr','prefatture_da_associare'));
+    return view('fatture.form', compact('fattura','riga_fattura', 'servizio_prefill_arr','prefatture_da_associare','prefatture_associate'));
     
     }
 
@@ -315,6 +318,32 @@ class FattureController extends Controller
       return redirect('fatture/'.$fattura_id.'/edit');
       }
 
+
+    // chiamata AJAX in seguito ad un click sul checkbox della prefattura da associare o disassociare
+    public function fatturePrefattureAjax(Request $request)
+      {
+        $fattura_id = $request->get('fattura_id');
+        $prefattura_id = $request->get('prefattura_id');
+        $associa = $request->get('associa');
+        
+        $fattura = Fattura::find($fattura_id);
+
+        $fattura->prefatture()->toggle([$prefattura_id]);
+
+        if($associa == 'true')
+          {
+          $ris['type'] = 'success';
+          $ris['title'] = 'Ok...';
+          $ris['text'] = 'prefattura associata correttamente';
+          }
+        else
+          {
+          $ris['type'] = 'error';
+          $ris['title'] = 'Ok...';
+          $ris['text'] = 'prefattura disassociata correttamente';
+          }
+          echo json_encode($ris);
+      }
 
 
 }

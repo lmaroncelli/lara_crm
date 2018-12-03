@@ -111,6 +111,16 @@ class Fattura extends Model
     }
 
 
+  /**
+   * Per visualizzare la prefattura come checkbox da associare alla fattura
+   * @return [type] [description]
+   */
+  public function getPrefatturaDaAssociare()
+    {
+      return $this->numero_fattura. ' ' . $this->data->format('d/m/Y'). ' ' .$this->pagamento->nome;
+    }
+
+
 
 
 }

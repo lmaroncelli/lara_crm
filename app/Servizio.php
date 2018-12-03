@@ -45,7 +45,10 @@ class Servizio extends Model
       return $this->belongsTo(RigaDiFatturazione::class, 'rigafatturazione_id', 'id');
   }
 
-
+  /**
+   * [nella fatturazione la multiselect che include i servizi da fatturare]
+   * @return [type] [description]
+   */
   public function getValueforRigaFatturazione()
     {
       $val =  $this->prodotto->nome . ': dal '. $this->data_inizio->format('d/m/Y'). ' al '. $this->data_fine->format('d/m/Y');

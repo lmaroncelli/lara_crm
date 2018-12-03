@@ -15,16 +15,8 @@
                         @include('fatture._header_fattura')
 
                         {{-- PREFATTURE DA ASSOCIARE --}}
-                        @if($prefatture_da_associare->count())
-                          <div class="m-checkbox-list">
-                          @foreach ($prefatture_da_associare as $p)
-                            <label class="m-checkbox m-checkbox--square">
-                              <input type="checkbox"> {{$p->numero_fattura}} {{$p->data}} {{$p->pagamento->nome}}
-                              <span></span>
-                            </label>
-                          @endforeach
-                          </div>
-                        @endif
+
+                        @include('fatture._prefatture_da_associare')
 
                         {{-- righe fatturazione --}}
                         <div class="m-invoice__body m-invoice__body--centered">
@@ -60,7 +52,7 @@
                                                   </a>
                                                 </td>
                                                 <td>
-                                                  <a href="{{ route('fatture.delete-riga',['rigafattura_id' => $riga->id]) }}" class="btn btn-danger m-btn m-btn--icon m-btn--icon-only">
+                                                  <a href="{{ route('fatture.delete-riga',['rigafattura_id' => $riga->id]) }}" class="delete btn btn-danger m-btn m-btn--icon m-btn--icon-only">
                                                     <i class="la la-trash"></i>
                                                   </a>
                                                 </td>
@@ -227,6 +219,51 @@
             });
 
 
+            $(".fatture_prefatture").click(function(){
+              var prefattura_id = $(this).val();
+              var associa = this.checked;
+
+              //console.log('prefattura_id = '+prefattura_id);
+              //console.log('associa = '+associa);
+
+              jQuery.ajax({
+                      url: '<?=url("/fatture-prefatture-ajax") ?>',
+                      type: "post",
+                      async: false,
+                      datatype: 'json',
+                      data : { 
+                             'prefattura_id': prefattura_id, 
+                             'fattura_id':{{$fattura->id}},
+                             'associa': associa,
+                             '_token': jQuery('input[name=_token]').val()
+                             },
+                      success: function(msg) {
+                       //console.log(msg);
+                       var msg = JSON.parse(msg);
+                        swal({
+                          type: msg.type,
+                          title: msg.title,
+                          text: msg.text
+                        })
+                      }
+               });
+
+            });
+
+
+
+            $(".delete").click(function(e){
+              e.preventDefault();
+              swal({
+                title: 'Sei sicuro?',
+                text: "Operazione irreversibile!",
+                type: 'question',
+                showCancelButton: true,
+                cancelButtonColor: '#c4c5d6',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Sì, elimina!'
+              })
+            });
 
 
         });
@@ -235,4 +272,6 @@
     </script>
     <script src="{{ asset('js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/select2.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/sweetalert2.js') }}" type="text/javascript"></script>
+
 @endsection

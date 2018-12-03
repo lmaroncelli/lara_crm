@@ -76,6 +76,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('fatture/add-note', 'FattureController@addNote')->name('fatture.add-note');
     Route::get('fatture/load-riga/{rigafattura_id}', 'FattureController@loadRiga')->name('fatture.load-riga');
     Route::post('fatture/update-riga/{rigafattura_id}', 'FattureController@updateRiga')->name('fatture.update-riga');
-    Route::get('fatture/delete-riga/{rigafattura_id}', 'FattureController@deleteRiga')->name('fatture.delete-riga');
+    Route::get('fatture/delete-riga/{rigafattura_id}', 'FattureController@deleteRiga')->name('fatture.delete-riga');    
+    Route::post('/fatture-prefatture-ajax', 'FattureController@fatturePrefattureAjax');
+
     Route::post('/last-fatture-ajax', 'FattureController@lastFattureAjax');
 });
