@@ -14,15 +14,23 @@ class FattureController extends Controller
 
     private function _validate_riga_fatturazione(Request $request)
       {
-        $validatedData = $request->validate([
-               'servizio' => 'required',
+        
+        $validation_array = [
                'qta' => 'required|numeric',
                'prezzo' => 'required|numeric',
                'totale_netto' => 'required|numeric',
                'al_iva' => 'required|numeric',
                'iva' => 'required|numeric',
                'totale' => 'required|numeric',
-           ]);
+           ];
+
+        if($request->has('servizio'))
+          {
+          $validation_array['servizio'] = 'required';
+          }
+
+
+        $validatedData = $request->validate($validation_array);
       }
 
 
@@ -143,13 +151,7 @@ class FattureController extends Controller
         {
         foreach ($fattura->societa->cliente->servizi_non_fatturati as $servizio) 
           {
-          $val =  $servizio->prodotto->nome . ': dal '. $servizio->data_inizio->format('d/m/Y'). ' al '. $servizio->data_fine->format('d/m/Y');
-          if($servizio->note != '')
-            {
-            $val .= ' - ' .$servizio->note;
-            }
-          $servizio_prefill_arr[$servizio->id] =  $val;
-
+          $servizio_prefill_arr[$servizio->id] =  $servizio->getValueforRigaFatturazione();
           }
         }
       }
@@ -238,9 +240,9 @@ class FattureController extends Controller
         // assegno ai servizi selezionati l'id della fattura //
         ///////////////////////////////////////////////////////
 
-        // può essere
+        // in realtà è sempre hidden perché onSubmit del form chiamo la funzione servizi_select_to_servizio_text()
         // hidden
-        // multiselect
+
         $servizi = $request->get('servizi');
 
         if(!is_array($servizi))

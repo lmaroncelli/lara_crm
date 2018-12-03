@@ -44,6 +44,18 @@ class Servizio extends Model
   {
       return $this->belongsTo(RigaDiFatturazione::class, 'rigafatturazione_id', 'id');
   }
+
+
+  public function getValueforRigaFatturazione()
+    {
+      $val =  $this->prodotto->nome . ': dal '. $this->data_inizio->format('d/m/Y'). ' al '. $this->data_fine->format('d/m/Y');
+      if($this->note != '')
+        {
+        $val .= ' - ' .$this->note;
+        }
+
+      return $val;
+    }
    
 
 }

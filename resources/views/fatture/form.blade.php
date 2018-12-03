@@ -36,7 +36,7 @@
                                         <tbody>
                                         @foreach ($fattura->righe as $riga)
                                             <tr>
-                                                <td>{{$riga->servizio}}</td>
+                                                <td style="max-width: 200px!important">{{$riga->servizio}}</td>
                                                 <td>{{$riga->qta}}</td>
                                                 <td>{{App\Utility::formatta_cifra($riga->prezzo, '€')}}</td>
                                                 <td>{{App\Utility::formatta_cifra($riga->totale_netto, '€')}}</td>
@@ -186,8 +186,8 @@
             $("#servizi").select2({placeholder:"Seleziona i servizi da fatturare"});
 
 
-            $(".add_servizi").click(function(e){
-                e.preventDefault();
+            function servizi_select_to_servizio_text()
+              {
                 var servizi_ids = $("#servizi").val();
 
                 var selText = [];
@@ -200,6 +200,19 @@
 
                 $("#prefill").html(' <textarea name="servizio" class="form-control m-input m-input--air m-input--pill" id="servizio" rows="4">' + selText.join("\n") + '</textarea> <input type="hidden" name="servizi" value="'+ servizi_ids +'">');
                 $("#reset_servizi").show();
+              }
+
+
+            $(".add_servizi").click(function(e){
+                e.preventDefault();
+
+                servizi_select_to_servizio_text();
+               
+            });
+
+
+            $("#riga_fattura_form").submit(function(){
+                servizi_select_to_servizio_text();
             });
 
 
