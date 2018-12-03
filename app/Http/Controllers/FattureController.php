@@ -178,6 +178,8 @@ class FattureController extends Controller
                                 ->whereIn('id', $prefatture_ids)
                                 ->get();
 
+    
+
     }
 
     

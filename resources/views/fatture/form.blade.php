@@ -12,8 +12,19 @@
                 <div class="m-invoice-2">
                     <div class="m-invoice__wrapper">
                         {{-- intestazione fattura --}}
-                        
                         @include('fatture._header_fattura')
+
+                        {{-- PREFATTURE DA ASSOCIARE --}}
+                        @if($prefatture_da_associare->count())
+                          <div class="m-checkbox-list">
+                          @foreach ($prefatture_da_associare as $p)
+                            <label class="m-checkbox m-checkbox--square">
+                              <input type="checkbox"> {{$p->numero_fattura}} {{$p->data}} {{$p->pagamento->nome}}
+                              <span></span>
+                            </label>
+                          @endforeach
+                          </div>
+                        @endif
 
                         {{-- righe fatturazione --}}
                         <div class="m-invoice__body m-invoice__body--centered">
