@@ -1,5 +1,5 @@
 @if($prefatture_da_associare->count())
-<div class="m-invoice__body m-invoice__body--centered">
+<div class="m-invoice__body">
 <div class="m-form__group form-group">
 	<label>Prefatture da associare</label>
   <div class="m-checkbox-list">

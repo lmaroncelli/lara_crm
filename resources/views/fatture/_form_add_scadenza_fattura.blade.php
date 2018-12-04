@@ -22,7 +22,22 @@
             </div>
              <label class="col-lg-1 col-form-label text-right" for="numero">Importo:</label>
              <div class="col-lg-1">
-                 <input type="text" name="importo" id="importo" value="{{ old('importo') != '' ?  old('importo') : !is_null($scadenza_fattura) ? optional($scadenza_fattura)->importo : $fattura->getTotalePerChiudere() }}"  class="form-control m-input m-input--air m-input--pill">
+                    @if (old('importo') != '')
+                       @php 
+                       $valore = old('importo');
+                        @endphp 
+                    @else
+                       @if (!is_null($scadenza_fattura))
+                           @php
+                               $valore = optional($scadenza_fattura)->importo;
+                           @endphp
+                       @else
+                           @php
+                              $valore = $fattura->getTotalePerChiudere();
+                          @endphp
+                       @endif
+                    @endif
+                 <input type="text" name="importo" id="importo" value="{{ $valore }}"  class="form-control m-input m-input--air m-input--pill">
              </div>
         </div>
         <div class="text-center">

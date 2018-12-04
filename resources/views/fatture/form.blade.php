@@ -14,23 +14,102 @@
                         
                         {{-- intestazione fattura --}}
                         @include('fatture._header_fattura')
+                        
 
-                        {{-- PREFATTURE DA ASSOCIARE --}}
-                        @include('fatture._prefatture_da_associare')
-              
+                        <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <span class="m-portlet__head-icon m--hide">
+                                            <i class="flaticon-statistics"></i>
+                                        </span>
+                                        <h3 class="m-portlet__head-text">
+                                            Associa/Dissocia le prefatture
+                                        </h3>
+                                        <h2 class="m-portlet__head-label m-portlet__head-label--info">
+                                            <span>Prefatture</span>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- PREFATTURE DA ASSOCIARE --}}
+                            @include('fatture._prefatture_da_associare')
+                        </div>
+                        
+                        <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <span class="m-portlet__head-icon m--hide">
+                                            <i class="flaticon-statistics"></i>
+                                        </span>
+                                        <h3 class="m-portlet__head-text">
+                                            Aggiungi/modifica riga fattura
+                                        </h3>
+                                        <h2 class="m-portlet__head-label m-portlet__head-label--info">
+                                            <span>Riga Fattura</span>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- form aggiunta servizio / riga di fatturazione --}}
+                            @include('fatture._form_add_riga_fattura')
+                          </div>  
+                        
                         @if ($fattura->righe()->count())
-                          {{-- righe fatturazione --}}
-                          @include('fatture._righe_fatturazione')
+                          <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+                              <div class="m-portlet__head">
+                                  <div class="m-portlet__head-caption">
+                                      <div class="m-portlet__head-title">
+                                          <span class="m-portlet__head-icon m--hide">
+                                              <i class="flaticon-statistics"></i>
+                                          </span>
+                                          <h3 class="m-portlet__head-text">
+                                              Elenco rghe di fatturazione
+                                          </h3>
+                                          <h2 class="m-portlet__head-label m-portlet__head-label--info">
+                                              <span>Righe</span>
+                                          </h2>
+                                      </div>
+                                  </div>
+                              </div>
+                              {{-- righe fatturazione --}}
+                              @include('fatture._righe_fatturazione')
+                          </div>
                         @endif
 
-                         {{-- form aggiunta servizio / riga di fatturazione --}}
-                        @include('fatture._form_add_riga_fattura')
+                        @if ($fattura->righe()->count() && !$fattura->fatturaChiusa())
 
-                        @if ($fattura->righe()->count() && $fattura->getTotalePerChiudere() > 0)
-                        {{-- Scadenze fattura --}}
-                          @include('fatture._form_add_scadenza_fattura')  
-                        @elseif($fattura->getTotalePerChiudere() == 0)
-                          <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-danger alert-dismissible fade show" role="alert">
+                          <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+                              <div class="m-portlet__head">
+                                  <div class="m-portlet__head-caption">
+                                      <div class="m-portlet__head-title">
+                                          <span class="m-portlet__head-icon m--hide">
+                                              <i class="flaticon-statistics"></i>
+                                          </span>
+                                          @if ($fattura->scadenze->count())
+                                          <h3 class="m-portlet__head-text">
+                                              Elenco scadenze fattura
+                                          </h3>
+                                          @endif
+                                          <h2 class="m-portlet__head-label m-portlet__head-label--info">
+                                              <span>Scadenze</span>
+                                          </h2>
+                                      </div>
+                                  </div>
+                              </div>
+                              
+                              {{-- elenco righe scadenze --}}
+                              @include('fatture._elenco_scadenze')
+
+                              {{-- Scadenze fattura --}}
+                              @include('fatture._form_add_scadenza_fattura')
+                          </div>  
+
+                        @elseif($fattura->fatturaChiusa())
+                          {{-- Avviso Fattura chiusa --}}
+                          <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-danger fade show" role="alert">
                             <div class="m-alert__icon">
                               <i class="flaticon-exclamation-1"></i>
                               <span></span>
@@ -43,6 +122,7 @@
                               </button>
                             </div>
                           </div>
+
                         @endif
                         
                         {{-- footer fattura --}}
@@ -235,7 +315,12 @@
                 cancelButtonColor: '#c4c5d6',
                 confirmButtonColor: '#d33',
                 confirmButtonText: 'Sì, elimina!'
-              })
+              }).then((result) => { 
+                    if (result.value) {
+                     $("#delete-riga-form").submit();    
+                    }
+                })
+
             });
 
 

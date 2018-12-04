@@ -1,4 +1,4 @@
-<div class="m-invoice__body m-invoice__body--centered">
+<div class="m-invoice__body">
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -30,9 +30,13 @@
                       </a>
                     </td>
                     <td>
-                      <a href="{{ route('fatture.delete-riga',['rigafattura_id' => $riga->id]) }}" class="delete btn btn-danger m-btn m-btn--icon m-btn--icon-only">
-                        <i class="la la-trash"></i>
-                      </a>
+                        <form action="{{ route('fatture.delete-riga') }}" method="POST" accept-charset="utf-8" id="delete-riga-form">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            <input type="hidden" name="rigafattura_id" value="{{ $riga->id }}" />
+                            <a href="#" class="delete btn btn-danger m-btn m-btn--icon m-btn--icon-only"> 
+                                <i class="la la-trash"></i>
+                            </a>
+                        </form>
                     </td>
                 </tr>
             @endforeach

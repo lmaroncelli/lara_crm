@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Fattura;
 use App\RigaDiFatturazione;
+use App\ScadenzaFattura;
 use App\Servizio;
 use App\Utility;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FattureController extends Controller
@@ -31,6 +33,17 @@ class FattureController extends Controller
 
 
         $validatedData = $request->validate($validation_array);
+      }
+
+
+    private function _validate_scadenza(Request $request)
+      {
+       $validation_array = [
+              'data_scadenza' => 'required|date_format:"d/m/Y"|after:'.Carbon::today(),
+              'importo' => 'required|numeric',
+          ];
+
+       $validatedData = $request->validate($validation_array); 
       }
 
 
@@ -82,8 +95,7 @@ class FattureController extends Controller
              'data' => 'required|date_format:"d/m/Y"'
          ]);
 
-      $fattura = Fattura::create($request->except(['data','numero']));
-      $fattura->data = Utility::getCarbonDate($request->get('data'));
+      $fattura = Fattura::create($request->except(['numero']));
       
       if ($request->get('tipo_id') == 'PF') 
         {
@@ -307,8 +319,9 @@ class FattureController extends Controller
       }
 
 
-    public function deleteRiga(Request $request, $rigafattura_id)
+    public function deleteRiga(Request $request)
       {
+      $rigafattura_id = $request->get('rigafattura_id');
       $riga_fattura = RigaDiFatturazione::find($rigafattura_id);
       $fattura_id = $riga_fattura->fattura_id;
       $riga_fattura->delete();
@@ -353,6 +366,23 @@ class FattureController extends Controller
           $ris['text'] = 'prefattura disassociata correttamente';
           }
           echo json_encode($ris);
+      }
+
+
+    public function addScadenza(Request $request)
+      {
+      $this->_validate_scadenza($request);
+
+      $fattura_id = $request->get('fattura_id');
+
+      $dati_scadenza = $request->all();
+
+      $scadenza_fattura = ScadenzaFattura::create($dati_scadenza);
+
+      Fattura::find($fattura_id)->righe()->save($scadenza_fattura);
+      
+      return redirect('fatture/'.$fattura_id.'/edit');
+
       }
 
 

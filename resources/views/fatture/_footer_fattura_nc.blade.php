@@ -1,5 +1,5 @@
 <div class="m-invoice__footer">
-    <div class="m-invoice__table  m-invoice__table--centered">
+    <div class="m-invoice__table">
         <form class="" action="{{ route('fatture.add-note') }}" method="POST" accept-charset="utf-8">
         <div class="row">        
                 @csrf

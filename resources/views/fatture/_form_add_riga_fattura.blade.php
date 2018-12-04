@@ -76,8 +76,9 @@
                 <button type="reset"  title="Annulla" class="btn btn-secondary">Annulla</button>
             @else
                 <button type="submit" class="btn btn-success">Modifica</button>
-                <a href="{{ route('fatture.edit',['fattura_id' => $fattura->id]) }}" title="Annulla" class="btn btn-secondary">Annulla</button>
+                <a href="{{ route('fatture.edit',['fattura_id' => $fattura->id]) }}" title="Annulla" class="btn btn-secondary">Annulla</a>
             @endif
         </div>
     </form>
 </div>
+    

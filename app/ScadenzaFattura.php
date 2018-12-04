@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Fattura;
+use App\Utility;
 use Illuminate\Database\Eloquent\Model;
 
 class ScadenzaFattura extends Model
@@ -23,6 +24,13 @@ class ScadenzaFattura extends Model
    {
        return $this->belongsTo(Fattura::class, 'fattura_id', 'id');
    }
+
+
+
+   public function setDataScadenzaAttribute($value)
+    {
+        $this->attributes['data_scadenza'] = Utility::getCarbonDate($value);
+    }
    
 
 }

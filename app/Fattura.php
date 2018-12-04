@@ -21,6 +21,12 @@ class Fattura extends Model
    ];
 
 
+   public function setDataAttribute($value)
+    {
+        $this->attributes['data'] = Utility::getCarbonDate($value);
+    }
+
+
    public function righe()
    {
        return $this->hasMany(RigaDiFatturazione::class, 'fattura_id', 'id');
@@ -100,7 +106,7 @@ class Fattura extends Model
 
   // devo togliere dal totale le eventuali righe scadenza
   // quando il saldo è 0 la fattura è chiusa
-   public function getTotalePerChiudere()
+   public function fatturaChiusa()
      {
       $importo_scadenze = 0;
       foreach (self::scadenze()->get() as $s) 
@@ -108,9 +114,31 @@ class Fattura extends Model
         $importo_scadenze += $s->importo;
         }
 
-      return $this->getTotale() - $importo_scadenze;
+      if($this->getTotale() > 0 && $importo_scadenze > 0)
+        {
+        // se la differenza è 0 ritorno TRUE
+        return !($this->getTotale() - $importo_scadenze);
+        }
+      else
+        {
+        return false;
+        }
 
       }
+
+    // devo togliere dal totale le eventuali righe scadenza
+   // quando il saldo è 0 la fattura è chiusa
+    public function getTotalePerChiudere()
+      {
+       $importo_scadenze = 0;
+       foreach (self::scadenze()->get() as $s) 
+         {
+         $importo_scadenze += $s->importo;
+         }
+
+       return $this->getTotale() - $importo_scadenze;
+
+       }
 
    public function scopeTipo($query, $tipo_id)
      {

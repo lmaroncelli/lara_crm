@@ -34,6 +34,33 @@ a:hover {
 }
 
 
+/* nella fattura */
+div.m-invoice-2 .m-portlet.m-portlet--creative {
+		padding-bottom: 3.5rem!important;
+		border: 1px solid #eee!important;
+    margin-left: 20px!important;
+    margin-right: 20px!important;
+}
+
+
+div.m-invoice-2 .m-list-timeline__item {
+	margin-left:20px!important;
+	padding: 30px!important;
+}
+
+
+div.m-invoice-2 .m-list-timeline__items .m-list-timeline__item .m-list-timeline__text {
+	font-size: 1.3rem!important;
+}
+
+div.m-invoice-2 .m-list-timeline__items .m-list-timeline__item .m-list-timeline__text .m-badge {
+	font-size: 1.3rem!important;
+	margin-left: 20px!important;
+	margin-bottom: 5px!important;
+}
+
+
+
 /*
 override default anchor
  */
