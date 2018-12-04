@@ -115,7 +115,7 @@ class FattureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, $rigafattura_id = null)
+    public function edit($id, $rigafattura_id = 0, $scadenza_fattura_id = 0)
     {
     $fattura = Fattura::with([
                           'righe',
@@ -125,13 +125,23 @@ class FattureController extends Controller
                           'prefatture',
                         ])->find($id);
 
-    if(!is_null($rigafattura_id))
+    if($rigafattura_id)
       {
       $riga_fattura = RigaDiFatturazione::find($rigafattura_id);
       }
     else
       {
       $riga_fattura = null;
+      }
+
+
+    if($scadenza_fattura_id)
+      {
+      $scadenza_fattura = ScadenzaFattura::find($scadenza_fattura_id);
+      }
+    else
+      {
+      $scadenza_fattura = null;
       }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +196,7 @@ class FattureController extends Controller
     }
 
     
-    return view('fatture.form', compact('fattura','riga_fattura', 'servizio_prefill_arr','prefatture_da_associare','prefatture_associate'));
+    return view('fatture.form', compact('fattura','riga_fattura', 'scadenza_fattura', 'servizio_prefill_arr','prefatture_da_associare','prefatture_associate'));
     
     }
 

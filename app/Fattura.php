@@ -93,9 +93,24 @@ class Fattura extends Model
       {
       $totale += $r->totale;
       }
+    
     return $totale;
     }
 
+
+  // devo togliere dal totale le eventuali righe scadenza
+  // quando il saldo è 0 la fattura è chiusa
+   public function getTotalePerChiudere()
+     {
+      $importo_scadenze = 0;
+      foreach (self::scadenze()->get() as $s) 
+        {
+        $importo_scadenze += $s->importo;
+        }
+
+      return $this->getTotale() - $importo_scadenze;
+
+      }
 
    public function scopeTipo($query, $tipo_id)
      {

@@ -11,70 +11,43 @@
                 
                 <div class="m-invoice-2">
                     <div class="m-invoice__wrapper">
+                        
                         {{-- intestazione fattura --}}
                         @include('fatture._header_fattura')
 
                         {{-- PREFATTURE DA ASSOCIARE --}}
-
                         @include('fatture._prefatture_da_associare')
+              
+                        @if ($fattura->righe()->count())
+                          {{-- righe fatturazione --}}
+                          @include('fatture._righe_fatturazione')
+                        @endif
 
-                        {{-- righe fatturazione --}}
-                        <div class="m-invoice__body m-invoice__body--centered">
-                            @if ($fattura->righe()->count())
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Servizio</th>
-                                                <th>Qta</th>
-                                                <th>Prezzo</th>
-                                                <th>T.Netto</th>
-                                                <th>Al.IVA</th>
-                                                <th>IVA</th>
-                                                <th>Totale</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach ($fattura->righe as $riga)
-                                            <tr>
-                                                <td style="max-width: 200px!important">{{$riga->servizio}}</td>
-                                                <td>{{$riga->qta}}</td>
-                                                <td>{{App\Utility::formatta_cifra($riga->prezzo, '€')}}</td>
-                                                <td>{{App\Utility::formatta_cifra($riga->totale_netto, '€')}}</td>
-                                                <td>{{$riga->al_iva}}</td>
-                                                <td>{{App\Utility::formatta_cifra($riga->iva, '€')}}</td>
-                                                <td class="m--font-danger">{{App\Utility::formatta_cifra($riga->totale, '€')}}</td>
-                                                <td>
-                                                  <a href="{{ route('fatture.load-riga',['rigafattura_id' => $riga->id]) }}" class="btn btn-info m-btn m-btn--icon m-btn--icon-only">
-                                                    <i class="la la-edit"></i>
-                                                  </a>
-                                                </td>
-                                                <td>
-                                                  <a href="{{ route('fatture.delete-riga',['rigafattura_id' => $riga->id]) }}" class="delete btn btn-danger m-btn m-btn--icon m-btn--icon-only">
-                                                    <i class="la la-trash"></i>
-                                                  </a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            
-                            @endif
-                            
-                        </div>
-                        
                          {{-- form aggiunta servizio / riga di fatturazione --}}
                         @include('fatture._form_add_riga_fattura')
-                        
 
+                        @if ($fattura->righe()->count() && $fattura->getTotalePerChiudere() > 0)
+                        {{-- Scadenze fattura --}}
+                          @include('fatture._form_add_scadenza_fattura')  
+                        @elseif($fattura->getTotalePerChiudere() == 0)
+                          <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="m-alert__icon">
+                              <i class="flaticon-exclamation-1"></i>
+                              <span></span>
+                            </div>
+                            <div class="m-alert__text">
+                              <strong>Perfetto!</strong> La fattura è chiusa.
+                            </div>
+                            <div class="m-alert__close">
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              </button>
+                            </div>
+                          </div>
+                        @endif
+                        
                         {{-- footer fattura --}}
                         @include('fatture._footer_fattura_'.strtolower($fattura->tipo_id))
-
                         
-
                     </div> {{--  \wrapper --}}
                 </div> {{-- "m-invoice-2 --}} 
 

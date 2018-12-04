@@ -70,7 +70,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('fatture/create/{tipo_id?}', 'FattureController@create')->name('fatture.create');
     
     // sovrascrivo edit
-    Route::get('fatture/{fattura_id}/edit/{rigafattura_id?}', 'FattureController@edit')->name('fatture.edit');
+    Route::get('fatture/{fattura_id}/edit/{rigafattura_id?}/{scadenza_fattura_id?}', 'FattureController@edit')->name('fatture.edit');
+
+    Route::post('fatture/add-scadenza', 'FattureController@addScadenza')->name('fatture.add-scadenza');
+    Route::post('fatture/update-scadenza/{scadenza_fattura_id}', 'FattureController@updateScadenza')->name('fatture.update-scadenza');
 
     Route::post('fatture/add-riga', 'FattureController@addRiga')->name('fatture.add-riga');
     Route::post('fatture/add-note', 'FattureController@addNote')->name('fatture.add-note');
