@@ -74,6 +74,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('fatture/add-scadenza', 'FattureController@addScadenza')->name('fatture.add-scadenza');
     Route::post('fatture/update-scadenza/{scadenza_fattura_id}', 'FattureController@updateScadenza')->name('fatture.update-scadenza');
+    Route::get('fatture/load-scadenza/{scadenza_fattura_id}', 'FattureController@loadScadenza')->name('fatture.load-scadenza');
+     Route::post('fatture/delete-scadenza', 'FattureController@deleteScadenza')->name('fatture.delete-scadenza');
+
 
     Route::post('fatture/add-riga', 'FattureController@addRiga')->name('fatture.add-riga');
     Route::post('fatture/add-note', 'FattureController@addNote')->name('fatture.add-note');

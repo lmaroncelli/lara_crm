@@ -43,20 +43,24 @@ div.m-invoice-2 .m-portlet.m-portlet--creative {
 }
 
 
-div.m-invoice-2 .m-list-timeline__item {
-	margin-left:20px!important;
-	padding: 30px!important;
-}
-
-
-div.m-invoice-2 .m-list-timeline__items .m-list-timeline__item .m-list-timeline__text {
+table.riga_scadenza td {
 	font-size: 1.3rem!important;
 }
 
-div.m-invoice-2 .m-list-timeline__items .m-list-timeline__item .m-list-timeline__text .m-badge {
+table.riga_scadenza td .m-badge {
 	font-size: 1.3rem!important;
 	margin-left: 20px!important;
 	margin-bottom: 5px!important;
+}
+
+
+div.m-portlet .m-invoice-2 .m-invoice__wrapper .m-invoice__footer {
+    background-color: inherit!important;
+}
+
+div.m-portlet .m-invoice-2 .m-invoice__wrapper .m-invoice__footer {
+    margin-top: inherit!important;
+    padding: inherit!important;
 }
 
 

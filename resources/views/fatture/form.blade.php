@@ -79,7 +79,35 @@
                           </div>
                         @endif
 
-                        @if ($fattura->righe()->count() && !$fattura->fatturaChiusa())
+
+                        @if ($fattura->righe()->count())
+                          <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
+                              <div class="m-portlet__head">
+                                  <div class="m-portlet__head-caption">
+                                      <div class="m-portlet__head-title">
+                                          <span class="m-portlet__head-icon m--hide">
+                                              <i class="flaticon-statistics"></i>
+                                          </span>
+                                          <h3 class="m-portlet__head-text">
+                                              Totale ed eventuali note
+                                          </h3>
+                                          <h2 class="m-portlet__head-label m-portlet__head-label--info">
+                                              <span>Totale</span>
+                                          </h2>
+                                      </div>
+                                  </div>
+                              </div>
+                              {{-- footer fattura --}}
+                              @include('fatture._footer_fattura_'.strtolower($fattura->tipo_id))
+                          </div>
+                        @endif
+
+
+                        
+
+
+
+                        @if ($fattura->righe()->count())
 
                           <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi">
                               <div class="m-portlet__head">
@@ -100,33 +128,28 @@
                                   </div>
                               </div>
                               
+                              @if (!$fattura->fatturaChiusa())
+                                {{-- Scadenze fattura --}}
+                                @include('fatture._form_add_scadenza_fattura')
+                              @endif
+                              
                               {{-- elenco righe scadenze --}}
                               @include('fatture._elenco_scadenze')
-
-                              {{-- Scadenze fattura --}}
-                              @include('fatture._form_add_scadenza_fattura')
+                              
+                              @if($fattura->fatturaChiusa())
+                                {{-- Avviso Fattura chiusa --}}
+                                <div class="row">
+                                  <div class="col-lg-6 offset-lg-3">
+                                    <div class="alert alert-danger" role="alert">
+                                      <strong>Perfetto!</strong> La fattura è chiusa.
+                                    </div>
+                                  </div>
+                                </div>
+                              @endif
                           </div>  
-
-                        @elseif($fattura->fatturaChiusa())
-                          {{-- Avviso Fattura chiusa --}}
-                          <div class="m-alert m-alert--icon m-alert--icon-solid m-alert--outline alert alert-danger fade show" role="alert">
-                            <div class="m-alert__icon">
-                              <i class="flaticon-exclamation-1"></i>
-                              <span></span>
-                            </div>
-                            <div class="m-alert__text">
-                              <strong>Perfetto!</strong> La fattura è chiusa.
-                            </div>
-                            <div class="m-alert__close">
-                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                              </button>
-                            </div>
-                          </div>
-
                         @endif
                         
-                        {{-- footer fattura --}}
-                        @include('fatture._footer_fattura_'.strtolower($fattura->tipo_id))
+                       
                         
                     </div> {{--  \wrapper --}}
                 </div> {{-- "m-invoice-2 --}} 
@@ -317,7 +340,8 @@
                 confirmButtonText: 'Sì, elimina!'
               }).then((result) => { 
                     if (result.value) {
-                     $("#delete-riga-form").submit();    
+                     //$("#delete-riga-form").submit();
+                     $(this).closest("form.deleteForm").submit();
                     }
                 })
 

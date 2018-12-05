@@ -386,4 +386,38 @@ class FattureController extends Controller
       }
 
 
+    public function updateScadenza(Request $request, $scadenza_fattura_id = 0)
+      {
+      $this->_validate_scadenza($request);
+
+      $scadenza_fattura = ScadenzaFattura::find($scadenza_fattura_id);
+
+      $fattura_id = $scadenza_fattura->fattura_id;
+
+      $scadenza_fattura->update($request->all());
+
+      return redirect('fatture/'.$fattura_id.'/edit');
+
+      }
+
+    public function loadScadenza(Request $request, $scadenza_fattura_id = 0)
+      {
+      $scadenza_fattura = ScadenzaFattura::find($scadenza_fattura_id);
+
+      $fattura_id = $scadenza_fattura->fattura_id;
+
+      return redirect('fatture/'.$fattura_id.'/edit/0/'.$scadenza_fattura_id);
+      }
+
+
+    public function deleteScadenza(Request $request)
+      {
+      $scadenza_fattura_id = $request->get('scadenza_fattura_id');
+      $scadenza_fattura = ScadenzaFattura::find($scadenza_fattura_id);
+      $fattura_id = $scadenza_fattura->fattura_id;
+      $scadenza_fattura->delete();
+       return redirect('fatture/'.$fattura_id.'/edit');
+      }
+
+
 }
