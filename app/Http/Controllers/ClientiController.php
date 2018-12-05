@@ -11,7 +11,11 @@ class ClientiController extends Controller
 {
 
 
-
+    /**
+     * [_getClienteEagerLoaded Uso $orderby SOLO per fare i vari join]
+     * @param  [type] $orderby [description]
+     * @return [type]          [description]
+     */
     private function _getClienteEagerLoaded($orderby)
       {
       $clienti = Cliente::with([

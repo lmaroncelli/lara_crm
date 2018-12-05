@@ -87,6 +87,8 @@ class Fattura extends Model
                $servizio->rigafatturazione_id = NULL;
                $servizio->save();
             }
+            $fattura->righe()->delete();
+            $fattura->scadenze()->delete();
          });
        }
 

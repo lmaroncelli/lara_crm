@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Cliente;
 use App\Fattura;
+use App\Pagamento;
+use App\RagioneSociale;
 use App\RigaDiFatturazione;
 use App\ScadenzaFattura;
 use App\Servizio;
+use App\Societa;
 use App\Utility;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -60,13 +64,136 @@ class FattureController extends Controller
       }
 
     /**
+     * [_getClienteEagerLoaded Uso $orderby SOLO per fare i vari join]
+     * @param  [type] $orderby [description]
+     * @return [type]          [description]
+     */
+    private function _getFattureEagerLoaded($orderby)
+      {
+      $fatture = Fattura::with(
+                    [
+                      'pagamento',
+                      'societa.ragioneSociale',
+                      'societa.cliente',
+                    ]
+                  )
+                  ->tipo('F');
+
+      if($orderby == 'nome_pagamento')
+        {
+        $fatture->select('tblFatture.*', 'tblPagamenti.nome as nome_pagamento');
+        $fatture->join("tblPagamenti","tblFatture.pagamento_id","=","tblPagamenti.cod");
+        }
+
+      if($orderby == 'nome_societa')
+        {
+        $fatture->select('tblFatture.*', 'tblRagioneSociale.nome as nome_societa');
+        $fatture->join("tblSocieta","tblFatture.societa_id","=","tblSocieta.id")->join("tblRagioneSociale","tblSocieta.ragionesociale_id","=","tblRagioneSociale.id");
+        }
+
+
+      return $fatture;
+      }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+      // campo libero
+      $qf = $request->get('qf');
+      $field = $request->get('field');
+
+
+      $orderby = $request->get('orderby');
+      $order = $request->get('order');
+
+
+      if(is_null($order))
+       {
+         $order='desc';
+       }
+
+     if(is_null($orderby))
+       {
+         $orderby='tblFatture.data';
+       }
+     
+
+     $fattureEagerLoaded = $this->_getFattureEagerLoaded($orderby);
+
+     $fatture = $fattureEagerLoaded;
+
+     //////////////////////////////////////
+     // Ricerca campo libero del cliente //
+     //////////////////////////////////////
+
+     // se ho inserito un valore da cercare ed ho selzionato un campo
+     
+     if( !is_null($qf) && $field != '0' )
+       {
+       if($field == 'data')
+         {
+         $request->validate([
+             'qf' =>  'required|date_format:"d/m/Y"'
+           ]);
+
+         $fatture = $fatture->where('tblFatture.'.$field, '=', Utility::getCarbonDate($qf)->format('Y-m-d'));
+
+         }
+      elseif ($field == 'pagamento')
+        {
+        $pagamenti_ids = Pagamento::where('nome','LIKE','%'.$qf.'%')->pluck('id')->toArray();
+        $fatture = $fatture->whereIn('pagamento_id',$pagamenti_ids);        
+        }
+      elseif ($field == 'societa')
+        {
+        $ragSoc_ids = RagioneSociale::where('nome','LIKE','%'.$qf.'%')->pluck('id')->toArray();
+        $cocieta_ids = Societa::whereIn('ragionesociale_id',$ragSoc_ids)->pluck('id')->toArray();
+        $fatture = $fatture->whereIn('societa_id',$cocieta_ids);        
+
+        }
+      elseif ($field == 'cliente')
+        {
+        $clienti_ids = Cliente::where('nome','LIKE','%'.$qf.'%')->pluck('id')->toArray();
+        $cocieta_ids = Societa::whereIn('cliente_id',$clienti_ids)->pluck('id')->toArray();
+        $fatture = $fatture->whereIn('societa_id',$cocieta_ids);
+        }
+      else
+        {
+         $fatture = $fatture->where('tblFatture.'.$field, 'LIKE', '%' . $qf . '%');
+        }
+
+       }
+
+
+      
+       if($orderby == 'tblFatture.data')
+        {
+        $orderby='data';
+        }
+       
+
+
+
+      $to_append = ['order' => $order, 'orderby' => $orderby];
+  
+      if( !is_null($qf) && $field != '0' )
+       {
+       $to_append['qf'] = $qf;
+       $to_append['field'] = $field;
+       }
+
+
+
+      $fatture = $fatture
+                  ->orderBy($orderby, $order)
+                  ->paginate(15)->setpath('')->appends($to_append);
+
+      return view('fatture.index', compact('fatture'));
     }
 
     /**
@@ -232,7 +359,8 @@ class FattureController extends Controller
      */
     public function destroy($id)
     {
-        //
+      Fattura::destroy($id);
+      return redirect()->route('fatture.index')->with('status', 'Fattura elimnata correttamente!');
     }
 
 
