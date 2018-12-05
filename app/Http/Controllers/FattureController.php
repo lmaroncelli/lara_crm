@@ -63,37 +63,7 @@ class FattureController extends Controller
 
       }
 
-    /**
-     * [_getClienteEagerLoaded Uso $orderby SOLO per fare i vari join]
-     * @param  [type] $orderby [description]
-     * @return [type]          [description]
-     */
-    private function _getFattureEagerLoaded($orderby)
-      {
-      $fatture = Fattura::with(
-                    [
-                      'pagamento',
-                      'societa.ragioneSociale',
-                      'societa.cliente',
-                    ]
-                  )
-                  ->tipo('F');
 
-      if($orderby == 'nome_pagamento')
-        {
-        $fatture->select('tblFatture.*', 'tblPagamenti.nome as nome_pagamento');
-        $fatture->join("tblPagamenti","tblFatture.pagamento_id","=","tblPagamenti.cod");
-        }
-
-      if($orderby == 'nome_societa')
-        {
-        $fatture->select('tblFatture.*', 'tblRagioneSociale.nome as nome_societa');
-        $fatture->join("tblSocieta","tblFatture.societa_id","=","tblSocieta.id")->join("tblRagioneSociale","tblSocieta.ragionesociale_id","=","tblRagioneSociale.id");
-        }
-
-
-      return $fatture;
-      }
 
     /**
      * Display a listing of the resource.
@@ -123,7 +93,7 @@ class FattureController extends Controller
        }
      
 
-     $fattureEagerLoaded = $this->_getFattureEagerLoaded($orderby);
+     $fattureEagerLoaded = Fattura::getFattureEagerLoaded($orderby);
 
      $fatture = $fattureEagerLoaded;
 
@@ -146,7 +116,7 @@ class FattureController extends Controller
          }
       elseif ($field == 'pagamento')
         {
-        $pagamenti_ids = Pagamento::where('nome','LIKE','%'.$qf.'%')->pluck('id')->toArray();
+        $pagamenti_ids = Pagamento::where('nome','LIKE','%'.$qf.'%')->pluck('cod')->toArray();
         $fatture = $fatture->whereIn('pagamento_id',$pagamenti_ids);        
         }
       elseif ($field == 'societa')

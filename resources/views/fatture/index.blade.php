@@ -111,9 +111,9 @@
                                             @endif
                                         </th>
                                         
-                                        <th class="order" data-orderby="cliente_id" @if (\Request::get('orderby') == 'cliente_id' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
+                                        <th class="order" data-orderby="nome_cliente" @if (\Request::get('orderby') == 'nome_cliente' && \Request::get('order') == 'asc') data-order='desc' @else data-order='asc' @endif>
                                             Cliente 
-                                            @if (\Request::get('orderby') == 'cliente_id') 
+                                            @if (\Request::get('orderby') == 'nome_cliente') 
                                                 @if (\Request::get('order') == 'asc')
                                                     <i class="fa fa-sort-alpha-down"></i>
                                                 @else 

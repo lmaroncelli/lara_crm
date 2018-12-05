@@ -10,37 +10,6 @@ use Illuminate\Http\Request;
 class ClientiController extends Controller
 {
 
-
-    /**
-     * [_getClienteEagerLoaded Uso $orderby SOLO per fare i vari join]
-     * @param  [type] $orderby [description]
-     * @return [type]          [description]
-     */
-    private function _getClienteEagerLoaded($orderby)
-      {
-      $clienti = Cliente::with([
-            'localita',
-            'associato_a_commerciali',
-            'categoria',
-            'localita.comune.provincia.regione',
-            'contatti',
-            'gruppo.clienti',
-            ]);
-      
-      if($orderby == 'nome_localita')
-        {
-        $clienti->select('tblClienti.*', 'tblLocalita.nome as nome_localita');
-        $clienti->join("tblLocalita","tblClienti.localita_id","=","tblLocalita.id");
-        }
-      elseif ($orderby == 'categoria_id') 
-        {
-        $clienti->where('categoria_id', '!=', 0);
-        }
-
-      return $clienti;
-      }
-
-
     /**
      * Display a listing of the resource.
      * Capacità di cercare e ordinare
@@ -119,7 +88,7 @@ class ClientiController extends Controller
         $attivo = $request->get('attivo');
 
 
-        $clienteEagerLoaded = $this->_getClienteEagerLoaded($orderby);
+        $clienteEagerLoaded = Cliente::getClienteEagerLoaded($orderby);
 
 
         $clienti = $clienteEagerLoaded;

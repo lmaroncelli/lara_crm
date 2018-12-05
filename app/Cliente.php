@@ -106,6 +106,38 @@ class Cliente extends Model
      }
 
 
+
+
+    /**
+     * [_getClienteEagerLoaded Uso $orderby SOLO per fare i vari join]
+     * @param  [type] $orderby [description]
+     * @return [type]          [description]
+     */
+    public static function getClienteEagerLoaded($orderby)
+      {
+      $clienti = self::with([
+            'localita',
+            'associato_a_commerciali',
+            'categoria',
+            'localita.comune.provincia.regione',
+            'contatti',
+            'gruppo.clienti',
+            ]);
+      
+      if($orderby == 'nome_localita')
+        {
+        $clienti->select('tblClienti.*', 'tblLocalita.nome as nome_localita');
+        $clienti->join("tblLocalita","tblClienti.localita_id","=","tblLocalita.id");
+        }
+      elseif ($orderby == 'categoria_id') 
+        {
+        $clienti->where('categoria_id', '!=', 0);
+        }
+
+      return $clienti;
+      }
+
+
     public function stato($icon = false)
       {
       if ($this->attivo) 

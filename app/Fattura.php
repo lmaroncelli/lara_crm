@@ -94,6 +94,49 @@ class Fattura extends Model
 
 
 
+
+    /**
+     * [_getClienteEagerLoaded Uso $orderby SOLO per fare i vari join]
+     * @param  [type] $orderby [description]
+     * @return [type]          [description]
+     */
+    public static function getFattureEagerLoaded($orderby)
+      {
+      $fatture = self::with(
+                    [
+                      'pagamento',
+                      'societa.ragioneSociale',
+                      'societa.cliente',
+                    ]
+                  )
+                  ->tipo('F');
+
+      if($orderby == 'nome_pagamento')
+        {
+        $fatture->select('tblFatture.*', 'tblPagamenti.nome as nome_pagamento');
+        $fatture->join("tblPagamenti","tblFatture.pagamento_id","=","tblPagamenti.cod");
+        }
+
+      if($orderby == 'nome_societa')
+        {
+        $fatture->select('tblFatture.*', 'tblRagioneSociale.nome as nome_societa');
+        $fatture->join("tblSocieta","tblFatture.societa_id","=","tblSocieta.id")->join("tblRagioneSociale","tblSocieta.ragionesociale_id","=","tblRagioneSociale.id");
+        }
+
+      if($orderby == 'nome_cliente')
+        {
+        $fatture->select('tblFatture.*', 'tblClienti.nome as nome_cliente');
+        $fatture->join("tblSocieta","tblFatture.societa_id","=","tblSocieta.id")->join("tblClienti","tblSocieta.cliente_id","=","tblClienti.id"); 
+        }
+      
+
+
+      return $fatture;
+      }
+
+
+
+
    public function getTotale()
     {
     $totale = 0;
@@ -144,7 +187,7 @@ class Fattura extends Model
 
    public function scopeTipo($query, $tipo_id)
      {
-        return $query->where('tipo_id', $tipo_id);
+        return $query->where($this->table.'.tipo_id', $tipo_id);
      }
 
 
