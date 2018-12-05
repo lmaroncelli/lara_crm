@@ -8,7 +8,8 @@
         <!--begin:: Widgets/Tasks -->
         <div class="m-portlet m-portlet--full-height ">
             <div class="m-portlet__head">
-                <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-caption" style="width: 100%;">
+                    
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text" style="width: 200px;">
                             @if (!count(Request()->query()))
@@ -21,6 +22,16 @@
                             &nbsp;&nbsp; @if (isset($fatture)) <span class="m-badge m-badge--success m-badge--wide">{{$fatture->total()}}@endif</span>
                         </h3>
                     </div>
+                    
+                    <div class="add_item" style="margin-left: auto;">
+                        <a href="{{ route('fatture.create') }}" class="btn btn-success m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                            <span>
+                                <i class="fa fa-file-medical"></i>
+                                <span>Nuova fattura</span>
+                            </span>
+                        </a>        
+                    </div>
+                
                 </div>
             </div>
                 <form action="{{ url('fatture') }}" method="get" id="searchForm" accept-charset="utf-8">
