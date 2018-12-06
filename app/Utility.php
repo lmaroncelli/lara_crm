@@ -2,6 +2,7 @@
 namespace App;
 
 use App\Associazione;
+use App\Pagamento;
 use Auth;
 use Carbon\Carbon;
 use Exception;
@@ -260,6 +261,11 @@ class Utility extends Model
 				return 'Fattura';
 				break;
 			}
+		}
+
+	public static function getPagamentoFattura($pagamento_id)
+		{
+		return Pagamento::where('cod',$pagamento_id)->first()->nome;
 		}
 
 	public static function formatta_cifra($cifra, $simbolo = '')

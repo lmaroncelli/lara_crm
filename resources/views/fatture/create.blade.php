@@ -63,6 +63,19 @@
             </div>
             {{-- \numero-Data --}}
 
+            {{-- tipo pagamento --}}
+            <div class="form-group m-form__group row">
+                <label class="col-lg-2 col-form-label" for="attivo">Tipo:</label>
+                <div class="col-lg-3">
+                    <select class="form-control m-input" id="pagamento_id" name="pagamento_id">
+                        @foreach ($tipo_pagamento as $key => $value)
+                            <option value="{{$key}}" @if ( $fattura->pagamento_id == $key || old('pagamento_id') != null ) selected="selected" @endif>{{$value}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            {{-- \tipo pagamento --}}
+
             </div> {{-- m-portlet__body --}}
 
             <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">

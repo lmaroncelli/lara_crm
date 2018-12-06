@@ -1,10 +1,12 @@
 <div class="m-invoice__head" style="background-image: url(../../assets/app/media/img//logos/bg-6.jpg);">
     <div class="m-invoice__container m-invoice__container--centered">
-        <div class="m-invoice__logo">
+        <div class="m-invoice__logo" style="display: flex;">
             <a href="#">
                 <h1>{{ App\Utility::getNomeTipoFattura($fattura->tipo_id) }}</h1>
+
+                <h4 class="m--font-danger">{{App\Utility::getPagamentoFattura($fattura->pagamento_id)}}</h4>
             </a>
-            <a href="#">
+            <a href="#" style="margin-left: auto;">
                 <img src="../../assets/app/media/img//logos/logo_client_color.png">
             </a>
         </div>

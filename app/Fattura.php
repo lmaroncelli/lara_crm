@@ -12,7 +12,7 @@ class Fattura extends Model
 {
    protected $table = 'tblFatture';
 
-   protected $fillable = ['tipo_id','numero_fattura','numero_prefattura','data','societa_id'];
+   protected $fillable = ['tipo_id','numero_fattura','numero_prefattura','data','societa_id','pagamento_id'];
 
    protected $dates = [
        'created_at',
@@ -137,16 +137,29 @@ class Fattura extends Model
 
 
 
-   public function getTotale()
+   public function getTotale($save=false)
     {
     $totale = 0;
+
     foreach (self::righe()->get() as $r) 
       {
       $totale += $r->totale;
       }
+
+    if($save)
+      {
+      $this->totale = $totale;
+      self::save();
+      }
     
     return $totale;
     }
+
+
+    public function azzeraTotale()
+      {
+      $this->totale = 0.00;
+      }
 
 
   // devo togliere dal totale le eventuali righe scadenza

@@ -22,7 +22,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="m--font-danger">{{App\Utility::formatta_cifra($fattura->getTotale(), '€')}}</td>
+                                <td class="m--font-danger">{{App\Utility::formatta_cifra($fattura->getTotale($save=true), '€')}}</td>
                             </tr>
                         </tbody>
                     </table>

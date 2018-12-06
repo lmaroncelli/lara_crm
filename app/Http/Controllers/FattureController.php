@@ -174,7 +174,18 @@ class FattureController extends Controller
     public function create($tipo_id = 'F')
     {
         $fattura = new Fattura;
-        return view('fatture.create', compact('fattura'));
+
+        if ($tipo_id != 'NC') 
+          {
+          $tipo_pagamento = Pagamento::where('cod_PA','!=',NULL)->where('cod','!=',-1)->orderBy('nome','asc')->pluck('nome','cod');
+          } 
+        else 
+          {
+          $tipo_pagamento = Pagamento::where('cod','=',-1)->orderBy('nome','asc')->pluck('nome','cod');
+          }
+
+
+        return view('fatture.create', compact('fattura','tipo_pagamento'));
     }
 
     /**
@@ -423,6 +434,14 @@ class FattureController extends Controller
       $riga_fattura = RigaDiFatturazione::find($rigafattura_id);
       $fattura_id = $riga_fattura->fattura_id;
       $riga_fattura->delete();
+
+      if (!$riga_fattura->fattura->righe()->count()) 
+        {
+        $f = $riga_fattura->fattura;
+        $f->azzeraTotale();
+        $f->save();
+        }
+      
        return redirect('fatture/'.$fattura_id.'/edit');
       }
 

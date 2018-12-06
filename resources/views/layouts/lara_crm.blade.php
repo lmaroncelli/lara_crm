@@ -76,7 +76,7 @@
                             @endif
 
                             @if (session('status'))
-                                <div class="m-alert m-alert--icon m-alert--outline alert alert-success alert-dismissible fade show" role="alert">
+                                <div class="m-alert m-alert--icon m-alert--outline alert alert-success alert-dismissible fade show" role="alert" style="margin-top:30px;">
                                     <div class="m-alert__icon">
                                         <i class="la la-warning"></i>
                                     </div>

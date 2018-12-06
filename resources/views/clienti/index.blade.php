@@ -106,7 +106,7 @@
                 <div class="tab-content">
                     <div class="m-section">
                         <div class="m-section__content">
-                            <table class="table {{-- table-striped --}} m-table m-table--head-bg-success table-hover">
+                            <table class="table table-responsive-sm m-table m-table--head-bg-success table-hover">
                                 <thead>
                                     <tr>
                                         
