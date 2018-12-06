@@ -65,6 +65,17 @@ div.m-portlet .m-invoice-2 .m-invoice__wrapper .m-invoice__footer {
 
 
 
+div.sezioni-cliente .m-demo {
+	margin-bottom: 0px!important;
+}
+
+
+div.sezioni-cliente .m-demo .m-demo__preview {
+	border:0px!important;
+	padding: 0!important;
+}
+
+
 /*
 override default anchor
  */
