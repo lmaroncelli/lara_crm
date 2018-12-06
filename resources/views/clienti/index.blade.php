@@ -6,22 +6,41 @@
     <div class="col-xl-12">
 
         <!--begin:: Widgets/Tasks -->
-        <div class="m-portlet m-portlet--full-height ">
+        <div class="m-portlet m-portlet--last m-portlet--head-lg m-portlet--responsive-mobile" id="main_portlet">
             <div class="m-portlet__head">
-                <div class="m-portlet__head-caption">
-                    <div class="m-portlet__head-title">
-                        <h3 class="m-portlet__head-text" style="width: 200px;">
-                            @if (!count(Request()->query()))
-                                Elenco clienti
-                            @else
-                                <a href="{{ url('clienti') }}" title="Tutti i clienti" class="btn btn-warning">
+                <div class="m-portlet__head-progress">
+                   
+                   <!-- here can place a progress bar-->
+               </div>
+               <div class="m-portlet__head-wrapper">
+                   <div class="m-portlet__head-caption" style="width: 100%;">
+
+                        <div class="m-portlet__head-title col-x-6">
+                            <h3 class="m-portlet__head-text" style="width: 200px;">
+                                @if (!count(Request()->query()))
                                     Elenco clienti
-                                </a> 
-                            @endif
-                            &nbsp;&nbsp; @if (isset($clienti)) <span class="m-badge m-badge--success m-badge--wide">{{$clienti->total()}}@endif</span>
-                        </h3>
+                                @else
+                                    <a href="{{ url('clienti') }}" title="Tutti i clienti" class="btn btn-warning">
+                                        Elenco clienti
+                                    </a> 
+                                @endif
+                                &nbsp;&nbsp; @if (isset($clienti)) <span class="m-badge m-badge--success m-badge--wide">{{$clienti->total()}}@endif</span>
+                            </h3>
+                        </div>
+                        
+                        <div class="add_item col-x-6" style="margin-left: auto;">
+                            <a href="{{ route('clienti.create') }}" class="btn btn-success m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                                <span>
+                                    <i class="fa fa-file-medical"></i>
+                                    <span>Nuovo cliente</span>
+                                </span>
+                            </a>        
+                        </div>
+
                     </div>
+
                 </div>
+
             </div>
                 <form action="{{ url('clienti') }}" method="get" id="searchForm" accept-charset="utf-8">
                 <input type="hidden" name="orderby" id="orderby" value="">
