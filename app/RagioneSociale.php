@@ -25,6 +25,39 @@ class RagioneSociale extends Model
         return $this->belongsTo(Localita::class, 'localita_id', 'id');
     }
 
+
+    /*
+    used:
+    App\Http\Composers\FattureFormComposer
+    App\Http\Controllers\ClientiFatturazioniController
+     */
+    public static function getListForSelectModal($societa_ids_to_exlude = [])
+      {
+        if(count($societa_ids_to_exlude))
+          {
+          return self::has('societa')
+                            ->with([
+                              'societa' => function($q) use ($societa_ids_to_exlude) {
+                                $q->whereNotIn('id', $societa_ids_to_exlude);
+                              },
+                              'societa.cliente' => function($q){
+                                $q->orderBy('id_info');
+                              }
+                            ])
+                        ->get();
+          }
+        else
+          {
+          return self::has('societa')
+                            ->with([
+                              'societa.cliente' => function($q){
+                                $q->orderBy('id_info');
+                              }
+                            ])
+                        ->get();
+          }
+      }
+
    
 
 }

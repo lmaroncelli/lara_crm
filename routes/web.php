@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('clienti/fatturazioni/{cliente_id}', 'ClientiFatturazioniController@index')->name('clienti-fatturazioni');
+    Route::get('/associa-societa-ajax', 'ClientiFatturazioniController@associaSocietaAjax');
 
 
     //////////////

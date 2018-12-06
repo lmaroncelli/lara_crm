@@ -15,13 +15,7 @@ class FattureFormComposer
 {
     public function compose(View $view)
     	{
-    	$ragioneSociale = RagioneSociale::has('societa')
-    								->with([
-    									'societa.cliente' => function($q){
-    										$q->orderBy('id_info');
-    									}
-    								])
-    						->get();
+    	$ragioneSociale = RagioneSociale::getListForSelectModal();
         
     	$tipo_fattura = ['F' => 'Fattura', 'PF' => 'Prefattura', 'NC' => 'Nota di credito'];
 
