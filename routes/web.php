@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('clienti', 'ClientiController')/*->middleware('log')*/;
 
 
+    Route::get('clienti/fatturazioni/{cliente_id}', 'ClientiFatturazioniController@index')->name('clienti-fatturazioni');
+
+
     //////////////
     // CONTATTI //
     //////////////

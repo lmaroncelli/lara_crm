@@ -81,6 +81,24 @@ override default anchor
  */
 
 
+h3.info-cliente {
+	flex-direction: column;
+}
+
+
+h3.info-cliente span.main{
+	font-size: 1.5rem;
+   font-weight: 600;
+	color:#34bfa3!important;
+}
+
+h3.info-cliente span.other{
+	font-size: .85rem;
+	color: #6f727d;
+}
+
+
+
 
 /* data attivazione form clienti*/
 .data_attivazione {
