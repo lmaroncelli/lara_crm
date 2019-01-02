@@ -19,4 +19,15 @@ quando le ho importate con FattureTableSeeder Carbon::createFromTimestamp($fattu
 
 basta settare in config/app.php 
 
- 'timezone' => 'Europe/Rome',
+	'timezone' => 'Europe/Rome'
+
+
+
+
+
+
+
+ #EVIDENZE
+
+Tutte le tabelle delle evidenze hanno il prefisso "tblEV" (es: tblEVTipiEvidenze)
+
