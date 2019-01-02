@@ -15,7 +15,7 @@ class CreateTableTipiEvidenze extends Migration
     {
         Schema::create('tblEVTipiEvidenze', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer("macrolocalita_id")->unsigned()->nullable()->default(null);
+            $table->integer("macrolocalita_id")->nullable()->default(null);
             $table->string('nome',150);
             $table->integer("n_max_visibile")->default(1);
             $table->integer("n_min_mesi")->default(1);

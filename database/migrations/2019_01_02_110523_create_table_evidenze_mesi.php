@@ -17,7 +17,7 @@ class CreateTableEvidenzeMesi extends Migration
             $table->increments('id');
             $table->integer("evidenza_id")->unsigned()->nullable()->default(null);
             $table->integer("mese_id")->unsigned()->nullable()->default(null);
-            $table->integer('cliente_id')->unsigned()->nullable()->default(0);
+            $table->integer('cliente_id')->nullable()->default(0);
             $table->integer('user_id')->unsigned()->nullable()->default(0);
             $table->boolean('acquistata')->default(false);
             $table->boolean('prelazionata')->default(false);
