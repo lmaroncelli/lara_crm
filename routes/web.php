@@ -64,6 +64,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/gestisci-contatti-ajax', 'ClientiController@gestisciContattiAjax');
 
 
+    //////////////
+    // SCOCIETA //
+    //////////////
+    Route::model('clienti', 'App\Societa');
+    Route::resource('clienti', 'SocietaController')/*->middleware('log')*/;
+
+
     /////////////
     // FATTURE //
     /////////////
