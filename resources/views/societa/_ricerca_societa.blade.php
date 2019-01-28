@@ -20,13 +20,13 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-lg-3" style="padding-top: 20px;">
+                    {{-- <div class="col-lg-3" style="padding-top: 20px;">
                         <select class="form-control m-input" id="field" name="field">
                             @foreach ($campi_fattura_search as $key => $value)
                                 <option value="{{$key}}" @if (\Request::get('field') == $key || old('key') == $key ) selected="selected" @endif>{{$value}}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
                 </div>
                 </form>

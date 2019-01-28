@@ -42,7 +42,8 @@
 
                 </div>
             </div>
-                {{-- @include('societa._ricerca_societa') --}}
+            
+            @include('societa._ricerca_societa')
             
             @if (isset($societa))
             <div class="m-portlet__body">
@@ -144,10 +145,6 @@
         jQuery(document).ready(function(){
             
             $(".la-search").click(function(){
-                $("#searchForm").submit();
-            });
-
-            $(".attivo_check").on('switchChange.bootstrapSwitch', function (event, state) {
                 $("#searchForm").submit();
             });
 

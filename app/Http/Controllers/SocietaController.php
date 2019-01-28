@@ -34,9 +34,37 @@ class SocietaController extends Controller
 
 
       $societa = Societa::with(['ragioneSociale','cliente']); 
+
+
+
+      if ($orderby == 'nome_rag') 
+        {
+        $societa = $societa
+                    ->join('tblRagioneSociale', 'tblSocieta.ragionesociale_id', '=', 'tblRagioneSociale.id')
+                      ->orderBy('tblRagioneSociale.nome', $order);
+        }
+
+      if ($orderby == 'nome_cliente' || $orderby == 'id_info')
+          {
+          $societa = $societa
+                    ->join('tblClienti', 'tblSocieta.cliente_id', '=', 'tblClienti.id');
+          
+
+          if($orderby == 'nome_cliente') 
+            {
+            $societa = $societa
+                    ->orderBy('tblClienti.nome', $order);
+            }
+          else
+            {
+            $societa = $societa
+                    ->orderBy('tblClienti.id_info', $order);
+            }
+          }
+
+      
       $societa = $societa
-                    ->orderBy($orderby, $order)
-                    ->paginate(15)->setpath('')->appends($to_append);
+                  ->paginate(15)->setpath('')->appends($to_append);
 
        return view('societa.index', compact('societa'));
 
