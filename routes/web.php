@@ -67,8 +67,8 @@ Route::middleware(['auth'])->group(function () {
     //////////////
     // SCOCIETA //
     //////////////
-    Route::model('clienti', 'App\Societa');
-    Route::resource('clienti', 'SocietaController')/*->middleware('log')*/;
+    Route::model('societa', 'App\Societa');
+    Route::resource('societa', 'SocietaController')/*->middleware('log')*/;
 
 
     /////////////

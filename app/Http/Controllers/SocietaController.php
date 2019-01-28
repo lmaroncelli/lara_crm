@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Societa;
 use Illuminate\Http\Request;
 
 class SocietaController extends Controller
@@ -11,10 +12,35 @@ class SocietaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+    public function index(Request $request)
+      {
+
+       $orderby = $request->get('orderby');
+       $order = $request->get('order');
+
+
+       if(is_null($order))
+        {
+          $order='asc';
+        }
+
+      if(is_null($orderby))
+        {
+          $orderby='id';
+        }
+      
+      $to_append = ['order' => $order, 'orderby' => $orderby];
+
+
+
+      $societa = Societa::with(['ragioneSociale','cliente']); 
+      $societa = $societa
+                    ->orderBy($orderby, $order)
+                    ->paginate(15)->setpath('')->appends($to_append);
+
+       return view('societa.index', compact('societa'));
+
+      }
 
     /**
      * Show the form for creating a new resource.
