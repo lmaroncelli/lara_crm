@@ -15,8 +15,53 @@ class SocietaController extends Controller
     public function index(Request $request)
       {
 
-       $orderby = $request->get('orderby');
-       $order = $request->get('order');
+      // campo libero
+      $qf = $request->get('qf');
+      $field = $request->get('field');
+
+      $orderby = $request->get('orderby');
+      $order = $request->get('order');
+
+      $societa = Societa::with(['ragioneSociale','cliente']); 
+
+
+      $join_rag_soc = 0;
+
+       //////////////////////////////////////
+       // Ricerca campo libero del cliente //
+       //////////////////////////////////////
+
+      // se ho inserito un valore da cercare ed ho selzionato un campo
+      if( !is_null($qf) && $field != '0' )
+        {
+        if (in_array($field, ['nome','localita','indirizzo','cap','piva','cf'])) 
+          {
+
+          if($field == 'localita')
+            {
+            $societa = $societa
+                    ->select('tblSocieta.*')
+                    ->join('tblRagioneSociale', 'tblSocieta.ragionesociale_id', '=', 'tblRagioneSociale.id')
+                    ->join('tblLocalita', 'tblRagioneSociale.localita_id', '=', 'tblLocalita.id')
+                    ->where('tblLocalita.nome','LIKE','%'.$qf.'%');
+                
+            }
+          else
+            {
+            $societa = $societa
+                      ->select('tblSocieta.*')
+                      ->join('tblRagioneSociale', 'tblSocieta.ragionesociale_id', '=', 'tblRagioneSociale.id')
+                      ->where('tblRagioneSociale.'.$field,'LIKE','%'.$qf.'%');
+            }
+
+          $join_rag_soc = 1;
+          }
+        }
+
+
+
+
+
 
 
        if(is_null($order))
@@ -33,15 +78,20 @@ class SocietaController extends Controller
 
 
 
-      $societa = Societa::with(['ragioneSociale','cliente']); 
 
 
 
       if ($orderby == 'nome_rag') 
         {
+        if(!$join_rag_soc)
+        {
         $societa = $societa
-                    ->join('tblRagioneSociale', 'tblSocieta.ragionesociale_id', '=', 'tblRagioneSociale.id')
-                      ->orderBy('tblRagioneSociale.nome', $order);
+                ->select('tblSocieta.*')
+                ->join('tblRagioneSociale', 'tblSocieta.ragionesociale_id', '=', 'tblRagioneSociale.id');
+        }
+
+        $societa = $societa
+                ->orderBy('tblRagioneSociale.nome', $order);
         }
 
       if ($orderby == 'nome_cliente' || $orderby == 'id_info')
@@ -66,6 +116,7 @@ class SocietaController extends Controller
       $societa = $societa
                   ->paginate(15)->setpath('')->appends($to_append);
 
+      //dd($societa);
        return view('societa.index', compact('societa'));
 
       }

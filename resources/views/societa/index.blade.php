@@ -87,7 +87,7 @@
                                             @endif
                                         </th>
 
-                                        <th>Note</th>
+                                        <th width="20%">Note</th>
                                         <th></th>
                                     </tr>
                                 </thead>

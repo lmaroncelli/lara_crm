@@ -23,9 +23,10 @@ class FattureIndexComposer
                 $campi_fattura_search['societa'] = 'societa';
                 $campi_fattura_search['cliente'] = 'cliente';
                 $campi_fattura_search['note'] = 'note';
-                $campi_fattura_search['0'] = 'campo in cui cercare';
-
                 asort($campi_fattura_search);
+                
+                array_unshift($campi_fattura_search, 'campo in cui cercare');
+               
                 $view->with(compact('campi_fattura_search'));
     	}
 }
