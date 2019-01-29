@@ -14,7 +14,7 @@
                 <div class="tab-content">
                     <div class="m-section">
                         <div class="m-section__heading">
-                            Elenco Società  <button type="button" class="btn btn-warning" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#m_modal_contatti">Società</button>
+                            Elenco Società  <button type="button" class="btn btn-warning" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#m_modal_contatti">Aggiungi Società</button>
                         </div>
                          <div class="m-section__content">
                             @if ($cliente->societa->count())
@@ -30,7 +30,7 @@
                                 <tbody>
                                     @foreach ($cliente->societa as $s)
                                         <tr>
-                                            <td>{{optional($s->ragioneSociale)->nome}}</td>
+                                            <td> <a href="{{ route('clienti-fatturazioni-edit', $s->id) }}"> {{optional($s->ragioneSociale)->nome}} </a></td>
                                             <td>{{$s->abi}}</td>
                                             <td>{{$s->cab}}</td>
                                             <td>{{$s->note}}</td>

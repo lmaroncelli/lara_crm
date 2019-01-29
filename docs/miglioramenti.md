@@ -24,6 +24,9 @@ basta settare in config/app.php
 
 
 
+nella tabella tblRagioneSociale ci sono delle righe vuote !!!
+
+
 
 
 

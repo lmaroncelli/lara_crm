@@ -41,4 +41,10 @@ class ClientiFatturazioniController extends Controller
 
 
 		}
+
+
+	public function edit($societa_id)
+		{
+		$societa = Societa::with(['ragioneSociale', 'cliente'])->find($societa_id);
+		}
 }

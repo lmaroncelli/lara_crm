@@ -26,6 +26,7 @@ class SocietaController extends Controller
 
 
       $join_rag_soc = 0;
+      $join_clienti = 0;
 
        //////////////////////////////////////
        // Ricerca campo libero del cliente //
@@ -34,7 +35,7 @@ class SocietaController extends Controller
       // se ho inserito un valore da cercare ed ho selzionato un campo
       if( !is_null($qf) && $field != '0' )
         {
-        if (in_array($field, ['nome','localita','indirizzo','cap','piva','cf'])) 
+        if (in_array($field, ['nome','localita','indirizzo','cap','piva','cf', 'pec', 'codice_sdi'])) 
           {
 
           if($field == 'localita')
@@ -56,15 +57,26 @@ class SocietaController extends Controller
 
           $join_rag_soc = 1;
           }
+        elseif (in_array($field, ['note','banca','iban'])) 
+          {
+          $societa = $societa
+                    ->select('tblSocieta.*')
+                    ->where('tblSocieta.'.$field,'LIKE','%'.$qf.'%');
+          }
+        elseif ($field == 'cliente') 
+          {
+          $societa = $societa
+                    ->select('tblSocieta.*')
+                    ->join('tblClienti', 'tblSocieta.cliente_id', '=', 'tblClienti.id')
+                    ->where('tblClienti.nome','LIKE','%'.$qf.'%');
+
+          $join_clienti = 1;
+          }
         }
 
 
 
-
-
-
-
-       if(is_null($order))
+      if(is_null($order))
         {
           $order='asc';
         }
@@ -75,9 +87,6 @@ class SocietaController extends Controller
         }
       
       $to_append = ['order' => $order, 'orderby' => $orderby];
-
-
-
 
 
 
@@ -96,9 +105,11 @@ class SocietaController extends Controller
 
       if ($orderby == 'nome_cliente' || $orderby == 'id_info')
           {
-          $societa = $societa
+          if(!$join_clienti)
+            {
+            $societa = $societa
                     ->join('tblClienti', 'tblSocieta.cliente_id', '=', 'tblClienti.id');
-          
+            } 
 
           if($orderby == 'nome_cliente') 
             {
@@ -117,7 +128,8 @@ class SocietaController extends Controller
                   ->paginate(15)->setpath('')->appends($to_append);
 
       //dd($societa);
-       return view('societa.index', compact('societa'));
+       
+      return view('societa.index', compact('societa'));
 
       }
 
