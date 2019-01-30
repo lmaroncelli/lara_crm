@@ -30,10 +30,10 @@
                                 <tbody>
                                     @foreach ($cliente->societa as $s)
                                         <tr>
-                                            <td> <a href="{{ route('clienti-fatturazioni-edit', $s->id) }}"> {{optional($s->ragioneSociale)->nome}} </a></td>
+                                            <td> <a href="{{ route('clienti-fatturazioni.edit', $s->id) }}"> {{optional($s->ragioneSociale)->nome}} </a></td>
                                             <td>{{$s->abi}}</td>
                                             <td>{{$s->cab}}</td>
-                                            <td>{{$s->note}}</td>
+                                            <td>{!!$s->note!!}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

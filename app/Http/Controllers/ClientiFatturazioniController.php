@@ -11,7 +11,7 @@ class ClientiFatturazioniController extends Controller
 {
 	public function index($cliente_id)
 		{
-		$cliente = Cliente::with(['societa.ragioneSociale'])->find($cliente_id);
+		$cliente = Cliente::with(['societa.ragioneSociale.localita'])->find($cliente_id);
 
 		////////////////////////////////////////////////////////////
 		// definire gli id delle società del cliente da escludere //
@@ -46,5 +46,23 @@ class ClientiFatturazioniController extends Controller
 	public function edit($societa_id)
 		{
 		$societa = Societa::with(['ragioneSociale', 'cliente'])->find($societa_id);
+
+		$cliente = $societa->cliente;
+
+		return view('clienti-fatturazioni.form', compact('societa','cliente'));
+		}
+
+
+	public function update(Request $request, $societa_id)
+		{
+		
+
+		$validatedData = $request->validate([
+		       'societa' => 'required',
+		       'societa_id' => 'required|integer',
+		       'numero' => 'required',
+		       'data' => 'required|date_format:"d/m/Y"'
+		   ]);
+
 		}
 }
