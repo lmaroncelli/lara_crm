@@ -198,4 +198,26 @@ class SocietaController extends Controller
     {
         //
     }
+
+
+
+
+    public function fatture(Request $request, $societa_id = 0)
+      {
+        if (!$societa_id) 
+          {
+           return back()->with('status', 'Specificare la società!');
+          }
+
+        $societa = Societa::find($societa_id);
+
+        $fatture = $societa->fatture;
+        $prefatture = $societa->prefatture;
+
+        return view('societa.fatture', compact('fatture','prefatture'));
+
+
+      }
+
+
 }

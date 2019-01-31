@@ -22,7 +22,7 @@ class ClientiFormComposer
 
     	$tipi_cliente = TipologiaCliente::pluck('nome','id')->toArray(); 
     	$cataegorie_cliente = CategoriaCliente::pluck('categoria','id')->toArray(); 
-    	$localita_cliente = Localita::pluck('nome','id')->toArray(); 
+    	$localita_cliente = Localita::orderBy('nome','asc')->pluck('nome','id')->toArray(); 
     	$commerciali = User::commerciale()->orderBy('name')->pluck('name','id')->toArray();
     	$contatti = Contatto::orderBy('nome')->get();
     	$view->with(compact('tipi_cliente','cataegorie_cliente', 'localita_cliente','commerciali','contatti'));

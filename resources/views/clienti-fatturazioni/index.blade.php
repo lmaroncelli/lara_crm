@@ -25,15 +25,30 @@
                                         <th>Abi</th>
                                         <th>Cab</th>
                                         <th>Note</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($cliente->societa as $s)
                                         <tr>
-                                            <td> <a href="{{ route('clienti-fatturazioni.edit', $s->id) }}"> {{optional($s->ragioneSociale)->nome}} </a></td>
+                                            <td><a href="{{ route('clienti-fatturazioni.edit', $s->id) }}"> {{optional($s->ragioneSociale)->nome}} </a></td>
                                             <td>{{$s->abi}}</td>
                                             <td>{{$s->cab}}</td>
                                             <td>{!!$s->note!!}</td>
+                                            <td>
+                                              <a href="{{ route('societa-fatture', $s->id) }}" class="btn btn-info m-btn m-btn--icon m-btn--icon-only">
+                                                <i class="fa fa-euro-sign"></i>
+                                              </a>
+                                            </td>
+                                            <td>
+                                              <form action="{{ route('clienti-fatturazioni.destroy', ['id' => $s->id]) }}" method="POST" accept-charset="utf-8" class="deleteForm" id="delete-riga-form">
+                                                  @csrf
+                                                  <a href="#" style="margin-bottom: 5px!important;" class="delete btn btn-danger m-btn m-btn--icon m-btn--icon-only"> 
+                                                      <i class="la la-trash"></i>
+                                                  </a>
+                                              </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

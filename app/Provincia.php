@@ -15,7 +15,7 @@ class Provincia extends Model
 
    public function comuni()
    {
-       return $this->hasMany(Comune::class, 'comune_id', 'id');
+       return $this->hasMany(Comune::class, 'provincia_id', 'id');
    }
 
     public function regione()

@@ -3,6 +3,7 @@ namespace App;
 
 use App\Associazione;
 use App\Pagamento;
+use App\Provincia;
 use Auth;
 use Carbon\Carbon;
 use Exception;
@@ -273,6 +274,23 @@ class Utility extends Model
 	
 		$formato =  number_format((float)$cifra, 2, ',', '.');
 		return empty($simbolo) ? $formato : $simbolo.' '.$formato;
+		}
+
+
+
+	/**
+	 * [isLocalitaInRSM verifica se la località è di San Marino]
+	 * @param  [type]  $localita_id [description]
+	 * @return boolean              [description]
+	 */
+	public static function isLocalitaInRSM($localita_id)
+		{
+			$p_rsm = Provincia::where('sigla','SM')->first();
+			$comuni_rsm_ids = $p_rsm->comuni->pluck('id')->toArray();
+
+			// se è 0 NON è SAN MARINO
+			return Localita::where('id',$localita_id)->whereIn('comune_id', $comuni_rsm_ids)->get()->count();
+
 		}
 
 

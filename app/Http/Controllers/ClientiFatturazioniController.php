@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cliente;
 use App\RagioneSociale;
 use App\Societa;
+use App\Utility;
 use Illuminate\Http\Request;
 
 class ClientiFatturazioniController extends Controller
@@ -56,13 +57,32 @@ class ClientiFatturazioniController extends Controller
 	public function update(Request $request, $societa_id)
 		{
 		
+		$validation_arr = ['nome_rag_soc' => 'required'];
 
-		$validatedData = $request->validate([
-		       'societa' => 'required',
-		       'societa_id' => 'required|integer',
-		       'numero' => 'required',
-		       'data' => 'required|date_format:"d/m/Y"'
-		   ]);
+		////////////////////////////////////////////////////////////////////
+		// controllo piva solo se localita NON è PROVINCIA DI  San Marino //
+		////////////////////////////////////////////////////////////////////
+		if( !Utility::isLocalitaInRSM($request->get('localita_id')) )
+			{
+			$validation_arr['piva'] = 'digits:11';
+			}
 
+		$validatedData = $request->validate($validation_arr);
+
+		$societa = Societa::find($societa_id);
+		$societa->fill(['banca' => $request->get('banca'), 'abi' => $request->get('abi'), 'cab' => $request->get('cab'), 'iban' => $request->get('iban'), 'note' => $request->get('note')]);
+		$societa->save();
+
+		$ragioneSociale = $societa->ragioneSociale;
+		$ragioneSociale->fill([ 'nome' => $request->get('nome_rag_soc'), 'indirizzo' => $request->get('indirizzo'), 'localita_id' => $request->get('localita_id'), 'cap' => $request->get('cap'), 'piva' => $request->get('piva'), 'cf' => $request->get('cf'), 'pec' => $request->get('pec'), 'codice_sdi' => $request->get('codice_sdi') ]);
+		$ragioneSociale->save();
+
+		return redirect()->route('clienti-fatturazioni', $societa->cliente_id)->with('status', 'Ragione Sociale modificata correttamente!');
+
+		}
+
+	public function destroy(Request $request)
+		{
+		dd('Elimina!!!');
 		}
 }

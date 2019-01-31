@@ -17,7 +17,7 @@ class SocietaFormComposer
     	{
 
     
-    	$localita = Localita::pluck('nome','id')->toArray(); 
+    	$localita = Localita::orderBy('nome','asc')->pluck('nome','id')->toArray();
   
     	$view->with(compact('localita'));
     	}
