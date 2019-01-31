@@ -3,10 +3,12 @@
 @section('content')
 
 <div class="row">
-    <div class="col-xl-12">
+    <div class="col-xl-12 sezioni-societa">
 
         <!--begin:: Widgets/Tasks -->
         <div class="m-portlet m-portlet--last m-portlet--head-lg m-portlet--responsive-mobile" id="main_portlet">
+
+            @include('menu_sezioni_societa') 
             
             @if (isset($fatture))
             <div class="m-portlet__body">

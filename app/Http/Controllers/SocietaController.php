@@ -209,12 +209,14 @@ class SocietaController extends Controller
            return back()->with('status', 'Specificare la società!');
           }
 
-        $societa = Societa::find($societa_id);
+        $societa = Societa::with(['ragioneSociale.localita.comune.provincia','cliente'])->find($societa_id);
 
         $fatture = $societa->fatture;
         $prefatture = $societa->prefatture;
 
-        return view('societa.fatture', compact('fatture','prefatture'));
+        $ragioneSociale = $societa->ragioneSociale;
+
+        return view('societa.fatture', compact('ragioneSociale', 'fatture', 'prefatture'));
 
 
       }

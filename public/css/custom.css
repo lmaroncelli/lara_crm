@@ -75,6 +75,22 @@ div.sezioni-cliente .m-demo .m-demo__preview {
 	padding: 0!important;
 }
 
+div.sezioni-societa .info_societa {
+	padding-top: 15px;
+}
+
+div.sezioni-societa .info_societa ul li {
+	display: inline;
+	list-style: none;
+	margin-right: 20px;
+	font-size: .90rem;
+  color: #6f727d;
+}
+
+div.sezioni-societa .info_societa ul li span {
+	font-weight: bold;
+}
+
 
 /*
 override default anchor

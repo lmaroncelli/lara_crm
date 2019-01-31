@@ -5,7 +5,7 @@
 	</div>
 	<div class="m-portlet__head-wrapper">
 
-		<div class="m-portlet__head-caption" style="width: 100%;">
+		<div class="m-portlet__head-caption" style="width: 100%; display: flex; flex-wrap:wrap; justify-content: space-around; margin-top: 5px;">
 			
 			<div class="m-portlet__head-title">
 				<h3 class="m-portlet__head-text info-cliente">
